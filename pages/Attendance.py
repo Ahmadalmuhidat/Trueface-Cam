@@ -1,0 +1,127 @@
+import customtkinter
+import sys
+import os
+import threading
+import time
+import json
+
+from datetime import timedelta
+from FaceRecognitionModal import FaceRecognitionModal
+
+class Attendance(FaceRecognitionModal):
+  def __init__(self):
+    try:
+      super().__init__()
+
+      self.AttendanceRows = []
+      self.headers = [
+        "Individual",
+        "Date",
+        "Attend Time",
+      ]
+
+      with open('configrations.json', 'r') as file:
+        self.WorkingHourAbsence = self.parseTimedelta(json.load(file)['Working_Hours']['absence'])
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
+  
+  def parseTimedelta(self, time):
+    hours, minutes = map(int, time.split(':'))
+    return timedelta(hours=hours, minutes=minutes)
+
+  def displayAttendanceTable(self):
+    try:
+      for label in self.AttendanceRows:
+        label.destroy()
+
+      if len(self.Attendance) > 0:
+        for row, log in enumerate(self.Attendance, start=1):
+          attendance_individual, attendance_date, attendance_attend_time = log
+          attendance_data = [
+            attendance_individual,
+            attendance_date,
+            attendance_attend_time,
+          ]
+
+          for col, data in enumerate(attendance_data):
+            if attendance_attend_time < self.WorkingHourAbsence:
+              data_label = customtkinter.CTkLabel(
+                self.attendance_table_frame,
+                text=data,
+                padx=10,
+                pady=5
+              )
+              data_label.grid(row=row, column=col, sticky="nsew")
+              self.AttendanceRows.append(data_label)
+            else:
+              data_label = customtkinter.CTkLabel(
+                self.attendance_table_frame,
+                text=data,
+                padx=10,
+                pady=5,
+                text_color="red"
+              )
+              data_label.grid(
+                row=row,
+                column=col,
+                sticky="nsew"
+              )
+              self.AttendanceRows.append(data_label)
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
+  
+  def refresh(self):
+    try:
+      while True:
+        self.getAttendance()
+        self.displayAttendanceTable()
+        time.sleep(5)
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
+
+  def create(self, parent):
+    try:
+      self.attendance_table_frame = customtkinter.CTkScrollableFrame(parent)
+      self.attendance_table_frame.pack(
+        fill="both",
+        expand=True
+      )
+
+      for col, header in enumerate(self.headers):
+        header_label = customtkinter.CTkLabel(
+          self.attendance_table_frame,
+          text=header,
+          padx=10,
+          pady=5
+        )
+        header_label.grid(
+          row=0,
+          column=col,
+          sticky="nsew"
+        )
+
+      for col in range(len(self.headers)):
+        self.attendance_table_frame.columnconfigure(
+          col,
+          weight=1
+        )
+      
+      threading.Thread(target=self.refresh).start()
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)

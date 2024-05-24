@@ -1,0 +1,9 @@
+face_recognition
+opencv-python
+mysql-connector-python
+customtkinter
+psutil
+CTkMessagebox
+pandas
+openpyxl
+pylint
