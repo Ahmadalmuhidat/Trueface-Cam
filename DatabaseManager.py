@@ -144,7 +144,6 @@ class DatabaseManager(Configrations):
           Students.StudentFirstName,
           Students.StudentMiddleName,
           Students.StudentLastName,
-          Attendance.AttendanceClassID
         FROM
           Attendance
         LEFT JOIN

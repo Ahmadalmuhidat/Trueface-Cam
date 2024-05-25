@@ -19,7 +19,6 @@ class Attendance(FaceRecognitionModal):
         "First Name",
         "Middle Name",
         "Last Name",
-        "Class Subject",
         "Attendance Time"
       ]
 
@@ -40,14 +39,13 @@ class Attendance(FaceRecognitionModal):
 
       if len(DatabaseManager.Attendance) > 0:
         for row, log in enumerate(DatabaseManager.Attendance, start = 1):
-          AttendanceTime, StudentID, StudentFirstName, StudentMiddleName, StudentLastName, AttendanceClassID = log
+          AttendanceTime, StudentID, StudentFirstName, StudentMiddleName, StudentLastName = log
 
           attendance_data = [
             StudentID,
             StudentFirstName,
             StudentMiddleName,
             StudentLastName,
-            AttendanceClassID,
             AttendanceTime
           ]
 
