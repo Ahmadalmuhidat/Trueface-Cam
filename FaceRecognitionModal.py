@@ -8,13 +8,12 @@ import os
 
 from queue import Queue
 from CameraManager import CameraManager
+from DatabaseManager import DatabaseManager
 
 class FaceRecognitionModal(CameraManager):
 	def __init__(self) -> None:
 		try:
 			super().__init__()
-
-			self.ShowedIDs = []
 
 			self.n_frames = 5
 			self.FrameCounter = 0
@@ -46,20 +45,8 @@ class FaceRecognitionModal(CameraManager):
 			results = face_recognition.compare_faces(stored_face_encoding, cam_face_encodings)
 
 			if results[0]:
-				self.ShowedIDs.append(TargetID)
 				self.insertAttendance(TargetID)
-				self.Students.pop(index)
-
-		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
-			pass
-
-	def checkTargetInShowedIDs(self, targetID):
-		try:
-			return targetID not in self.ShowedIDs
+				DatabaseManager.Students.pop(index)
 
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -77,11 +64,11 @@ class FaceRecognitionModal(CameraManager):
 				if (face):
 					self.createLoadingScreen("scanning....")
 
-					for index in range(len(self.Students)):
-						target = self.Students[index]
+					for index in range(len(DatabaseManager.Students)):
+						target = DatabaseManager.Students[index]
 						TargetID = target[0]
 						TargetName = target[1]
-						TargetFaceEncode = target[3]
+						TargetFaceEncode = target[5]
 						args = (
               TargetID,
               TargetName,
@@ -90,8 +77,7 @@ class FaceRecognitionModal(CameraManager):
               face,
               index)
 
-						if self.checkTargetInShowedIDs(TargetID):
-							threading.Thread(target=self.compareFaces, args=args).start()
+						threading.Thread(target=self.compareFaces, args=args).start()
 				else:
 					self.closeLoadingScreen()
 

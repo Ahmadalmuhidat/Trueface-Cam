@@ -1,10 +1,11 @@
-import customtkinter
 import sys
 import os
+import customtkinter
 import json
 import threading
 
 from DatabaseManager import DatabaseManager
+from CTkMessagebox import CTkMessagebox
 
 class Settings(DatabaseManager):
   def __init__(self):
@@ -14,7 +15,7 @@ class Settings(DatabaseManager):
       self.getSettings()
       self.getClasses()
 
-      self.class_id_title_map = {f"{x[1]} {x[2]} - {x[3]}"  : x[0] for x in self.Classes}
+      self.class_id_title_map = {f"{x[1]} {x[2]}-{x[3]}"  : x[0] for x in self.Classes}
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -33,22 +34,36 @@ class Settings(DatabaseManager):
         Settings['Database']['database'] = self.DatabaseEntry.get()
         Settings['Activation_Key'] = self.ActivationKeyEntry.get()
 
-       
       with open('configrations.json', 'w') as file:
         json.dump(Settings, file, indent=2)
 
       self.getSettings()
 
-      self.HostEntry.configure(placeholder_text= self.Host)
-      self.UserEntry.configure(placeholder_text= self.User)
-      self.PasswordEntry.configure(placeholder_text= self.Password)
-      self.DatabaseEntry.configure(placeholder_text= self.Database)
-      self.ActivationKeyEntry.configure(placeholder_text= self.ActivationKey)
+      self.HostEntry.configure(
+        placeholder_text = self.Host
+      )
+      self.UserEntry.configure(
+        placeholder_text = self.User
+      )
+      self.PasswordEntry.configure(
+        placeholder_text = self.Password
+      )
+      self.DatabaseEntry.configure(
+        placeholder_text = self.Database
+      )
+      self.ActivationKeyEntry.configure(
+        placeholder_text = self.ActivationKey
+      )
 
       DatabaseManager.CurrentClass = self.class_id_title_map[self.CurrentLectureEntry.get()]
 
       threading.Thread(target=self.connect).start()
-      threading.Thread(target=self.checkCustomerLicenseStatus).start()
+      # threading.Thread(target=self.checkCustomerLicenseStatus).start()
+
+      self.getStudents()
+      self.getAttendance()
+
+      CTkMessagebox(title="Info", message="Settings has been updated", icon="check")
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -181,7 +196,7 @@ class Settings(DatabaseManager):
       )
       self.CurrentLectureEntry = customtkinter.CTkComboBox(
         ContentFrame,
-        values=[f"{x[1]} {x[2]} - {x[3]}" for x in self.Classes],
+        values=[f"{x[1]} {x[2]}-{x[3]}" for x in self.Classes],
         width=400
       )
       self.CurrentLectureEntry.grid(
@@ -190,7 +205,7 @@ class Settings(DatabaseManager):
         padx=10,
         pady=10
       )
-      self.CurrentLectureEntry.set("Select Lecture")
+      self.CurrentLectureEntry.set("None")
 
       save_button = customtkinter.CTkButton(ContentFrame)
       save_button.grid(

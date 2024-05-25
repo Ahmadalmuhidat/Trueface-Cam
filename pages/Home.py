@@ -6,16 +6,14 @@ import time
 import threading
 
 from FaceRecognitionModal import FaceRecognitionModal
+from DatabaseManager import DatabaseManager
 
 class Home(FaceRecognitionModal):
   def __init__(self):
     try:
       super().__init__()
 
-      self.CamsLabels = []
-      self.ImagePath = None
-
-      # self.connect()
+      self.connect()
       # self.checkCustomerLicenseStatus()
       self.listWorkingCameras()
       self.getStudents()
@@ -71,7 +69,7 @@ class Home(FaceRecognitionModal):
     try:
       while True:
         self.getAttendance()
-        self.attendance_count.configure(text="Attendance \n\n{}".format(len(self.Attendance)))
+        self.Attendance_count.configure(text="Attendance \n\n{}".format(len(DatabaseManager.Attendance)))
         time.sleep(5)
 
     except Exception as e:
@@ -129,9 +127,9 @@ class Home(FaceRecognitionModal):
       attendance_count_frame = customtkinter.CTkFrame(content_frame, corner_radius=0)
       attendance_count_frame.grid(row=1, column=2, sticky="nsew")
       attendance_count_frame.grid_propagate(False)
-      self.attendance_count = customtkinter.CTkLabel(attendance_count_frame, text="Attendance \n\n0")
-      self.attendance_count.pack(padx=5, pady=15)
-      self.attendance_count.configure(bg_color="transparent", font=customtkinter.CTkFont(size=15))
+      self.Attendance_count = customtkinter.CTkLabel(attendance_count_frame, text="Attendance \n\n0")
+      self.Attendance_count.pack(padx=5, pady=15)
+      self.Attendance_count.configure(bg_color="transparent", font=customtkinter.CTkFont(size=15))
 
       CPU_count_frame = customtkinter.CTkFrame(content_frame, corner_radius=0)
       CPU_count_frame.grid(row=1, column=3, sticky="nsew")
@@ -149,4 +147,4 @@ class Home(FaceRecognitionModal):
       exc_type, exc_obj, exc_tb = sys.exc_info()
       fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
       print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      print(exc_obj)  

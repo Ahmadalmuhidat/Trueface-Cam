@@ -10,13 +10,14 @@ from datetime import datetime
 
 class DatabaseManager(Configrations):
   cursor = None
+  db = None
   CurrentClass = None
   CurrentTeacher = None
+  Students = []
+  Attendance = []
 
   def __init__(self) -> None:
     try:
-      self.Students = []
-      self.Attendance = []
       self.Classes = []
 
     except Exception as e:
@@ -41,14 +42,14 @@ class DatabaseManager(Configrations):
       with open("configrations.json", 'r') as json_file:
         config = json.load(json_file)["Database"]
 
-      self.db = mysql.connector.connect(
+      DatabaseManager.db = mysql.connector.connect(
         host = config["host"],
         user = config["user"],
         password = config["password"],
         database = config["database"]
       )
 
-      DatabaseManager.cursor = self.db.cursor()
+      DatabaseManager.cursor = DatabaseManager.db.cursor()
 
     except Exception as e: 
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -63,8 +64,10 @@ class DatabaseManager(Configrations):
         SELECT
           UserID,
           UserPassword
-        FROM Users
-        WHERE UserEmail=%s
+        FROM
+          Users
+        WHERE
+          UserEmail=%s
         '''
 
         DatabaseManager.cursor.execute(query, data)
@@ -93,9 +96,12 @@ class DatabaseManager(Configrations):
 
       data = (ActivationKey,)
       query = '''
-      SELECT LicenseStatus
-      FROM Customers
-      WHERE LicenseActivationKey=%s
+      SELECT
+        LicenseStatus
+      FROM
+        Customers
+      WHERE
+        LicenseActivationKey=%s
       '''
 
       DatabaseManager.cursor.execute(query, data)
@@ -130,13 +136,15 @@ class DatabaseManager(Configrations):
 
   def getAttendance(self):
     try:
+      data = (DatabaseManager.CurrentClass,)
       query = '''
         SELECT
           Attendance.AttendanceTime,
           Students.StudentID,
           Students.StudentFirstName,
           Students.StudentMiddleName,
-          Students.StudentLastName 
+          Students.StudentLastName,
+          Attendance.AttendanceClassID
         FROM
           Attendance
         LEFT JOIN
@@ -145,10 +153,12 @@ class DatabaseManager(Configrations):
           Attendance.AttendanceStudentID = Students.StudentID
         WHERE
           Attendance.AttendanceDate = CURDATE()
+        AND
+          Attendance.AttendanceClassID = %s
       '''
 
-      DatabaseManager.cursor.execute(query)
-      self.Attendance = DatabaseManager.cursor.fetchall()
+      DatabaseManager.cursor.execute(query, data)
+      DatabaseManager.Attendance = DatabaseManager.cursor.fetchall()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -199,7 +209,7 @@ class DatabaseManager(Configrations):
 
       DatabaseManager.cursor.execute(query, data)
       result = DatabaseManager.cursor.fetchall()
-      self.db.commit()
+      DatabaseManager.db.commit()
 
       if len(result) > 0:
         return True
@@ -221,13 +231,12 @@ class DatabaseManager(Configrations):
         AttendanceID = str(uuid.uuid4())
         date  = now.strftime("%Y-%m-%d")
         time = now.strftime("%H:%M:%S")
-        CurrentClass = DatabaseManager.CurrentClass
 
-        data = (AttendanceID, StudentID, CurrentClass, date, time)
+        data = (AttendanceID, StudentID, DatabaseManager.CurrentClass, time, date)
 
         query = "INSERT INTO Attendance VALUES (%s, %s, %s, %s, %s)"
         DatabaseManager.cursor.execute(query, data)
-        self.db.commit()
+        DatabaseManager.db.commit()
 
         CTkMessagebox(title="Match Found", message="{} has been signed".format(StudentID), icon="check")
       else:
@@ -244,7 +253,7 @@ class DatabaseManager(Configrations):
     try:
       query = "SELECT * FROM Students"
       DatabaseManager.cursor.execute(query)
-      self.Students = DatabaseManager.cursor.fetchall()
+      DatabaseManager.Students = DatabaseManager.cursor.fetchall()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

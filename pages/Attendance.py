@@ -13,7 +13,7 @@ class Attendance(FaceRecognitionModal):
     try:
       super().__init__()
 
-      self.AttendanceRows = []
+      DatabaseManager.AttendanceRows = []
       self.headers = [
         "Student ID",
         "First Name",
@@ -35,31 +35,31 @@ class Attendance(FaceRecognitionModal):
 
   def displayAttendanceTable(self):
     try:
-      for label in self.AttendanceRows:
+      for label in DatabaseManager.AttendanceRows:
         label.destroy()
 
-      if len(self.Attendance) > 0:
-        for row, log in enumerate(self.Attendance, start = 1):
-          AttendanceTime, StudentID, StudentFirstName, StudentMiddleName, StudentLastName = log
+      if len(DatabaseManager.Attendance) > 0:
+        for row, log in enumerate(DatabaseManager.Attendance, start = 1):
+          AttendanceTime, StudentID, StudentFirstName, StudentMiddleName, StudentLastName, AttendanceClassID = log
 
           attendance_data = [
             StudentID,
             StudentFirstName,
             StudentMiddleName,
             StudentLastName,
-            DatabaseManager.CurrentClass,
+            AttendanceClassID,
             AttendanceTime
           ]
 
           for col, data in enumerate(attendance_data):
               data_label = customtkinter.CTkLabel(
-                self.attendance_table_frame,
+                DatabaseManager.Attendance_table_frame,
                 text=data,
                 padx=10,
                 pady=5
               )
               data_label.grid(row=row, column=col, sticky="nsew")
-              self.AttendanceRows.append(data_label)
+              DatabaseManager.AttendanceRows.append(data_label)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -82,15 +82,15 @@ class Attendance(FaceRecognitionModal):
 
   def create(self, parent):
     try:
-      self.attendance_table_frame = customtkinter.CTkScrollableFrame(parent)
-      self.attendance_table_frame.pack(
+      DatabaseManager.Attendance_table_frame = customtkinter.CTkScrollableFrame(parent)
+      DatabaseManager.Attendance_table_frame.pack(
         fill="both",
         expand=True
       )
 
       for col, header in enumerate(self.headers):
         header_label = customtkinter.CTkLabel(
-          self.attendance_table_frame,
+          DatabaseManager.Attendance_table_frame,
           text=header,
           padx=10,
           pady=5
@@ -102,7 +102,7 @@ class Attendance(FaceRecognitionModal):
         )
 
       for col in range(len(self.headers)):
-        self.attendance_table_frame.columnconfigure(
+        DatabaseManager.Attendance_table_frame.columnconfigure(
           col,
           weight=1
         )

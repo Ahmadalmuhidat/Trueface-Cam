@@ -91,6 +91,13 @@ class CameraManager(DatabaseManager):
   
   def startCapturing(self):
     try:
+      if not DatabaseManager.CurrentClass:
+          title = "Error"
+          message = "Please select a lecture from the settings"
+          icon = "cancel"
+          CTkMessagebox(title=title, message=message, icon=icon)
+          return
+
       if not CameraManager.ActivateCapturing:
         if self.CameraActive:
           CameraManager.ActivateCapturing = True
