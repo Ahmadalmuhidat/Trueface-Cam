@@ -91,19 +91,6 @@ class CameraManager(DatabaseManager):
   
   def startCapturing(self):
     try:
-      with open('configrations.json', 'r') as file:
-          WorkingHour = json.load(file)['Working_Hours']
-          WorkingHourStart = WorkingHour['start']
-          WorkingHourEnd = WorkingHour['end']
-          CurrentTime = datetime.now().strftime("%H:%M")
-
-      # if not (WorkingHourStart <= CurrentTime < WorkingHourEnd):
-      #     title = "Action Failed"
-      #     message = "You can only scan between {} and {}, now it's {}".format(WorkingHourStart, WorkingHourEnd, CurrentTime)
-      #     icon = "cancel"
-      #     CTkMessagebox(title=title, message=message, icon=icon)
-      #     return
-
       if not CameraManager.ActivateCapturing:
         if self.CameraActive:
           CameraManager.ActivateCapturing = True

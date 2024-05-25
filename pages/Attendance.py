@@ -3,10 +3,10 @@ import sys
 import os
 import threading
 import time
-import json
 
 from datetime import timedelta
 from FaceRecognitionModal import FaceRecognitionModal
+from DatabaseManager import DatabaseManager
 
 class Attendance(FaceRecognitionModal):
   def __init__(self):
@@ -15,13 +15,13 @@ class Attendance(FaceRecognitionModal):
 
       self.AttendanceRows = []
       self.headers = [
-        "Individual",
-        "Date",
-        "Attend Time",
+        "Student ID",
+        "First Name",
+        "Middle Name",
+        "Last Name",
+        "Class Subject",
+        "Attendance Time"
       ]
-
-      with open('configrations.json', 'r') as file:
-        self.WorkingHourAbsence = self.parseTimedelta(json.load(file)['Working_Hours']['absence'])
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -39,16 +39,19 @@ class Attendance(FaceRecognitionModal):
         label.destroy()
 
       if len(self.Attendance) > 0:
-        for row, log in enumerate(self.Attendance, start=1):
-          attendance_individual, attendance_date, attendance_attend_time = log
+        for row, log in enumerate(self.Attendance, start = 1):
+          AttendanceTime, StudentID, StudentFirstName, StudentMiddleName, StudentLastName = log
+
           attendance_data = [
-            attendance_individual,
-            attendance_date,
-            attendance_attend_time,
+            StudentID,
+            StudentFirstName,
+            StudentMiddleName,
+            StudentLastName,
+            DatabaseManager.CurrentClass,
+            AttendanceTime
           ]
 
           for col, data in enumerate(attendance_data):
-            if attendance_attend_time < self.WorkingHourAbsence:
               data_label = customtkinter.CTkLabel(
                 self.attendance_table_frame,
                 text=data,
@@ -56,20 +59,6 @@ class Attendance(FaceRecognitionModal):
                 pady=5
               )
               data_label.grid(row=row, column=col, sticky="nsew")
-              self.AttendanceRows.append(data_label)
-            else:
-              data_label = customtkinter.CTkLabel(
-                self.attendance_table_frame,
-                text=data,
-                padx=10,
-                pady=5,
-                text_color="red"
-              )
-              data_label.grid(
-                row=row,
-                column=col,
-                sticky="nsew"
-              )
               self.AttendanceRows.append(data_label)
 
     except Exception as e:

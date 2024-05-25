@@ -47,8 +47,8 @@ class FaceRecognitionModal(CameraManager):
 
 			if results[0]:
 				self.ShowedIDs.append(TargetID)
-				self.insertAttendance(TargetName)
-				self.Individuals.pop(index)
+				self.insertAttendance(TargetID)
+				self.Students.pop(index)
 
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -77,8 +77,8 @@ class FaceRecognitionModal(CameraManager):
 				if (face):
 					self.createLoadingScreen("scanning....")
 
-					for index in range(len(self.Individuals)):
-						target = self.Individuals[index]
+					for index in range(len(self.Students)):
+						target = self.Students[index]
 						TargetID = target[0]
 						TargetName = target[1]
 						TargetFaceEncode = target[3]

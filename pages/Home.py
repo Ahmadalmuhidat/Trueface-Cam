@@ -15,10 +15,10 @@ class Home(FaceRecognitionModal):
       self.CamsLabels = []
       self.ImagePath = None
 
-      self.connect()
-      self.checkCustomerLicenseStatus()
+      # self.connect()
+      # self.checkCustomerLicenseStatus()
       self.listWorkingCameras()
-      self.getIndividuals()
+      self.getStudents()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

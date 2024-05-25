@@ -4,16 +4,20 @@ import os
 import json
 import uuid
 
+from Configrations import Configrations
 from CTkMessagebox import CTkMessagebox
 from datetime import datetime
 
-class DatabaseManager:
+class DatabaseManager(Configrations):
   cursor = None
+  CurrentClass = None
+  CurrentTeacher = None
 
   def __init__(self) -> None:
     try:
-      self.Individuals = []
+      self.Students = []
       self.Attendance = []
+      self.Classes = []
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -51,7 +55,37 @@ class DatabaseManager:
       fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
-  
+
+  def checkUser(self, email, password):
+    try:
+        data = (email,)
+        query = '''
+        SELECT
+          UserID,
+          UserPassword
+        FROM Users
+        WHERE UserEmail=%s
+        '''
+
+        DatabaseManager.cursor.execute(query, data)
+        User = DatabaseManager.cursor.fetchall()
+
+        if len(User) == 1:
+          if str(User[0][1]) == str(password):
+            return User[0][0]
+          else:
+            CTkMessagebox(title="Info", message="Incorrect password")
+            return False
+        else:
+          CTkMessagebox(title="Info", message="Email was not found")
+          return False
+
+    except Exception as e: 
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
+        print(exc_obj)
+
   def checkCustomerLicenseStatus(self):
     try:
       with open('configrations.json', 'r') as file:
@@ -59,9 +93,9 @@ class DatabaseManager:
 
       data = (ActivationKey,)
       query = '''
-      SELECT CustomerLicenseStatus
+      SELECT LicenseStatus
       FROM Customers
-      WHERE CustomerActivationKey=%s
+      WHERE LicenseActivationKey=%s
       '''
 
       DatabaseManager.cursor.execute(query, data)
@@ -96,17 +130,24 @@ class DatabaseManager:
 
   def getAttendance(self):
     try:
-      with open('configrations.json', 'r') as file:
-        WorkingHourStart = json.load(file)['Working_Hours']['start']
-
-      data = [WorkingHourStart]
       query = '''
-          SELECT AttendanceIndividual, AttendanceDate, AttendanceTime
-          FROM Attendance
-          WHERE TIME(AttendanceTime) > %s
-          AND AttendanceDate = CURDATE()
+        SELECT
+          Attendance.AttendanceTime,
+          Students.StudentID,
+          Students.StudentFirstName,
+          Students.StudentMiddleName,
+          Students.StudentLastName 
+        FROM
+          Attendance
+        LEFT JOIN
+          Students
+        ON
+          Attendance.AttendanceStudentID = Students.StudentID
+        WHERE
+          Attendance.AttendanceDate = CURDATE()
       '''
-      DatabaseManager.cursor.execute(query, data)
+
+      DatabaseManager.cursor.execute(query)
       self.Attendance = DatabaseManager.cursor.fetchall()
 
     except Exception as e:
@@ -116,14 +157,44 @@ class DatabaseManager:
       print(exc_obj)
       pass
 
-  def checkAttendance(self, name):
+  def getClasses(self):
     try:
-      data = (name,)
+      data = (DatabaseManager.CurrentTeacher,)
       query = '''
-      SELECT * FROM
-      Attendance
-      WHERE AttendanceDate = CURDATE()
-      AND AttendanceIndividual=%s
+        SELECT
+          ClasseID,
+          ClassSubjectArea,
+          ClasseSessionStartTime,
+          ClasseSessionEndTime
+        FROM
+           Classes
+        WHERE
+          ClasseInstructorID=%s
+      '''
+
+      DatabaseManager.cursor.execute(query, data)
+      self.Classes = DatabaseManager.cursor.fetchall()
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
+      pass
+
+  def checkAttendance(self, StudentID):
+    try:
+      data = (StudentID, DatabaseManager.CurrentClass)
+      query = '''
+        SELECT *
+        FROM
+          Attendance
+        WHERE
+          AttendanceDate = CURDATE()
+        AND
+          AttendanceStudentID=%s
+        AND
+          AttendanceClassID=%s
       '''
 
       DatabaseManager.cursor.execute(query, data)
@@ -142,22 +213,25 @@ class DatabaseManager:
       print(exc_obj)
       pass
 
-  def insertAttendance(self, name):
+  def insertAttendance(self, StudentID):
     try:
-      if not self.checkAttendance(name):
+      if not self.checkAttendance(StudentID):
         now = datetime.now()
-        id = str(uuid.uuid4())
+
+        AttendanceID = str(uuid.uuid4())
         date  = now.strftime("%Y-%m-%d")
         time = now.strftime("%H:%M:%S")
-        data = (id, name, date, time)
+        CurrentClass = DatabaseManager.CurrentClass
 
-        query = "INSERT INTO Attendance VALUES (%s, %s, %s, %s)"
+        data = (AttendanceID, StudentID, CurrentClass, date, time)
+
+        query = "INSERT INTO Attendance VALUES (%s, %s, %s, %s, %s)"
         DatabaseManager.cursor.execute(query, data)
         self.db.commit()
 
-        CTkMessagebox(title="Match Found", message="{} has been signed".format(name), icon="check")
+        CTkMessagebox(title="Match Found", message="{} has been signed".format(StudentID), icon="check")
       else:
-        CTkMessagebox(title="Info", message="{} has been already signed".format(name))
+        CTkMessagebox(title="Info", message="{} has been already signed".format(StudentID))
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -166,11 +240,11 @@ class DatabaseManager:
       print(exc_obj)
       pass
 
-  def getIndividuals(self):
+  def getStudents(self):
     try:
-      query = "SELECT * FROM Individuals"
+      query = "SELECT * FROM Students"
       DatabaseManager.cursor.execute(query)
-      self.Individuals = DatabaseManager.cursor.fetchall()
+      self.Students = DatabaseManager.cursor.fetchall()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

@@ -1,13 +1,13 @@
 # WatchGuard Facial Sentinel
 
 ## Overview
-The WatchGuard Facial Sentinel is a comprehensive system designed to assist in identifying wanted individuals by utilizing advanced facial recognition technology. This program allows users to upload information and images of wanted individuals, storing this data securely in a database. The system then connects to all available cameras linked to the PC, analyzing their streams in real-time. If a target person appears in any camera feed, the WatchGuard Facial Sentinel triggers an alert, notifying the user of the presence of the wanted individual.
+The WatchGuard Facial Sentinel is a comprehensive system designed to assist in identifying wanted Students by utilizing advanced facial recognition technology. This program allows users to upload information and images of wanted Students, storing this data securely in a database. The system then connects to all available cameras linked to the PC, analyzing their streams in real-time. If a target person appears in any camera feed, the WatchGuard Facial Sentinel triggers an alert, notifying the user of the presence of the wanted individual.
 
 ## Features
-- **Upload Wanted Individuals:** Users can upload information about wanted people along with their images to the program.
+- **Upload Wanted Students:** Users can upload information about wanted people along with their images to the program.
 - **Database Storage:** All uploaded data is securely stored in a database for future reference.
 - **Real-time Camera Stream Analysis:** The WatchGuard Facial Sentinel connects to available cameras and continuously analyzes their feeds for faces.
-- **Facial Recognition:** Utilizes sophisticated facial recognition algorithms to match faces in camera feeds with the uploaded images of wanted individuals.
+- **Facial Recognition:** Utilizes sophisticated facial recognition algorithms to match faces in camera feeds with the uploaded images of wanted Students.
 - **Alert System:** Upon detecting a match, the program generates an alert to notify the user of the presence of the wanted person.
 
 ## Installation
@@ -27,8 +27,8 @@ Camera Connection: Ensure all cameras intended for monitoring are connected and 
 
     ```bash
     python watchguard.py
-1. **Upload Wanted Individuals**:
-        Access the program's interface to upload information and images of wanted individuals.
+1. **Upload Wanted Students**:
+        Access the program's interface to upload information and images of wanted Students.
         Ensure the data is correctly entered and stored in the database.
 
 1. **Monitoring**:
