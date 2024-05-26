@@ -42,22 +42,25 @@ class CameraManager(DatabaseManager):
 
   def listWorkingCameras(self):
     try:
-      TestCam = cv2.VideoCapture(0)
+      for x in range(0, 10):
+        TestCam = cv2.VideoCapture(x)
 
-      if TestCam.isOpened():
-        is_reading, img = TestCam.read()
+        if TestCam.isOpened():
+          is_reading, img = TestCam.read()
 
-        if is_reading:
-          self.CameraActive = True
-          title = "Camera Activated"
-          message = "Camera has been tested successfully"
-          icon = "check"
-          CTkMessagebox(title=title, message=message, icon=icon)
-        else:
-          title = "Camera Not Activate"
-          message = "Camera testing has failed"
-          icon = "cancel"
-          CTkMessagebox(title=title, message=message, icon=icon)
+          if is_reading:
+            self.CameraActive = True
+            title = "Camera Activated"
+            message = "Camera has been tested successfully"
+            icon = "check"
+            CTkMessagebox(title=title, message=message, icon=icon)
+            break
+
+      if not self.CameraActive:
+        title = "Camera Not Activate"
+        message = "Camera testing has failed"
+        icon = "cancel"
+        CTkMessagebox(title=title, message=message, icon=icon)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

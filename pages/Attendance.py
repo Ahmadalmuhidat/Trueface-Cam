@@ -104,7 +104,6 @@ class Attendance(FaceRecognitionModal):
       reset_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=5)
       reset_button.configure(command=self.refresh)
 
-      
       self.Attendance_table_frame = customtkinter.CTkScrollableFrame(parent)
       self.Attendance_table_frame.pack(
         fill="both",
