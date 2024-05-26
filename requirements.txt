@@ -1,6 +1,7 @@
 face_recognition
 opencv-python
 customtkinter
+mysql-connector-python 
 psutil
 CTkMessagebox
 pandas

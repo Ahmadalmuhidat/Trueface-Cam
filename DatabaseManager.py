@@ -1,6 +1,6 @@
-import pymysql
 import sys
 import os
+import mysql.connector
 import json
 import uuid
 
@@ -39,19 +39,16 @@ class DatabaseManager(Configrations):
 
   def connect(self):
     try:
-      with open("configrations.json", 'r') as json_file:
-        config = json.load(json_file)["Database"]
-
-      self.db = pymysql.connect(
-        host = config["host"],
-        user = config["user"],
-        password = config["password"],
-        database = config["database"]
+      DatabaseManager.db = mysql.connector.connect(
+        host = self.Host,
+        user = self.User,
+        password = self.User,
+        database = self.Database
       )
 
       DatabaseManager.cursor = DatabaseManager.db.cursor()
 
-    except Exception as e: 
+    except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
       fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
       print(exc_type, fname, exc_tb.tb_lineno)
