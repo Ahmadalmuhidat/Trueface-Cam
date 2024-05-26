@@ -51,7 +51,7 @@ class Attendance(FaceRecognitionModal):
 
           for col, data in enumerate(attendance_data):
               data_label = customtkinter.CTkLabel(
-                DatabaseManager.Attendance_table_frame,
+                self.Attendance_table_frame,
                 text=data,
                 padx=10,
                 pady=5
@@ -67,10 +67,19 @@ class Attendance(FaceRecognitionModal):
   
   def refresh(self):
     try:
-      while True:
-        self.getAttendance()
-        self.displayAttendanceTable()
-        time.sleep(5)
+      self.getAttendance()
+      self.displayAttendanceTable()
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
+
+  def search(self, term):
+    try:
+      self.searchAttendance(term)
+      self.displayAttendanceTable()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -80,15 +89,31 @@ class Attendance(FaceRecognitionModal):
 
   def create(self, parent):
     try:
-      DatabaseManager.Attendance_table_frame = customtkinter.CTkScrollableFrame(parent)
-      DatabaseManager.Attendance_table_frame.pack(
+      search_bar_frame = customtkinter.CTkFrame(parent, bg_color="transparent")
+      search_bar_frame.pack(fill="x", expand=False)
+
+      search_button = customtkinter.CTkButton(search_bar_frame, text="Search")
+      search_button.grid(row=0, column=0, sticky="nsew", pady=10, padx=5)
+      search_button.configure(command=lambda: self.search(search_bar.get()))
+
+      search_bar = customtkinter.CTkEntry(search_bar_frame)
+      search_bar.grid(row=0, column=1, sticky="nsew", pady=10)
+      search_bar.configure(width=400, placeholder_text="Search for Students...")
+
+      reset_button = customtkinter.CTkButton(search_bar_frame, width=100, text="Refresh")
+      reset_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=5)
+      reset_button.configure(command=self.refresh)
+
+      
+      self.Attendance_table_frame = customtkinter.CTkScrollableFrame(parent)
+      self.Attendance_table_frame.pack(
         fill="both",
         expand=True
       )
 
       for col, header in enumerate(self.headers):
         header_label = customtkinter.CTkLabel(
-          DatabaseManager.Attendance_table_frame,
+          self.Attendance_table_frame,
           text=header,
           padx=10,
           pady=5
@@ -100,12 +125,10 @@ class Attendance(FaceRecognitionModal):
         )
 
       for col in range(len(self.headers)):
-        DatabaseManager.Attendance_table_frame.columnconfigure(
+        self.Attendance_table_frame.columnconfigure(
           col,
           weight=1
         )
-      
-      threading.Thread(target=self.refresh).start()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

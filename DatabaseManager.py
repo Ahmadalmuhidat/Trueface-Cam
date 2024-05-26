@@ -140,7 +140,7 @@ class DatabaseManager(Configrations):
           Students.StudentID,
           Students.StudentFirstName,
           Students.StudentMiddleName,
-          Students.StudentLastName,
+          Students.StudentLastName
         FROM
           Attendance
         LEFT JOIN
@@ -151,6 +151,38 @@ class DatabaseManager(Configrations):
           Attendance.AttendanceDate = CURDATE()
         AND
           Attendance.AttendanceClassID = %s
+      '''
+
+      DatabaseManager.cursor.execute(query, data)
+      DatabaseManager.Attendance = DatabaseManager.cursor.fetchall()
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
+      pass
+
+  def searchAttendance(self, term):
+    try:
+      data = (term,)
+      query = '''
+        SELECT
+          Attendance.AttendanceTime,
+          Students.StudentID,
+          Students.StudentFirstName,
+          Students.StudentMiddleName,
+          Students.StudentLastName
+        FROM
+          Attendance
+        LEFT JOIN
+          Students
+        ON
+          Attendance.AttendanceStudentID = Students.StudentID
+        WHERE
+          Attendance.AttendanceDate = CURDATE()
+        AND
+          Attendance.AttendanceStudentID = %s
       '''
 
       DatabaseManager.cursor.execute(query, data)

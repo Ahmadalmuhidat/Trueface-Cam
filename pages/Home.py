@@ -13,6 +13,7 @@ class Home(FaceRecognitionModal):
     try:
       super().__init__()
 
+      self.getSettings()
       self.connect()
       # self.checkCustomerLicenseStatus()
       self.listWorkingCameras()
