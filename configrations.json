@@ -1,8 +1,8 @@
 {
   "Database": {
-    "host": "localhost",
-    "user": "kali",
-    "password": "kali",
+    "host": "34.83.216.163",
+    "user": "root",
+    "password": "root",
     "database": "TimeWizeAI"
   },
   "Activation_Key": "1234"

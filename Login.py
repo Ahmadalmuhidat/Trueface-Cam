@@ -32,7 +32,8 @@ class Login(DatabaseManager):
   def create(self):
     try:
       self.window = customtkinter.CTk()
-      self.window.geometry("550x200")
+      self.window.geometry("400x350")
+      self.window.resizable(width=0, height=0)
 
       self.window.title("Login To TimeWizeAI")
 
@@ -49,13 +50,12 @@ class Login(DatabaseManager):
       Emaillabel.grid(row=0, column=0, padx=10, pady=10)
       self.EmailEntry = customtkinter.CTkEntry(
         ContentFrame,
-        width=400
+        width=250
       )
       self.EmailEntry.grid(
         row=0,
         column=1,
-        padx=10,
-        pady=10
+        padx=10
       )
 
       Passwordlabel = customtkinter.CTkLabel(
@@ -66,17 +66,15 @@ class Login(DatabaseManager):
         row=1,
         column=0,
         padx=10,
-        pady=10
       )
       self.PasswordEntry = customtkinter.CTkEntry(
         ContentFrame,
-        width=400
+        width=250
       )
       self.PasswordEntry.grid(
         row=1,
         column=1,
         padx=10,
-        pady=10
       )
 
       save_button = customtkinter.CTkButton(ContentFrame)

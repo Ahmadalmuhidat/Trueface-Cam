@@ -1,4 +1,4 @@
-import mysql.connector
+import pymysql
 import sys
 import os
 import json
@@ -42,7 +42,7 @@ class DatabaseManager(Configrations):
       with open("configrations.json", 'r') as json_file:
         config = json.load(json_file)["Database"]
 
-      DatabaseManager.db = mysql.connector.connect(
+      self.db = pymysql.connect(
         host = config["host"],
         user = config["user"],
         password = config["password"],
