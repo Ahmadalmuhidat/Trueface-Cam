@@ -1,19 +1,16 @@
 import customtkinter
 import sys
 import os
-import threading
-import time
 
 from datetime import timedelta
 from FaceRecognitionModal import FaceRecognitionModal
-from DatabaseManager import DatabaseManager
 
 class Attendance(FaceRecognitionModal):
   def __init__(self):
     try:
       super().__init__()
 
-      DatabaseManager.AttendanceRows = []
+      self.AttendanceRows = []
       self.headers = [
         "Student ID",
         "First Name",
@@ -30,16 +27,19 @@ class Attendance(FaceRecognitionModal):
   
   def parseTimedelta(self, time):
     hours, minutes = map(int, time.split(':'))
-    return timedelta(hours=hours, minutes=minutes)
+    return timedelta(
+      hours = hours,
+      minutes = minutes
+    )
 
   def displayAttendanceTable(self):
     try:
-      for label in DatabaseManager.AttendanceRows:
+      for label in self.AttendanceRows:
         label.destroy()
 
-      if len(DatabaseManager.Attendance) > 0:
-        for row, log in enumerate(DatabaseManager.Attendance, start = 1):
-          AttendanceTime, StudentID, StudentFirstName, StudentMiddleName, StudentLastName = log
+      if len(self.Attendance) > 0:
+        for row, Attendance in enumerate(self.Attendance, start = 1):
+          AttendanceTime, StudentID, StudentFirstName, StudentMiddleName, StudentLastName = Attendance
 
           attendance_data = [
             StudentID,
@@ -50,14 +50,18 @@ class Attendance(FaceRecognitionModal):
           ]
 
           for col, data in enumerate(attendance_data):
-              data_label = customtkinter.CTkLabel(
-                self.Attendance_table_frame,
-                text=data,
-                padx=10,
-                pady=5
+              DataLabel = customtkinter.CTkLabel(self.AttendanceTableFrame)
+              DataLabel.grid(
+                row = row,
+                column = col,
+                sticky = "nsew"
               )
-              data_label.grid(row=row, column=col, sticky="nsew")
-              DatabaseManager.AttendanceRows.append(data_label)
+              DataLabel.configure(
+                text = data,
+                padx = 10,
+                pady = 5   
+              )
+              self.AttendanceRows.append(DataLabel)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -89,44 +93,75 @@ class Attendance(FaceRecognitionModal):
 
   def create(self, parent):
     try:
-      search_bar_frame = customtkinter.CTkFrame(parent, bg_color="transparent")
-      search_bar_frame.pack(fill="x", expand=False)
+      SearchBarFrame = customtkinter.CTkFrame(parent)
+      SearchBarFrame.pack(
+        fill = "x",
+        expand = False
+      )
+      SearchBarFrame.configure(bg_color = "transparent")
 
-      search_button = customtkinter.CTkButton(search_bar_frame, text="Search")
-      search_button.grid(row=0, column=0, sticky="nsew", pady=10, padx=5)
-      search_button.configure(command=lambda: self.search(search_bar.get()))
+      SearchButton = customtkinter.CTkButton(SearchBarFrame)
+      SearchButton.grid(
+        row = 0,
+        column = 0,
+        sticky = "nsew",
+        pady = 10,
+        padx = 5
+      )
+      SearchButton.configure(
+        command = lambda: self.search(SearchBar.get()),
+        text = "Search"
+      )
 
-      search_bar = customtkinter.CTkEntry(search_bar_frame)
-      search_bar.grid(row=0, column=1, sticky="nsew", pady=10)
-      search_bar.configure(width=400, placeholder_text="Search for Students...")
+      SearchBar = customtkinter.CTkEntry(SearchBarFrame)
+      SearchBar.grid(
+        row = 0,
+        column = 1,
+        sticky = "nsew",
+        pady = 10
+      )
+      SearchBar.configure(
+        width = 400,
+        placeholder_text = "Search for Students..."
+      )
 
-      reset_button = customtkinter.CTkButton(search_bar_frame, width=100, text="Refresh")
-      reset_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=5)
-      reset_button.configure(command=self.refresh)
+      RefreshButton = customtkinter.CTkButton(SearchBarFrame)
+      RefreshButton.grid(
+        row = 0,
+        column = 2,
+        sticky = "nsew",
+        pady = 10,
+        padx = 5
+      )
+      RefreshButton.configure(
+        command = self.refresh,
+        width = 100,
+        text = "Refresh"
+      )
 
-      self.Attendance_table_frame = customtkinter.CTkScrollableFrame(parent)
-      self.Attendance_table_frame.pack(
-        fill="both",
-        expand=True
+      self.AttendanceTableFrame = customtkinter.CTkScrollableFrame(parent)
+      self.AttendanceTableFrame.pack(
+        fill = "both",
+        expand = True
       )
 
       for col, header in enumerate(self.headers):
-        header_label = customtkinter.CTkLabel(
-          self.Attendance_table_frame,
-          text=header,
-          padx=10,
-          pady=5
+        HeaderLabel = customtkinter.CTkLabel(self.AttendanceTableFrame)
+        HeaderLabel.grid(
+          row = 0,
+          column = col,
+          sticky = "nsew"
         )
-        header_label.grid(
-          row=0,
-          column=col,
-          sticky="nsew"
+        HeaderLabel.configure(
+          text = header,
+          padx = 10,
+          pady = 5   
         )
 
       for col in range(len(self.headers)):
-        self.Attendance_table_frame.columnconfigure(
+        self.AttendanceTableFrame.columnconfigure(
           col,
-          weight=1
+          weight = 1
         )
 
     except Exception as e:

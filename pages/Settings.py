@@ -1,8 +1,6 @@
 import sys
 import os
 import customtkinter
-import json
-import threading
 
 from DatabaseManager import DatabaseManager
 from CTkMessagebox import CTkMessagebox
@@ -15,7 +13,7 @@ class Settings(DatabaseManager):
       self.getSettings()
       self.getClasses()
 
-      self.class_id_title_map = {f"{x[1]} {x[2]}-{x[3]}"  : x[0] for x in self.Classes}
+      self.class_id_title_map = {f"{x[1]} {x[2]}-{x[3]}": x[0] for x in self.Classes}
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -63,7 +61,15 @@ class Settings(DatabaseManager):
       self.getStudents()
       self.getAttendance()
 
-      CTkMessagebox(title="Info", message="Settings has been updated", icon="check")
+      title = "Info"
+      message="Settings has been updated"
+      icon="check"
+
+      CTkMessagebox(
+        title = title,
+        message = message,
+        icon = icon
+      )
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -75,149 +81,148 @@ class Settings(DatabaseManager):
     try:
       ContentFrame = customtkinter.CTkFrame(parent)
       ContentFrame.pack(
-        padx=20,
-        pady=20
+        padx = 20,
+        pady = 20
       )
 
       # Hostlabel = customtkinter.CTkLabel(
       #   ContentFrame,
-      #   text="Host:"
+      #   text = "Host:"
       # )
-      # Hostlabel.grid(row=0, column=0, padx=10, pady=10)
+      # Hostlabel.grid(row = 0, column = 0, padx = 10, pady = 10)
       # self.HostEntry = customtkinter.CTkEntry(
       #   ContentFrame,
-      #   width=400
+      #   width = 400
       # )
       # self.HostEntry.grid(
-      #   row=0,
-      #   column=1,
-      #   padx=10,
-      #   pady=10
+      #   row = 0,
+      #   column = 1,
+      #   padx = 10,
+      #   pady = 10
       # )
       # self.HostEntry.insert(0, self.Host)
 
       # Userlabel = customtkinter.CTkLabel(
       #   ContentFrame,
-      #   text="User:"
+      #   text = "User:"
       # )
       # Userlabel.grid(
-      #   row=1,
-      #   column=0,
-      #   padx=10,
-      #   pady=10
+      #   row = 1,
+      #   column = 0,
+      #   padx = 10,
+      #   pady = 10
       # )
       # self.UserEntry = customtkinter.CTkEntry(
       #   ContentFrame,
-      #   width=400
+      #   width = 400
       # )
       # self.UserEntry.grid(
-      #   row=1,
-      #   column=1,
-      #   padx=10,
-      #   pady=10
+      #   row = 1,
+      #   column = 1,
+      #   padx = 10,
+      #   pady = 10
       # )
       # self.UserEntry.insert(0, self.User)
 
       # Passwordlabel = customtkinter.CTkLabel(
       #   ContentFrame,
-      #   text="Password:"
+      #   text = "Password:"
       # )
       # Passwordlabel.grid(
-      #   row=2,
-      #   column=0,
-      #   padx=10,
-      #   pady=10
+      #   row = 2,
+      #   column = 0,
+      #   padx = 10,
+      #   pady = 10
       # )
       # self.PasswordEntry = customtkinter.CTkEntry(
       #   ContentFrame,
-      #   width=400
+      #   width = 400
       # )
       # self.PasswordEntry.grid(
-      #   row=2,
-      #   column=1,
-      #   padx=10,
-      #   pady=10
+      #   row = 2,
+      #   column = 1,
+      #   padx = 10,
+      #   pady = 10
       # )
       # self.PasswordEntry.insert(0, self.Password)
 
       # Databaselabel = customtkinter.CTkLabel(
       #   ContentFrame,
-      #   text="Database:"
+      #   text = "Database:"
       # )
       # Databaselabel.grid(
-      #   row=3,
-      #   column=0,
-      #   padx=10,
-      #   pady=10
+      #   row = 3,
+      #   column = 0,
+      #   padx = 10,
+      #   pady = 10
       # )
       # self.DatabaseEntry = customtkinter.CTkEntry(
       #   ContentFrame,
-      #   width=400
+      #   width = 400
       # )
       # self.DatabaseEntry.grid(
-      #   row=3,
-      #   column=1,
-      #   padx=10,
-      #   pady=10
+      #   row = 3,
+      #   column = 1,
+      #   padx = 10,
+      #   pady = 10
       # )
       # self.DatabaseEntry.insert(0, self.Database)
 
       # ActivationKeylabel = customtkinter.CTkLabel(
       #   ContentFrame,
-      #   text="Activation Key:"
+      #   text = "Activation Key:"
       # )
       # ActivationKeylabel.grid(
-      #   row=4,
-      #   column=0,
-      #   padx=10,
-      #   pady=10
+      #   row = 4,
+      #   column = 0,
+      #   padx = 10,
+      #   pady = 10
       # )
       # self.ActivationKeyEntry = customtkinter.CTkEntry(
       #   ContentFrame,
-      #   width=400
+      #   width = 400
       # )
       # self.ActivationKeyEntry.grid(
-      #   row=4,
-      #   column=1,
-      #   padx=10,
-      #   pady=10
+      #   row = 4,
+      #   column = 1,
+      #   padx = 10,
+      #   pady = 10
       # )
       # self.ActivationKeyEntry.insert(0, self.ActivationKey)
 
-      CurrentLecturelabel = customtkinter.CTkLabel(
-        ContentFrame,
-        text="Current Lecture:"
-      )
+      CurrentLecturelabel = customtkinter.CTkLabel(ContentFrame)
       CurrentLecturelabel.grid(
-        row=5,
-        column=0,
-        padx=10,
-        pady=10
+        row = 5,
+        column = 0,
+        padx = 10,
+        pady = 10
       )
-      self.CurrentLectureEntry = customtkinter.CTkComboBox(
-        ContentFrame,
-        values=[f"{x[1]} {x[2]}-{x[3]}" for x in self.Classes],
-        width=400
-      )
+      CurrentLecturelabel.configure(text = "Current Lecture:")
+
+      self.CurrentLectureEntry = customtkinter.CTkComboBox(ContentFrame)
       self.CurrentLectureEntry.grid(
-        row=5,
-        column=1,
-        padx=10,
-        pady=10
+        row = 5,
+        column = 1,
+        padx = 10,
+        pady = 10
+      )
+      self.CurrentLectureEntry.configure(
+        values = [f"{x[1]} {x[2]}-{x[3]}" for x in self.Classes],
+        width = 400
       )
       self.CurrentLectureEntry.set("None")
 
       save_button = customtkinter.CTkButton(ContentFrame)
       save_button.grid(
-        row=6,
-        columnspan=2,
-        padx=10,
-        pady=10,
-        sticky="nsew",
+        row = 6,
+        columnspan = 2,
+        padx = 10,
+        pady = 10,
+        sticky = "nsew",
       )
       save_button.configure(
-        text="Refresh Settings",
-        command=self.refreshSettings
+        text = "Refresh Settings",
+        command = self.refreshSettings
       )
 
     except Exception as e:

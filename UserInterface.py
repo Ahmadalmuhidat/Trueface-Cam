@@ -30,17 +30,29 @@ class UserInterface(CameraManager):
       navbar = customtkinter.CTkFrame(window)
       navbar.pack(fill=customtkinter.X)
 
-      HomeButton = customtkinter.CTkButton(navbar, text="Home")
-      HomeButton.configure(corner_radius=0, command=lambda: self.showPage("Home"))
-      HomeButton.pack(side=customtkinter.LEFT)
+      HomeButton = customtkinter.CTkButton(navbar)
+      HomeButton.configure(
+        corner_radius = 0,
+        command = lambda: self.showPage("Home"),
+        text = "Home"
+      )
+      HomeButton.pack(side = customtkinter.LEFT)
 
-      AttendanceButton = customtkinter.CTkButton(navbar, text="Attendance")
-      AttendanceButton.configure(corner_radius=0, command=lambda: self.showPage("Attendance"))
-      AttendanceButton.pack(side=customtkinter.LEFT)
+      AttendanceButton = customtkinter.CTkButton(navbar)
+      AttendanceButton.configure(
+        corner_radius = 0,
+        command = lambda: self.showPage("Attendance"),
+        text = "Attendance"
+      )
+      AttendanceButton.pack(side = customtkinter.LEFT)
 
-      SettingsButton = customtkinter.CTkButton(navbar, text="Settings")
-      SettingsButton.configure(corner_radius=0, command=lambda: self.showPage("Settings"))
-      SettingsButton.pack(side=customtkinter.LEFT)
+      SettingsButton = customtkinter.CTkButton(navbar)
+      SettingsButton.configure(
+        corner_radius = 0,
+        command = lambda: self.showPage("Settings"),
+        text = "Settings"
+      )
+      SettingsButton.pack(side = customtkinter.LEFT)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -86,7 +98,9 @@ class UserInterface(CameraManager):
         self.stopCapturing()
 
       self.window.destroy()
-      threadsToTerminate = [thread for thread in threading.enumerate() if thread.ident != threading.get_ident()]
+      threadsToTerminate = [
+        thread for thread in threading.enumerate() if thread.ident != threading.get_ident()
+      ]
 
       for thread in threadsToTerminate:
         if thread.is_alive():
@@ -104,8 +118,8 @@ class UserInterface(CameraManager):
     try:
       self.window = customtkinter.CTk()
       
-      width= self.window.winfo_screenwidth()
-      height= self.window.winfo_screenheight()
+      width =  self.window.winfo_screenwidth()
+      height =  self.window.winfo_screenheight()
       self.window.geometry("%dx%d" % (width, height))
 
       self.window.title("TimeWizeAI Camera")

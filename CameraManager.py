@@ -3,10 +3,8 @@ import os
 import time
 import cv2
 import threading
-import json
 
 from CTkMessagebox import CTkMessagebox
-from datetime import datetime
 from DatabaseManager import DatabaseManager
 
 class CameraManager(DatabaseManager):
@@ -137,6 +135,7 @@ class CameraManager(DatabaseManager):
         CameraManager.CaptureThreads[0].join(timeout=5)
         CameraManager.CaptureThreads.clear()
         CameraManager.CaptureEvents.clear()
+
       else:
         title = "Action Failed"
         message = "Camera is not capturing"

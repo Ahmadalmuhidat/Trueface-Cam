@@ -62,7 +62,7 @@ class FaceRecognitionModal(CameraManager):
 				face = self.getTheFace(small_frame)
 
 				if (face):
-					self.createLoadingScreen("scanning....")
+					self.createLoadingScreen()
 
 					for index in range(len(DatabaseManager.Students)):
 						target = DatabaseManager.Students[index]
@@ -90,18 +90,24 @@ class FaceRecognitionModal(CameraManager):
 			print(exc_obj)
 			pass
 
-	def createLoadingScreen(self, message):
+	def createLoadingScreen(self):
 		try:
 			if not self.ScanningLoadingScreenRunning and not self.LoadingScreen:
 				self.ScanningLoadingScreenRunning = True
 
 				self.LoadingScreen = customtkinter.CTkToplevel()
 				self.LoadingScreen.geometry("500x200")
-				self.LoadingScreen.title("")
+
 				self.LoadingScreen.resizable(width=0, height=0)
 
+				self.LoadingScreen.title("")
+
 				if self.LoadingScreen:
-					label = customtkinter.CTkLabel(self.LoadingScreen, text=message, font=customtkinter.CTkFont(size=15))
+					label = customtkinter.CTkLabel(
+						self.LoadingScreen,
+						text="scanning....",
+						font=customtkinter.CTkFont(size=15)
+					)
 					label.pack(pady=60)
 
 		except Exception as e:
