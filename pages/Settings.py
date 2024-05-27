@@ -186,7 +186,7 @@ class Settings(DatabaseManager):
 
       CurrentLecturelabel = customtkinter.CTkLabel(
         ContentFrame,
-        text="Current Teacher:"
+        text="Current Lecture:"
       )
       CurrentLecturelabel.grid(
         row=5,

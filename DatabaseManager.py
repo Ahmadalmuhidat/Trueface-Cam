@@ -148,9 +148,9 @@ class DatabaseManager(Configrations):
         ON
           Attendance.AttendanceStudentID = Students.StudentID
         WHERE
-          Attendance.AttendanceDate = CURDATE()
-        AND
           Attendance.AttendanceClassID = %s
+        AND
+          Attendance.AttendanceDate = CURDATE()
       '''
 
       DatabaseManager.cursor.execute(query, data)
