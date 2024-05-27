@@ -67,8 +67,12 @@ class DatabaseManager(Configrations):
           UserEmail=%s
         '''
 
+        DatabaseManager.cursor = DatabaseManager.db.cursor()
+
         DatabaseManager.cursor.execute(query, data)
         User = DatabaseManager.cursor.fetchall()
+
+        DatabaseManager.cursor.close()
 
         if len(User) == 1:
           if str(User[0][1]) == str(password):
@@ -100,9 +104,13 @@ class DatabaseManager(Configrations):
       WHERE
         LicenseActivationKey=%s
       '''
+      
+      DatabaseManager.cursor = DatabaseManager.db.cursor()
 
       DatabaseManager.cursor.execute(query, data)
       CustomerLicenseStatus = DatabaseManager.cursor.fetchall()
+
+      DatabaseManager.cursor.close()
 
       if len(CustomerLicenseStatus) > 0:
         if CustomerLicenseStatus[0][0] == "inactive":
@@ -153,8 +161,12 @@ class DatabaseManager(Configrations):
           Attendance.AttendanceDate = CURDATE()
       '''
 
+      DatabaseManager.cursor = DatabaseManager.db.cursor()
+
       DatabaseManager.cursor.execute(query, data)
       DatabaseManager.Attendance = DatabaseManager.cursor.fetchall()
+
+      DatabaseManager.cursor.close()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -185,8 +197,12 @@ class DatabaseManager(Configrations):
           Attendance.AttendanceStudentID = %s
       '''
 
+      DatabaseManager.cursor = DatabaseManager.db.cursor()
+
       DatabaseManager.cursor.execute(query, data)
       DatabaseManager.Attendance = DatabaseManager.cursor.fetchall()
+
+      DatabaseManager.cursor.close()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -210,8 +226,12 @@ class DatabaseManager(Configrations):
           ClasseInstructorID=%s
       '''
 
+      DatabaseManager.cursor = DatabaseManager.db.cursor()
+
       DatabaseManager.cursor.execute(query, data)
       self.Classes = DatabaseManager.cursor.fetchall()
+
+      DatabaseManager.cursor.close()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -235,9 +255,13 @@ class DatabaseManager(Configrations):
           AttendanceClassID=%s
       '''
 
+      DatabaseManager.cursor = DatabaseManager.db.cursor()
+
       DatabaseManager.cursor.execute(query, data)
       result = DatabaseManager.cursor.fetchall()
       DatabaseManager.db.commit()
+
+      DatabaseManager.cursor.close()
 
       if len(result) > 0:
         return True
@@ -255,16 +279,25 @@ class DatabaseManager(Configrations):
     try:
       if not self.checkAttendance(StudentID):
         now = datetime.now()
-
         AttendanceID = str(uuid.uuid4())
         date  = now.strftime("%Y-%m-%d")
         time = now.strftime("%H:%M:%S")
 
-        data = (AttendanceID, StudentID, DatabaseManager.CurrentClass, time, date)
+        data = (
+          AttendanceID,
+          StudentID,
+          DatabaseManager.CurrentClass,
+          time,
+          date
+        )
+
+        DatabaseManager.cursor = DatabaseManager.db.cursor()
 
         query = "INSERT INTO Attendance VALUES (%s, %s, %s, %s, %s)"
         DatabaseManager.cursor.execute(query, data)
         DatabaseManager.db.commit()
+
+        DatabaseManager.cursor.close()
 
         CTkMessagebox(title="Match Found", message="{} has been signed".format(StudentID), icon="check")
       else:
@@ -279,9 +312,13 @@ class DatabaseManager(Configrations):
 
   def getStudents(self):
     try:
+      DatabaseManager.cursor = DatabaseManager.db.cursor()
+
       query = "SELECT * FROM Students"
       DatabaseManager.cursor.execute(query)
       DatabaseManager.Students = DatabaseManager.cursor.fetchall()
+
+      DatabaseManager.cursor.close()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
