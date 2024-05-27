@@ -3,6 +3,8 @@ import os
 import json
 
 class Configrations:
+  CloseThreads = False
+
   def __init__(self) -> None:
     try:
       self.Host = None

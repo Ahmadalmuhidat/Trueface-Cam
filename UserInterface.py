@@ -8,6 +8,7 @@ import threading
 
 from CameraManager import CameraManager
 from DatabaseManager import DatabaseManager
+from Configrations import Configrations
 
 class UserInterface(CameraManager):
   def __init__(self, UserID):
@@ -98,15 +99,10 @@ class UserInterface(CameraManager):
         self.stopCapturing()
 
       self.window.destroy()
-      threadsToTerminate = [
-        thread for thread in threading.enumerate() if thread.ident != threading.get_ident()
-      ]
 
-      for thread in threadsToTerminate:
-        if thread.is_alive():
-          thread.join(timeout=1)
-      
-      print("Done Closing")
+      Configrations.CloseThreads = True
+
+      sys.exit(0)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

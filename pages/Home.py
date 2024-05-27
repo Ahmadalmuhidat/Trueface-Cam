@@ -7,6 +7,7 @@ import threading
 
 from FaceRecognitionModal import FaceRecognitionModal
 from DatabaseManager import DatabaseManager
+from Configrations import Configrations
 
 class Home(FaceRecognitionModal):
   def __init__(self):
@@ -73,6 +74,11 @@ class Home(FaceRecognitionModal):
           text = "CPU Usage \n\n{}%".format(metrics)
         )
 
+        if Configrations.CloseThreads:
+          break
+
+        time.sleep(1)
+
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
       fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -83,10 +89,13 @@ class Home(FaceRecognitionModal):
   def updateAttendanceCount(self):
     try:
       while True:
-        self.getAttendance()
         self.AttendanceCount.configure(
           text = "Attendance \n\n{}".format(len(DatabaseManager.Attendance))
         )
+
+        if Configrations.CloseThreads:
+          break
+
         time.sleep(5)
 
     except Exception as e:
@@ -236,9 +245,9 @@ class Home(FaceRecognitionModal):
       )
 
       threading.Thread(target = self.updateCPUMetrics).start()
-      # threading.Thread(target = self.updateAttendanceCount).start()
-      # threading.Thread(target = self.updateDatabaseStatus).start()
-      # threading.Thread(target = self.updateCamerasStatus).start()
+      threading.Thread(target = self.updateAttendanceCount).start()
+      threading.Thread(target = self.updateDatabaseStatus).start()
+      threading.Thread(target = self.updateCamerasStatus).start()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
