@@ -6,7 +6,7 @@ import uuid
 
 from Configrations import Configrations
 from CTkMessagebox import CTkMessagebox
-from datetime import datetime
+from datetime import datetime, date
 
 class DatabaseManager(Configrations):
   cursor = None
@@ -141,14 +141,14 @@ class DatabaseManager(Configrations):
 
   def getAttendance(self):
     try:
-      data = (DatabaseManager.CurrentClass,)
+      data = (DatabaseManager.CurrentClass, date.today())
       query = '''
         SELECT
-          Attendance.AttendanceTime,
           Students.StudentID,
           Students.StudentFirstName,
           Students.StudentMiddleName,
-          Students.StudentLastName
+          Students.StudentLastName,
+          TIME_FORMAT(Attendance.AttendanceTime, '%H:%i') AS AttendanceTime
         FROM
           Attendance
         LEFT JOIN
@@ -158,7 +158,7 @@ class DatabaseManager(Configrations):
         WHERE
           Attendance.AttendanceClassID = %s
         AND
-          Attendance.AttendanceDate = CURDATE()
+          Attendance.AttendanceDate = %s
       '''
 
       DatabaseManager.cursor = DatabaseManager.db.cursor()
@@ -177,7 +177,7 @@ class DatabaseManager(Configrations):
 
   def searchAttendance(self, term):
     try:
-      data = (term,)
+      data = (term, date.today())
       query = '''
         SELECT
           Attendance.AttendanceTime,
@@ -194,7 +194,7 @@ class DatabaseManager(Configrations):
         WHERE
           Attendance.AttendanceStudentID = %s
         AND
-          Attendance.AttendanceDate = CURDATE()
+          Attendance.AttendanceDate = %s
       '''
 
       DatabaseManager.cursor = DatabaseManager.db.cursor()
@@ -242,13 +242,17 @@ class DatabaseManager(Configrations):
 
   def checkAttendance(self, StudentID):
     try:
-      data = (StudentID, DatabaseManager.CurrentClass)
+      data = (
+        date.today(),
+        StudentID,
+        DatabaseManager.CurrentClass
+      )
       query = '''
         SELECT *
         FROM
           Attendance
         WHERE
-          AttendanceDate = CURDATE()
+          AttendanceDate = %s
         AND
           AttendanceStudentID=%s
         AND

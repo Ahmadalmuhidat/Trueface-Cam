@@ -1,9 +1,11 @@
-import customtkinter
 import sys
 import os
+import customtkinter
+import pandas
 
-from datetime import timedelta
 from FaceRecognitionModal import FaceRecognitionModal
+from CTkMessagebox import CTkMessagebox
+from DatabaseManager import DatabaseManager
 
 class Attendance(FaceRecognitionModal):
   def __init__(self):
@@ -24,13 +26,38 @@ class Attendance(FaceRecognitionModal):
       fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
-  
-  def parseTimedelta(self, time):
-    hours, minutes = map(int, time.split(':'))
-    return timedelta(
-      hours = hours,
-      minutes = minutes
-    )
+
+  def generateReport(self):
+    try:
+      report = pandas.DataFrame(
+        self.Attendance, columns=[
+        "Student ID",
+        "First Name",
+        "Middle Name",
+        "Last Name",
+        "Attendance Time"
+        ]
+      )
+
+      DownloadsFolder = os.path.join(os.path.expanduser("~"), "Downloads")
+      FileName = "Attendance Report.xlsx"
+      FilePath = os.path.join(DownloadsFolder, FileName)
+      report.to_excel(FilePath, index=False)
+
+      title="Generate complete"
+      message="you can find the report in {}".format(DownloadsFolder)
+      icon="check"
+      CTkMessagebox(
+        title=title,
+        message=message,
+        icon=icon
+      )
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
 
   def displayAttendanceTable(self):
     try:
@@ -39,7 +66,7 @@ class Attendance(FaceRecognitionModal):
 
       if len(self.Attendance) > 0:
         for row, Attendance in enumerate(self.Attendance, start = 1):
-          AttendanceTime, StudentID, StudentFirstName, StudentMiddleName, StudentLastName = Attendance
+          StudentID, StudentFirstName, StudentMiddleName, StudentLastName, AttendanceTime = Attendance
 
           attendance_data = [
             StudentID,
@@ -71,6 +98,13 @@ class Attendance(FaceRecognitionModal):
   
   def refresh(self):
     try:
+      if not DatabaseManager.CurrentClass:
+          title = "Error"
+          message = "Please select a lecture from the settings"
+          icon = "cancel"
+          CTkMessagebox(title=title, message=message, icon=icon)
+          return
+
       self.getAttendance()
       self.displayAttendanceTable()
 
@@ -137,6 +171,20 @@ class Attendance(FaceRecognitionModal):
         command = self.refresh,
         width = 100,
         text = "Refresh"
+      )
+
+      ReportButton = customtkinter.CTkButton(SearchBarFrame)
+      ReportButton.grid(
+        row = 0,
+        column = 3,
+        sticky = "nsew",
+        pady = 10,
+        padx = 5
+      )
+      ReportButton.configure(
+        command = self.generateReport,
+        width = 100,
+        text = "Report Report"
       )
 
       self.AttendanceTableFrame = customtkinter.CTkScrollableFrame(parent)
