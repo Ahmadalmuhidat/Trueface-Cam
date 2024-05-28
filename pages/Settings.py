@@ -13,7 +13,13 @@ class Settings(DatabaseManager):
       self.getSettings()
       self.getClasses()
 
-      self.class_id_title_map = {f"{x[1]} {x[2]}-{x[3]}": x[0] for x in self.Classes}
+      self.class_id_title_map = {
+        f"{x[1]} {x[2]}-{x[3]}": x[0] for x in self.Classes
+        }
+      
+      self.class_start_time_map = {
+        f"{x[1]} {x[2]}-{x[3]}": x[2] for x in self.Classes
+        }
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -54,7 +60,8 @@ class Settings(DatabaseManager):
       # )
 
       DatabaseManager.CurrentClass = self.class_id_title_map[self.CurrentLectureEntry.get()]
-
+      DatabaseManager.StartTime = self.class_start_time_map[self.CurrentLectureEntry.get()]
+      DatabaseManager.AllowedMinutes = self.AllowedMinutesEntry.get()
       # threading.Thread(target=self.connect).start()
       # threading.Thread(target=self.checkCustomerLicenseStatus).start()
 
@@ -212,9 +219,31 @@ class Settings(DatabaseManager):
       )
       self.CurrentLectureEntry.set("None")
 
+      AllowedMinuteslabel = customtkinter.CTkLabel(
+        ContentFrame,
+        text = "Allowed Minutes:"
+      )
+      AllowedMinuteslabel.grid(
+        row = 6,
+        column = 0,
+        padx = 10,
+        pady = 10
+      )
+
+      self.AllowedMinutesEntry = customtkinter.CTkEntry(
+        ContentFrame,
+        width = 400
+      )
+      self.AllowedMinutesEntry.grid(
+        row = 6,
+        column = 1,
+        padx = 10,
+        pady = 10
+      )
+
       save_button = customtkinter.CTkButton(ContentFrame)
       save_button.grid(
-        row = 6,
+        row = 7,
         columnspan = 2,
         padx = 10,
         pady = 10,

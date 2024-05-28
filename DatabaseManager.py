@@ -12,9 +12,12 @@ class DatabaseManager(Configrations):
   cursor = None
   db = None
   CurrentClass = None
+  StartTime = None
+  AllowedMinutes = None
   CurrentTeacher = None
   Students = []
   Attendance = []
+  Report = []
 
   def __init__(self) -> None:
     try:
@@ -165,6 +168,55 @@ class DatabaseManager(Configrations):
 
       DatabaseManager.cursor.execute(query, data)
       DatabaseManager.Attendance = DatabaseManager.cursor.fetchall()
+
+      DatabaseManager.cursor.close()
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
+      pass
+
+  def getReport(self, StartTime, AllowedMinutes):
+    try:
+      data = (
+        StartTime,
+        int (AllowedMinutes) * 60,
+        DatabaseManager.CurrentClass,
+        date.today()
+      )
+      query = '''
+        SELECT
+          Students.StudentID,
+          Students.StudentFirstName,
+          Students.StudentMiddleName,
+          Students.StudentLastName,
+          CASE
+            WHEN Attendance.AttendanceTime IS NULL THEN 'did not attend'
+            ELSE TIME_FORMAT(Attendance.AttendanceTime, '%H:%i')
+          END AS AttendanceTime,
+          CASE
+            WHEN Attendance.AttendanceTime IS NULL THEN FALSE
+            WHEN TIME_TO_SEC(TIMEDIFF(Attendance.AttendanceTime, %s)) > %s THEN 'late'
+            ELSE 'not late'
+          END AS Lateness
+        FROM
+          Students
+        LEFT JOIN
+          Attendance
+        ON
+          Attendance.AttendanceStudentID = Students.StudentID
+        AND
+          Attendance.AttendanceClassID = %s
+        AND
+          Attendance.AttendanceDate = %s
+        '''
+
+      DatabaseManager.cursor = DatabaseManager.db.cursor()
+
+      DatabaseManager.cursor.execute(query, data)
+      DatabaseManager.Report = DatabaseManager.cursor.fetchall()
 
       DatabaseManager.cursor.close()
 

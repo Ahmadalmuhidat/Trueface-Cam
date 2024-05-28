@@ -29,13 +29,19 @@ class Attendance(FaceRecognitionModal):
 
   def generateReport(self):
     try:
+      self.getReport(
+        DatabaseManager.StartTime,
+        DatabaseManager.AllowedMinutes
+      )
+
       report = pandas.DataFrame(
-        self.Attendance, columns=[
+        DatabaseManager.Report, columns=[
         "Student ID",
         "First Name",
         "Middle Name",
         "Last Name",
-        "Attendance Time"
+        "Attendance Time",
+        "Lateness"
         ]
       )
 
@@ -52,6 +58,8 @@ class Attendance(FaceRecognitionModal):
         message=message,
         icon=icon
       )
+
+      DatabaseManager.Report.clear()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -184,7 +192,7 @@ class Attendance(FaceRecognitionModal):
       ReportButton.configure(
         command = self.generateReport,
         width = 100,
-        text = "Report Report"
+        text = "Generate Report"
       )
 
       self.AttendanceTableFrame = customtkinter.CTkScrollableFrame(parent)
