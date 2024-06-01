@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 import mysql.connector
 import json
 import uuid
@@ -93,34 +93,34 @@ class DatabaseManager(Configrations):
         print(exc_type, fname, exc_tb.tb_lineno)
         print(exc_obj)
 
-  def checkCustomerLicenseStatus(self):
+  def checkLicenseStatus(self):
     try:
-      with open('configrations.json', 'r') as file:
-        ActivationKey = json.load(file)['Activation_Key']
-
-      data = (ActivationKey,)
+      data = (self.ActivationKey,)
       query = '''
-      SELECT
-        LicenseStatus
-      FROM
-        Customers
-      WHERE
-        LicenseActivationKey=%s
+        SELECT
+          LicenseActive
+        FROM
+          Licenses
+        WHERE
+          LicenseActivationKey = %s
       '''
-      
+
       DatabaseManager.cursor = DatabaseManager.db.cursor()
 
       DatabaseManager.cursor.execute(query, data)
       CustomerLicenseStatus = DatabaseManager.cursor.fetchall()
 
-      DatabaseManager.cursor.close()
-
       if len(CustomerLicenseStatus) > 0:
-        if CustomerLicenseStatus[0][0] == "inactive":
+        if CustomerLicenseStatus[0][0] == 0:
           title="License not active"
           message="Please Renew your License"
           icon="cancel"
-          msg = CTkMessagebox(title=title, message=message,icon=icon, option_1="ok")
+          msg = CTkMessagebox(
+            title=title,
+            message=message,
+            icon=icon,
+            option_1="ok"
+          )
           response = msg.get()
 
           if response=="ok":
@@ -129,11 +129,18 @@ class DatabaseManager(Configrations):
           title="License not found"
           message="The Activation Key is not valid, please contact the technical team"
           icon="cancel"
-          msg = CTkMessagebox(title=title, message=message,icon=icon, option_1="ok")
+          msg = CTkMessagebox(
+            title=title,
+            message=message,
+            icon=icon,
+            option_1="ok"
+          )
           response = msg.get()
 
-          if response=="ok":
+          if response == "ok":
             sys.exit(0)     
+
+      DatabaseManager.cursor.close()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

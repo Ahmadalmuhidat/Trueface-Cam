@@ -1,6 +1,6 @@
-import customtkinter
-import sys
 import os
+import sys
+import customtkinter
 import psutil
 import time
 import threading
@@ -16,7 +16,7 @@ class Home(FaceRecognitionModal):
 
       self.getSettings()
       self.connect()
-      # self.checkCustomerLicenseStatus()
+      self.checkLicenseStatus()
       self.listWorkingCameras()
 
     except Exception as e:
@@ -244,7 +244,7 @@ class Home(FaceRecognitionModal):
       )
 
       threading.Thread(target = self.updateCPUMetrics).start()
-      # threading.Thread(target = self.updateAttendanceCount).start()
+      threading.Thread(target = self.updateAttendanceCount).start()
       threading.Thread(target = self.updateDatabaseStatus).start()
       threading.Thread(target = self.updateCamerasStatus).start()
 

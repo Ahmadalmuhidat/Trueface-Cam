@@ -1,10 +1,10 @@
+import os
+import sys
 import customtkinter
 import cv2
 import face_recognition
 import threading
 import pickle
-import sys
-import os
 
 from queue import Queue
 from CameraManager import CameraManager

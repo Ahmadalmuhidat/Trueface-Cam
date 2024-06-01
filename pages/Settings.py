@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 import customtkinter
 
 from DatabaseManager import DatabaseManager
@@ -58,6 +58,28 @@ class Settings(DatabaseManager):
       # self.ActivationKeyEntry.configure(
       #   placeholder_text = self.ActivationKey
       # )
+
+      if not self.CurrentLectureEntry.get():
+        title = "Missing Entries"
+        message="Please Select Current Lecture"
+        icon="cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
+        return
+
+      if not self.AllowedMinutesEntry.get():
+        title = "Missing Entries"
+        message="Please Enter Allowed Late Time"
+        icon="cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
+        return
 
       DatabaseManager.CurrentClass = self.class_id_title_map[self.CurrentLectureEntry.get()]
       DatabaseManager.StartTime = self.class_start_time_map[self.CurrentLectureEntry.get()]

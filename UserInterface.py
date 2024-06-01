@@ -1,6 +1,6 @@
-import customtkinter
 import os
 import sys
+import customtkinter
 import pages.Home as Home
 import pages.Attendance as Attendance
 import pages.Settings as Settings

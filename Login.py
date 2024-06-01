@@ -1,6 +1,6 @@
-import customtkinter
-import sys
 import os
+import sys
+import customtkinter
 
 from UserInterface import UserInterface
 from DatabaseManager import DatabaseManager
