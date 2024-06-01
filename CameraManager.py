@@ -82,7 +82,7 @@ class CameraManager(DatabaseManager):
           thread.start()
 
         time.sleep(0.1)
-  
+
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
       fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -102,10 +102,13 @@ class CameraManager(DatabaseManager):
       if not CameraManager.ActivateCapturing:
         if self.CameraActive:
           CameraManager.ActivateCapturing = True
+
           StopEvent = threading.Event()
           CaptureThread = threading.Thread(target=self.CaptureAndAnalyze)
+
           CameraManager.CaptureThreads.append(CaptureThread)
           CameraManager.CaptureEvents.append(StopEvent)
+
           CaptureThread.start()
         else:
           title = "Error"

@@ -18,7 +18,6 @@ class Home(FaceRecognitionModal):
       self.connect()
       # self.checkCustomerLicenseStatus()
       self.listWorkingCameras()
-      self.getStudents()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -245,7 +244,7 @@ class Home(FaceRecognitionModal):
       )
 
       threading.Thread(target = self.updateCPUMetrics).start()
-      threading.Thread(target = self.updateAttendanceCount).start()
+      # threading.Thread(target = self.updateAttendanceCount).start()
       threading.Thread(target = self.updateDatabaseStatus).start()
       threading.Thread(target = self.updateCamerasStatus).start()
 

@@ -42,7 +42,10 @@ class FaceRecognitionModal(CameraManager):
 			cam_face_encodings = face_recognition.face_encodings(small_frame, face)
 			stored_face_encoding = pickle.loads(TargetFaceEncode)
 
-			results = face_recognition.compare_faces(stored_face_encoding, cam_face_encodings)
+			results = face_recognition.compare_faces(
+				stored_face_encoding,
+				cam_face_encodings
+			)
 
 			if results[0]:
 				self.insertAttendance(TargetID)
@@ -75,7 +78,8 @@ class FaceRecognitionModal(CameraManager):
               TargetFaceEncode,
               small_frame,
               face,
-              index)
+              index
+						)
 
 						threading.Thread(target=self.compareFaces, args=args).start()
 				else:

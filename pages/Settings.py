@@ -71,7 +71,6 @@ class Settings(DatabaseManager):
       title = "Info"
       message="Settings has been updated"
       icon="check"
-
       CTkMessagebox(
         title = title,
         message = message,

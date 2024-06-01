@@ -193,7 +193,7 @@ class DatabaseManager(Configrations):
           Students.StudentMiddleName,
           Students.StudentLastName,
           CASE
-            WHEN Attendance.AttendanceTime IS NULL THEN 'did not attend'
+            WHEN Attendance.AttendanceTime IS NULL THEN 'absent'
             ELSE TIME_FORMAT(Attendance.AttendanceTime, '%H:%i')
           END AS AttendanceTime,
           CASE
@@ -368,10 +368,37 @@ class DatabaseManager(Configrations):
 
   def getStudents(self):
     try:
+
+      days = {
+        0: "Monday",
+        1: "Tuesday",
+        2: "Wednesday",
+        3: "Thursday",
+        4: "Friday",
+        5: "Saturday",
+        6: "Sunday"
+      }
+      today = days[date.today().weekday()]
+    
       DatabaseManager.cursor = DatabaseManager.db.cursor()
 
-      query = "SELECT * FROM Students"
-      DatabaseManager.cursor.execute(query)
+      data = (DatabaseManager.CurrentClass, today)
+      query = '''
+        SELECT
+          Students.*      
+        FROM
+          Students
+        JOIN
+          ClassStudentRelation
+        ON
+          ClassStudentRelation.StudentID = Students.StudentID
+        WHERE
+          ClassStudentRelation.ClassID = %s
+        AND
+          ClassStudentRelation.ClassDay = %s
+      '''
+
+      DatabaseManager.cursor.execute(query, data)
       DatabaseManager.Students = DatabaseManager.cursor.fetchall()
 
       DatabaseManager.cursor.close()
