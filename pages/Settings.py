@@ -10,8 +10,8 @@ class Settings(DatabaseManager):
     try:
       super().__init__()
 
-      self.getSettings()
-      self.getClasses()
+      self.GetSettings()
+      self.GetClasses()
 
       self.class_id_title_map = {
         f"{x[1]} {x[2]}-{x[3]}": x[0] for x in self.Classes
@@ -28,7 +28,7 @@ class Settings(DatabaseManager):
       print(exc_obj)
   
 
-  def refreshSettings(self):
+  def RefreshSettings(self):
     try:
       # with open('configrations.json', 'r') as file:
       #   Settings = json.load(file)
@@ -87,8 +87,8 @@ class Settings(DatabaseManager):
       # threading.Thread(target=self.connect).start()
       # threading.Thread(target=self.checkCustomerLicenseStatus).start()
 
-      self.getStudents()
-      self.getAttendance()
+      self.GetStudents()
+      self.GetAttendance()
 
       title = "Info"
       message="Settings has been updated"
@@ -105,7 +105,7 @@ class Settings(DatabaseManager):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def create(self, parent):
+  def Create(self, parent):
     try:
       ContentFrame = customtkinter.CTkFrame(parent)
       ContentFrame.pack(
@@ -272,7 +272,7 @@ class Settings(DatabaseManager):
       )
       save_button.configure(
         text = "Refresh Settings",
-        command = self.refreshSettings
+        command = self.RefreshSettings
       )
 
     except Exception as e:

@@ -1,6 +1,5 @@
 import os
 import sys
-import time
 import cv2
 import threading
 
@@ -27,7 +26,7 @@ class CameraManager(DatabaseManager):
       print(exc_obj)
       pass
   
-  def returnActivateCapturing(self):
+  def ReturnActivateCapturing(self):
     try:
       return CameraManager.ActivateCapturing
 
@@ -38,7 +37,7 @@ class CameraManager(DatabaseManager):
       print(exc_obj)
       pass
 
-  def listWorkingCameras(self):
+  def ListWorkingCameras(self):
     try:
       for x in range(0, 10):
         TestCam = cv2.VideoCapture(x)
@@ -67,91 +66,6 @@ class CameraManager(DatabaseManager):
       print(exc_obj)
       pass
 
-  def CaptureAndAnalyze(self):
-    try:
-      cap = cv2.VideoCapture(0)
-
-      while CameraManager.ActivateCapturing:
-        ret, frame = cap.read()
-
-        if ret:
-          img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-          self.FramesQueue.put(img_rgb)
-
-          thread = threading.Thread(target=self.AnalyzeFace, args=(frame,))
-          thread.start()
-
-        time.sleep(0.1)
-
-    except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
-      pass
-  
-  def startCapturing(self):
-    try:
-      if not DatabaseManager.CurrentClass:
-          title = "Error"
-          message = "Please select a lecture from the settings"
-          icon = "cancel"
-          CTkMessagebox(title=title, message=message, icon=icon)
-          return
-
-      if not CameraManager.ActivateCapturing:
-        if self.CameraActive:
-          CameraManager.ActivateCapturing = True
-
-          StopEvent = threading.Event()
-          CaptureThread = threading.Thread(target=self.CaptureAndAnalyze)
-
-          CameraManager.CaptureThreads.append(CaptureThread)
-          CameraManager.CaptureEvents.append(StopEvent)
-
-          CaptureThread.start()
-        else:
-          title = "Error"
-          message = "Failed to find active cameras"
-          icon = "cancel"
-          CTkMessagebox(title=title, message=message, icon=icon)
-      else:
-        title = "Action Failed"
-        message = "Camera is already capturing"
-        icon = "cancel"
-        CTkMessagebox(title=title, message=message, icon=icon)       
-
-    except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
-      pass
-
-  def stopCapturing(self):
-    try:
-      if CameraManager.ActivateCapturing:
-        self.closeLoadingScreen()
-        
-        CameraManager.ActivateCapturing = False
-        CameraManager.CaptureEvents[0].set()
-        CameraManager.CaptureThreads[0].join(timeout=5)
-        CameraManager.CaptureThreads.clear()
-        CameraManager.CaptureEvents.clear()
-
-      else:
-        title = "Action Failed"
-        message = "Camera is not capturing"
-        icon = "cancel"
-        CTkMessagebox(title=title, message=message, icon=icon)    
-
-    except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
-      pass
-
   def viewCam(self):
     cap = cv2.VideoCapture(0)
     WindowTitle = "Camera View"
@@ -168,7 +82,7 @@ class CameraManager(DatabaseManager):
     cap.release() 
     cv2.destroyAllWindows()
 
-  def showVideoFrame(self):
+  def ShowVideoFrame(self):
     try:
       threading.Thread(target=self.viewCam).start()
 
@@ -178,7 +92,7 @@ class CameraManager(DatabaseManager):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def closeLoadingScreen(self):
+  def CloseLoadingScreen(self):
     try:
       if self.ScanningLoadingScreenRunning and self.LoadingScreen:
         self.ScanningLoadingScreenRunning = False

@@ -1,7 +1,6 @@
 import os
 import sys
 import mysql.connector
-import json
 import uuid
 
 from Configrations import Configrations
@@ -30,7 +29,7 @@ class DatabaseManager(Configrations):
       print(exc_obj)
       pass
   
-  def returnCursor(self):
+  def ReturnCursor(self):
     try:
       return DatabaseManager.cursor
 
@@ -40,7 +39,7 @@ class DatabaseManager(Configrations):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def connect(self):
+  def Connect(self):
     try:
       DatabaseManager.db = mysql.connector.connect(
         host = self.Host,
@@ -57,7 +56,7 @@ class DatabaseManager(Configrations):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def checkUser(self, email, password):
+  def CheckUser(self, email, password):
     try:
         data = (email,)
         query = '''
@@ -93,7 +92,7 @@ class DatabaseManager(Configrations):
         print(exc_type, fname, exc_tb.tb_lineno)
         print(exc_obj)
 
-  def checkLicenseStatus(self):
+  def CheckLicenseStatus(self):
     try:
       data = (self.ActivationKey,)
       query = '''
@@ -149,7 +148,7 @@ class DatabaseManager(Configrations):
       print(exc_obj)
       pass
 
-  def getAttendance(self):
+  def GetAttendance(self):
     try:
       data = (DatabaseManager.CurrentClass, date.today())
       query = '''
@@ -185,7 +184,7 @@ class DatabaseManager(Configrations):
       print(exc_obj)
       pass
 
-  def getReport(self, StartTime, AllowedMinutes):
+  def GetReport(self, StartTime, AllowedMinutes):
     try:
       data = (
         StartTime,
@@ -234,7 +233,7 @@ class DatabaseManager(Configrations):
       print(exc_obj)
       pass
 
-  def searchAttendance(self, term):
+  def SearchAttendance(self, term):
     try:
       data = (term, date.today())
       query = '''
@@ -270,7 +269,7 @@ class DatabaseManager(Configrations):
       print(exc_obj)
       pass
 
-  def getClasses(self):
+  def GetClasses(self):
     try:
       data = (DatabaseManager.CurrentTeacher,)
       query = '''
@@ -299,7 +298,7 @@ class DatabaseManager(Configrations):
       print(exc_obj)
       pass
 
-  def checkAttendance(self, StudentID):
+  def CheckAttendance(self, StudentID):
     try:
       data = (
         date.today(),
@@ -338,9 +337,9 @@ class DatabaseManager(Configrations):
       print(exc_obj)
       pass
 
-  def insertAttendance(self, StudentID):
+  def InsertAttendance(self, StudentID):
     try:
-      if not self.checkAttendance(StudentID):
+      if not self.CheckAttendance(StudentID):
         now = datetime.now()
         AttendanceID = str(uuid.uuid4())
         date  = now.strftime("%Y-%m-%d")
@@ -373,7 +372,7 @@ class DatabaseManager(Configrations):
       print(exc_obj)
       pass
 
-  def getStudents(self):
+  def GetStudents(self):
     try:
 
       days = {

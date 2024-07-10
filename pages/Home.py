@@ -14,10 +14,10 @@ class Home(FaceRecognitionModal):
     try:
       super().__init__()
 
-      self.getSettings()
-      self.connect()
-      self.checkLicenseStatus()
-      self.listWorkingCameras()
+      self.GetSettings()
+      self.Connect()
+      self.CheckLicenseStatus()
+      self.ListWorkingCameras()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -25,7 +25,7 @@ class Home(FaceRecognitionModal):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def updateCamerasStatus(self):
+  def UpdateCamerasStatus(self):
     try:
       if self.CameraActive:
         self.CameraStatus.configure(
@@ -45,9 +45,9 @@ class Home(FaceRecognitionModal):
       print(exc_obj)
       pass
 
-  def updateDatabaseStatus(self):
+  def UpdateDatabaseStatus(self):
     try:
-      if self.returnCursor():
+      if self.ReturnCursor():
         self.DatabaseStatus.configure(
           text = "Connected",
           text_color = "green"
@@ -65,7 +65,7 @@ class Home(FaceRecognitionModal):
       print(exc_obj)
       pass 
 
-  def updateCPUMetrics(self):
+  def UpdateCPUMetrics(self):
     try:
       while True:
         metrics = psutil.cpu_percent(interval=1)
@@ -85,7 +85,7 @@ class Home(FaceRecognitionModal):
       print(exc_obj)
       pass
 
-  def updateAttendanceCount(self):
+  def UpdateAttendanceCount(self):
     try:
       while True:
         self.AttendanceCount.configure(
@@ -104,7 +104,7 @@ class Home(FaceRecognitionModal):
       print(exc_obj)
       pass
 
-  def create(self, parent):
+  def Create(self, parent):
     try:
       parent.rowconfigure(0, weight = 1)
       parent.rowconfigure(1, weight = 3)
@@ -138,7 +138,7 @@ class Home(FaceRecognitionModal):
       )
       capture_button.configure(
         text = "Start Capture",
-        command = self.startCapturing,
+        command = self.StartCapturing,
         font=customtkinter.CTkFont(size=15)
       )
 
@@ -151,7 +151,7 @@ class Home(FaceRecognitionModal):
       )
       StopCaptureButton.configure(
         text = "Stop Capture",
-        command = self.stopCapturing,
+        command = self.StopCapturing,
         height = 50,
         fg_color = "red",
         font = customtkinter.CTkFont(size = 15)
@@ -243,10 +243,10 @@ class Home(FaceRecognitionModal):
         text = "CPU Usage \n\n0"
       )
 
-      threading.Thread(target = self.updateCPUMetrics).start()
-      threading.Thread(target = self.updateAttendanceCount).start()
-      threading.Thread(target = self.updateDatabaseStatus).start()
-      threading.Thread(target = self.updateCamerasStatus).start()
+      threading.Thread(target = self.UpdateCPUMetrics).start()
+      threading.Thread(target = self.UpdateAttendanceCount).start()
+      threading.Thread(target = self.UpdateDatabaseStatus).start()
+      threading.Thread(target = self.UpdateCamerasStatus).start()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

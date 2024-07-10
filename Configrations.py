@@ -20,7 +20,7 @@ class Configrations:
       print(exc_obj)
       pass
   
-  def getSettings(self):
+  def GetSettings(self):
     try:
       # with open('configrations.json', 'r') as file:
       #   Settings = json.load(file)
@@ -30,11 +30,11 @@ class Configrations:
       #   self.Database = Settings['Database']['database']
       #   self.ActivationKey = Settings['Activation_Key']
 
-      self.Host = "34.83.216.163"
+      self.Host = "localhost"
       self.User = "root"
       self.Password = "root"
       self.Database = "TimeWizeAI"
-      self.ActivationKey = "123"
+      self.ActivationKey = "1234"
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

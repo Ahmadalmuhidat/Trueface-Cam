@@ -34,7 +34,7 @@ class UserInterface(CameraManager):
       HomeButton = customtkinter.CTkButton(navbar)
       HomeButton.configure(
         corner_radius = 0,
-        command = lambda: self.showPage("Home"),
+        command = lambda: self.ShowPage("Home"),
         text = "Home"
       )
       HomeButton.pack(side = customtkinter.LEFT)
@@ -42,7 +42,7 @@ class UserInterface(CameraManager):
       AttendanceButton = customtkinter.CTkButton(navbar)
       AttendanceButton.configure(
         corner_radius = 0,
-        command = lambda: self.showPage("Attendance"),
+        command = lambda: self.ShowPage("Attendance"),
         text = "Attendance"
       )
       AttendanceButton.pack(side = customtkinter.LEFT)
@@ -50,7 +50,7 @@ class UserInterface(CameraManager):
       SettingsButton = customtkinter.CTkButton(navbar)
       SettingsButton.configure(
         corner_radius = 0,
-        command = lambda: self.showPage("Settings"),
+        command = lambda: self.ShowPage("Settings"),
         text = "Settings"
       )
       SettingsButton.pack(side = customtkinter.LEFT)
@@ -61,7 +61,7 @@ class UserInterface(CameraManager):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def showPage(self, name):
+  def ShowPage(self, name):
     try:
       if self.CurrentPage:
         self.CurrentPage.pack_forget()
@@ -75,17 +75,17 @@ class UserInterface(CameraManager):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def createPage(self, window, name):
+  def CreatePage(self, window, name):
     try:
       page = customtkinter.CTkFrame(window)
       self.pages[name] = page
 
       if name == "Home":
-        Home.Home().create(page)
+        Home.Home().Create(page)
       elif name == "Attendance":
-        Attendance.Attendance().create(page)
+        Attendance.Attendance().Create(page)
       elif name == "Settings":
-        Settings.Settings().create(page)
+        Settings.Settings().Create(page)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -93,10 +93,10 @@ class UserInterface(CameraManager):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def onClosing(self):
+  def OnClosing(self):
     try:
-      if self.returnActivateCapturing():
-        self.stopCapturing()
+      if self.ReturnActivateCapturing():
+        self.StopCapturing()
 
       self.window.destroy()
 
@@ -110,7 +110,7 @@ class UserInterface(CameraManager):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def startTheProgram(self):
+  def StartTheProgram(self):
     try:
       self.window = customtkinter.CTk()
       
@@ -120,14 +120,14 @@ class UserInterface(CameraManager):
 
       self.window.title("TimeWizeAI Camera")
 
-      self.window.protocol("WM_DELETE_WINDOW", self.onClosing)
+      self.window.protocol("WM_DELETE_WINDOW", self.OnClosing)
 
       self.Navbar(self.window)
-      self.createPage(self.window, "Home")
-      self.createPage(self.window, "Attendance")
-      self.createPage(self.window, "Settings")
+      self.CreatePage(self.window, "Home")
+      self.CreatePage(self.window, "Attendance")
+      self.CreatePage(self.window, "Settings")
 
-      self.showPage("Home")
+      self.ShowPage("Home")
 
       self.window.mainloop()
 

@@ -27,9 +27,9 @@ class Attendance(FaceRecognitionModal):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def generateReport(self):
+  def GenerateReport(self):
     try:
-      self.getReport(
+      self.GetReport(
         DatabaseManager.StartTime,
         DatabaseManager.AllowedMinutes
       )
@@ -67,7 +67,7 @@ class Attendance(FaceRecognitionModal):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def displayAttendanceTable(self):
+  def DisplayAttendanceTable(self):
     try:
       for label in self.AttendanceRows:
         label.destroy()
@@ -104,7 +104,7 @@ class Attendance(FaceRecognitionModal):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
   
-  def refresh(self):
+  def Refresh(self):
     try:
       if not DatabaseManager.CurrentClass:
           title = "Error"
@@ -113,8 +113,8 @@ class Attendance(FaceRecognitionModal):
           CTkMessagebox(title=title, message=message, icon=icon)
           return
 
-      self.getAttendance()
-      self.displayAttendanceTable()
+      self.GetAttendance()
+      self.DisplayAttendanceTable()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -122,10 +122,10 @@ class Attendance(FaceRecognitionModal):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def search(self, term):
+  def Search(self, term):
     try:
-      self.searchAttendance(term)
-      self.displayAttendanceTable()
+      self.SearchAttendance(term)
+      self.DisplayAttendanceTable()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -133,7 +133,7 @@ class Attendance(FaceRecognitionModal):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def create(self, parent):
+  def Create(self, parent):
     try:
       SearchBarFrame = customtkinter.CTkFrame(parent)
       SearchBarFrame.pack(
@@ -151,7 +151,7 @@ class Attendance(FaceRecognitionModal):
         padx = 5
       )
       SearchButton.configure(
-        command = lambda: self.search(SearchBar.get()),
+        command = lambda: self.Search(SearchBar.get()),
         text = "Search"
       )
 
@@ -176,7 +176,7 @@ class Attendance(FaceRecognitionModal):
         padx = 5
       )
       RefreshButton.configure(
-        command = self.refresh,
+        command = self.Refresh,
         width = 100,
         text = "Refresh"
       )
@@ -190,7 +190,7 @@ class Attendance(FaceRecognitionModal):
         padx = 5
       )
       ReportButton.configure(
-        command = self.generateReport,
+        command = self.GenerateReport,
         width = 100,
         text = "Generate Report"
       )

@@ -10,8 +10,8 @@ class Login(DatabaseManager):
     try:
       super().__init__()
 
-      self.getSettings()
-      self.connect()
+      self.GetSettings()
+      self.Connect()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -19,17 +19,17 @@ class Login(DatabaseManager):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
 
-  def login(self):
-    result = self.checkUser(
+  def Login(self):
+    result = self.CheckUser(
       self.EmailEntry.get(),
       self.PasswordEntry.get()
     )
 
     if result:
       self.window.destroy()
-      UserInterface(result).startTheProgram()
+      UserInterface(result).StartTheProgram()
 
-  def create(self):
+  def Create(self):
     try:
       self.window = customtkinter.CTk()
       self.window.geometry("400x350")
@@ -48,33 +48,32 @@ class Login(DatabaseManager):
         text="Email:"
       )
       Emaillabel.grid(row=0, column=0, padx=10, pady=10)
-      self.EmailEntry = customtkinter.CTkEntry(
-        ContentFrame,
-        width=250
-      )
+
+      self.EmailEntry = customtkinter.CTkEntry(ContentFrame)
       self.EmailEntry.grid(
         row=0,
         column=1,
         padx=10
       )
+      self.EmailEntry.configure(width=250)
 
-      Passwordlabel = customtkinter.CTkLabel(
-        ContentFrame,
-        text="Password:"
-      )
+      Passwordlabel = customtkinter.CTkLabel(ContentFrame)
       Passwordlabel.grid(
         row=1,
         column=0,
         padx=10,
       )
-      self.PasswordEntry = customtkinter.CTkEntry(
-        ContentFrame,
-        width=250
-      )
+      Passwordlabel.configure(text="Password:")
+
+      self.PasswordEntry = customtkinter.CTkEntry(ContentFrame)
       self.PasswordEntry.grid(
         row=1,
         column=1,
         padx=10,
+      )
+      self.PasswordEntry.configure(
+        width=250,
+        show="*"
       )
 
       save_button = customtkinter.CTkButton(ContentFrame)
@@ -87,7 +86,7 @@ class Login(DatabaseManager):
       )
       save_button.configure(
         text="Login",
-        command=self.login
+        command=self.Login
       )
 
       self.window.mainloop()
@@ -99,4 +98,4 @@ class Login(DatabaseManager):
       print(exc_obj)
 
 if __name__ ==  "__main__":
-  l = Login().create()
+  l = Login().Create()
