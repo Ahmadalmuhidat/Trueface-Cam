@@ -11,8 +11,9 @@ from queue import Queue
 from CameraManager import CameraManager
 from DatabaseManager import DatabaseManager
 from CTkMessagebox import CTkMessagebox
+from QRReader import QRReader
 
-class FaceRecognitionModal(CameraManager):
+class FaceRecognitionModal(CameraManager, QRReader):
 	def __init__(self) -> None:
 		try:
 			super().__init__()
@@ -39,11 +40,11 @@ class FaceRecognitionModal(CameraManager):
 					img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 					self.FramesQueue.put(img_rgb)
 
-					thread = threading.Thread(target=self.AnalyzeFace, args=(frame,))
-					thread.start()
+					FR_thread = threading.Thread(target=self.AnalyzeFace, args=(frame,))
+					FR_thread.start()
 
-					# thread = threading.Thread(target=self.ReadQRCode, args=(frame,))
-					# thread.start()
+					QR_thread = threading.Thread(target=self.ReadQRCode, args=(frame,))
+					QR_thread.start()
 
 				time.sleep(0.1)
 
@@ -218,7 +219,7 @@ class FaceRecognitionModal(CameraManager):
 				self.ScanningLoadingScreenRunning = True
 
 				self.LoadingScreen = customtkinter.CTkToplevel()
-				self.LoadingScreen.geometry("500x200")
+				self.LoadingScreen.geometry("300x200")
 
 				self.LoadingScreen.resizable(width=0, height=0)
 
