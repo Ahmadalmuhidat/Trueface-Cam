@@ -74,7 +74,11 @@ class Attendance(FaceRecognitionModal):
 
       if len(self.Attendance) > 0:
         for row, Attendance in enumerate(self.Attendance, start = 1):
-          StudentID, StudentFirstName, StudentMiddleName, StudentLastName, AttendanceTime = Attendance
+          StudentID, \
+          StudentFirstName, \
+          StudentMiddleName, \
+          StudentLastName, \
+          AttendanceTime = Attendance
 
           attendance_data = [
             StudentID,

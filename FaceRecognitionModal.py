@@ -139,7 +139,7 @@ class FaceRecognitionModal(CameraManager, QRReader):
 			)
 
 			if results[0]:
-				self.InsertAttendance(TargetID)
+				self.InsertAttendance(TargetID, TargetName)
 				DatabaseManager.Students.pop(index)
 
 		except Exception as e:

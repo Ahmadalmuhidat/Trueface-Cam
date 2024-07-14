@@ -4,7 +4,7 @@ import customtkinter
 import pages.Home as Home
 import pages.Attendance as Attendance
 import pages.Settings as Settings
-import threading
+import pages.Students as Students
 
 from CameraManager import CameraManager
 from DatabaseManager import DatabaseManager
@@ -47,6 +47,14 @@ class UserInterface(CameraManager):
       )
       AttendanceButton.pack(side = customtkinter.LEFT)
 
+      StudentsButton = customtkinter.CTkButton(navbar)
+      StudentsButton.configure(
+        corner_radius = 0,
+        command = lambda: self.ShowPage("Students"),
+        text = "Students"
+      )
+      StudentsButton.pack(side = customtkinter.LEFT)
+
       SettingsButton = customtkinter.CTkButton(navbar)
       SettingsButton.configure(
         corner_radius = 0,
@@ -86,6 +94,8 @@ class UserInterface(CameraManager):
         Attendance.Attendance().Create(page)
       elif name == "Settings":
         Settings.Settings().Create(page)
+      elif name == "Students":
+        Students.Students().Create(page)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -126,6 +136,7 @@ class UserInterface(CameraManager):
       self.CreatePage(self.window, "Home")
       self.CreatePage(self.window, "Attendance")
       self.CreatePage(self.window, "Settings")
+      self.CreatePage(self.window, "Students")
 
       self.ShowPage("Home")
 

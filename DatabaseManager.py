@@ -21,6 +21,7 @@ class DatabaseManager(Configrations):
   def __init__(self) -> None:
     try:
       self.Classes = []
+      self.ClassStudents = []
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -337,7 +338,7 @@ class DatabaseManager(Configrations):
       print(exc_obj)
       pass
 
-  def InsertAttendance(self, StudentID):
+  def InsertAttendance(self, StudentID, StudentName):
     try:
       if not self.CheckAttendance(StudentID):
         now = datetime.now()
@@ -361,9 +362,9 @@ class DatabaseManager(Configrations):
 
         DatabaseManager.cursor.close()
 
-        CTkMessagebox(title="Match Found", message="{} has been signed".format(StudentID), icon="check")
+        CTkMessagebox(title="Match Found", message="{} has been signed".format(StudentName), icon="check")
       else:
-        CTkMessagebox(title="Info", message="{} has been already signed".format(StudentID))
+        CTkMessagebox(title="Info", message="{} has been already signed".format(StudentName))
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -406,6 +407,54 @@ class DatabaseManager(Configrations):
 
       DatabaseManager.cursor.execute(query, data)
       DatabaseManager.Students = DatabaseManager.cursor.fetchall()
+
+      DatabaseManager.cursor.close()
+
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
+      pass
+
+  def GetClassStudents(self):
+    try:
+
+      days = {
+        0: "Monday",
+        1: "Tuesday",
+        2: "Wednesday",
+        3: "Thursday",
+        4: "Friday",
+        5: "Saturday",
+        6: "Sunday"
+      }
+      today = days[date.today().weekday()]
+    
+      DatabaseManager.cursor = DatabaseManager.db.cursor()
+
+      data = (DatabaseManager.CurrentClass, today)
+      query = '''
+        SELECT
+          Students.StudentID,
+          Students.StudentFirstName,
+          Students.StudentMiddleName,
+          Students.StudentLastName,
+          Students.StudentGender  
+        FROM
+          Students
+        JOIN
+          ClassStudentRelation
+        ON
+          ClassStudentRelation.StudentID = Students.StudentID
+        WHERE
+          ClassStudentRelation.ClassID = %s
+        AND
+          ClassStudentRelation.ClassDay = %s
+      '''
+
+      DatabaseManager.cursor.execute(query, data)
+      self.ClassStudents = DatabaseManager.cursor.fetchall()
 
       DatabaseManager.cursor.close()
 
