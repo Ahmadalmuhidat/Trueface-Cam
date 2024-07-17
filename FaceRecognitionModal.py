@@ -6,6 +6,7 @@ import face_recognition
 import threading
 import pickle
 import time
+import winsound
 
 from queue import Queue
 from CameraManager import CameraManager
@@ -128,7 +129,15 @@ class FaceRecognitionModal(CameraManager, QRReader):
 			print(exc_obj)
 			pass
 
-	def CompareFaces(self, TargetID, TargetName, TargetFaceEncode, small_frame, face, index):
+	def CompareFaces(
+			self,
+			TargetID,
+			TargetName,
+			TargetFaceEncode,
+			small_frame,
+			face,
+			index
+		):
 		try:
 			cam_face_encodings = face_recognition.face_encodings(small_frame, face)
 			stored_face_encoding = pickle.loads(TargetFaceEncode)
@@ -141,6 +150,9 @@ class FaceRecognitionModal(CameraManager, QRReader):
 			if results[0]:
 				self.InsertAttendance(TargetID, TargetName)
 				DatabaseManager.Students.pop(index)
+				frequency = 2500
+				duration = 500  # 1 second
+				winsound.Beep(frequency, duration)
 
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()
