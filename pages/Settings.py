@@ -4,8 +4,9 @@ import customtkinter
 
 from DatabaseManager import DatabaseManager
 from CTkMessagebox import CTkMessagebox
+from CameraManager import CameraManager
 
-class Settings(DatabaseManager):
+class Settings(CameraManager):
   def __init__(self):
     try:
       super().__init__()
@@ -15,11 +16,15 @@ class Settings(DatabaseManager):
 
       self.class_id_title_map = {
         f"{x[1]} {x[2]}-{x[3]}": x[0] for x in self.Classes
-        }
+      }
       
       self.class_start_time_map = {
         f"{x[1]} {x[2]}-{x[3]}": x[2] for x in self.Classes
-        }
+      }
+      
+      self.cameras_key_map = {
+        value: key for key, value in CameraManager.AvailableCameras.items()
+      }
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -30,35 +35,6 @@ class Settings(DatabaseManager):
 
   def RefreshSettings(self):
     try:
-      # with open('configrations.json', 'r') as file:
-      #   Settings = json.load(file)
-      #   Settings['Database']['host'] = self.HostEntry.get()
-      #   Settings['Database']['user'] = self.UserEntry.get()
-      #   Settings['Database']['password'] = self.PasswordEntry.get()
-      #   Settings['Database']['database'] = self.DatabaseEntry.get()
-      #   Settings['Activation_Key'] = self.ActivationKeyEntry.get()
-
-      # with open('configrations.json', 'w') as file:
-      #   json.dump(Settings, file, indent=2)
-
-      # self.getSettings()
-
-      # self.HostEntry.configure(
-      #   placeholder_text = self.Host
-      # )
-      # self.UserEntry.configure(
-      #   placeholder_text = self.User
-      # )
-      # self.PasswordEntry.configure(
-      #   placeholder_text = self.Password
-      # )
-      # self.DatabaseEntry.configure(
-      #   placeholder_text = self.Database
-      # )
-      # self.ActivationKeyEntry.configure(
-      #   placeholder_text = self.ActivationKey
-      # )
-
       if not self.CurrentLectureEntry.get():
         title = "Missing Entries"
         message="Please Select Current Lecture"
@@ -81,11 +57,18 @@ class Settings(DatabaseManager):
         )
         return
 
-      DatabaseManager.CurrentClass = self.class_id_title_map[self.CurrentLectureEntry.get()]
-      DatabaseManager.StartTime = self.class_start_time_map[self.CurrentLectureEntry.get()]
+      DatabaseManager.CurrentClass = self.class_id_title_map[
+        self.CurrentLectureEntry.get()
+      ]
+      DatabaseManager.StartTime = self.class_start_time_map[
+        self.CurrentLectureEntry.get()
+      ]
       DatabaseManager.AllowedMinutes = self.AllowedMinutesEntry.get()
-      # threading.Thread(target=self.connect).start()
       # threading.Thread(target=self.checkCustomerLicenseStatus).start()
+
+      self.UpdateCurrentCamera(
+        self.cameras_key_map[self.AvailableCamerasEntry.get()]
+      )
 
       self.GetStudents()
       self.GetAttendance()
@@ -112,111 +95,6 @@ class Settings(DatabaseManager):
         padx = 20,
         pady = 20
       )
-
-      # Hostlabel = customtkinter.CTkLabel(
-      #   ContentFrame,
-      #   text = "Host:"
-      # )
-      # Hostlabel.grid(row = 0, column = 0, padx = 10, pady = 10)
-      # self.HostEntry = customtkinter.CTkEntry(
-      #   ContentFrame,
-      #   width = 400
-      # )
-      # self.HostEntry.grid(
-      #   row = 0,
-      #   column = 1,
-      #   padx = 10,
-      #   pady = 10
-      # )
-      # self.HostEntry.insert(0, self.Host)
-
-      # Userlabel = customtkinter.CTkLabel(
-      #   ContentFrame,
-      #   text = "User:"
-      # )
-      # Userlabel.grid(
-      #   row = 1,
-      #   column = 0,
-      #   padx = 10,
-      #   pady = 10
-      # )
-      # self.UserEntry = customtkinter.CTkEntry(
-      #   ContentFrame,
-      #   width = 400
-      # )
-      # self.UserEntry.grid(
-      #   row = 1,
-      #   column = 1,
-      #   padx = 10,
-      #   pady = 10
-      # )
-      # self.UserEntry.insert(0, self.User)
-
-      # Passwordlabel = customtkinter.CTkLabel(
-      #   ContentFrame,
-      #   text = "Password:"
-      # )
-      # Passwordlabel.grid(
-      #   row = 2,
-      #   column = 0,
-      #   padx = 10,
-      #   pady = 10
-      # )
-      # self.PasswordEntry = customtkinter.CTkEntry(
-      #   ContentFrame,
-      #   width = 400
-      # )
-      # self.PasswordEntry.grid(
-      #   row = 2,
-      #   column = 1,
-      #   padx = 10,
-      #   pady = 10
-      # )
-      # self.PasswordEntry.insert(0, self.Password)
-
-      # Databaselabel = customtkinter.CTkLabel(
-      #   ContentFrame,
-      #   text = "Database:"
-      # )
-      # Databaselabel.grid(
-      #   row = 3,
-      #   column = 0,
-      #   padx = 10,
-      #   pady = 10
-      # )
-      # self.DatabaseEntry = customtkinter.CTkEntry(
-      #   ContentFrame,
-      #   width = 400
-      # )
-      # self.DatabaseEntry.grid(
-      #   row = 3,
-      #   column = 1,
-      #   padx = 10,
-      #   pady = 10
-      # )
-      # self.DatabaseEntry.insert(0, self.Database)
-
-      # ActivationKeylabel = customtkinter.CTkLabel(
-      #   ContentFrame,
-      #   text = "Activation Key:"
-      # )
-      # ActivationKeylabel.grid(
-      #   row = 4,
-      #   column = 0,
-      #   padx = 10,
-      #   pady = 10
-      # )
-      # self.ActivationKeyEntry = customtkinter.CTkEntry(
-      #   ContentFrame,
-      #   width = 400
-      # )
-      # self.ActivationKeyEntry.grid(
-      #   row = 4,
-      #   column = 1,
-      #   padx = 10,
-      #   pady = 10
-      # )
-      # self.ActivationKeyEntry.insert(0, self.ActivationKey)
 
       CurrentLecturelabel = customtkinter.CTkLabel(ContentFrame)
       CurrentLecturelabel.grid(
@@ -262,9 +140,35 @@ class Settings(DatabaseManager):
         pady = 10
       )
 
+      AvailableCameraslabel = customtkinter.CTkLabel(
+        ContentFrame,
+        text = "Available Cameras:"
+      )
+      AvailableCameraslabel.grid(
+        row = 7,
+        column = 0,
+        padx = 10,
+        pady = 10
+      )
+
+      self.AvailableCamerasEntry = customtkinter.CTkComboBox(ContentFrame)
+      self.AvailableCamerasEntry.grid(
+        row = 7,
+        column = 1,
+        padx = 10,
+        pady = 10
+      )
+      self.AvailableCamerasEntry.configure(
+        values = list(self.cameras_key_map.keys()),
+        width = 400
+      )
+      self.AvailableCamerasEntry.set(
+        next(iter(self.cameras_key_map))
+      )
+
       save_button = customtkinter.CTkButton(ContentFrame)
       save_button.grid(
-        row = 7,
+        row = 8,
         columnspan = 2,
         padx = 10,
         pady = 10,
