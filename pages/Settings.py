@@ -33,7 +33,7 @@ class Settings(CameraManager):
       print(exc_obj)
   
 
-  def RefreshSettings(self):
+  def UpdateSettings(self):
     try:
       if not self.CurrentLectureEntry.get():
         title = "Missing Entries"
@@ -166,17 +166,30 @@ class Settings(CameraManager):
         next(iter(self.cameras_key_map))
       )
 
-      save_button = customtkinter.CTkButton(ContentFrame)
-      save_button.grid(
+      ViewCameraButton = customtkinter.CTkButton(ContentFrame)
+      ViewCameraButton.grid(
         row = 8,
         columnspan = 2,
         padx = 10,
         pady = 10,
         sticky = "nsew",
       )
-      save_button.configure(
-        text = "Refresh Settings",
-        command = self.RefreshSettings
+      ViewCameraButton.configure(
+        text = "Test Current Camera",
+        command = self.viewCam
+      )
+
+      SaveButton = customtkinter.CTkButton(ContentFrame)
+      SaveButton.grid(
+        row = 9,
+        columnspan = 2,
+        padx = 10,
+        pady = 10,
+        sticky = "nsew",
+      )
+      SaveButton.configure(
+        text = "Update Settings",
+        command = self.UpdateSettings
       )
 
     except Exception as e:

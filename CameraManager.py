@@ -82,24 +82,30 @@ class CameraManager(DatabaseManager):
       pass
 
   def viewCam(self):
-    cap = cv2.VideoCapture(0)
-    WindowTitle = "Camera View"
+    if CameraManager.CurrentCamera:
+      cap = cv2.VideoCapture(CameraManager.CurrentCamera)
+      WindowTitle = "Camera View"
 
-    while True:
-      ret, frame = cap.read()
+      while True:
+        ret, frame = cap.read()
 
-      if ret:
-        cv2.imshow(WindowTitle, frame)
-        UserQuit = cv2.waitKey(1) & 0xFF == ord('q')
-        UserClosedWindow = cv2.getWindowProperty(
-          WindowTitle, cv2.WND_PROP_VISIBLE
-        ) < 1
+        if ret:
+          cv2.imshow(WindowTitle, frame)
+          UserQuit = cv2.waitKey(1) & 0xFF == ord('q')
+          UserClosedWindow = cv2.getWindowProperty(
+            WindowTitle, cv2.WND_PROP_VISIBLE
+          ) < 1
 
-        if UserQuit or UserClosedWindow: 
-          break
+          if UserQuit or UserClosedWindow: 
+            break
 
-    cap.release() 
-    cv2.destroyAllWindows()
+      cap.release() 
+      cv2.destroyAllWindows()
+    else:
+      title = "No Camera Selected"
+      message = "Please select camera before testing"
+      icon = "cancel"
+      CTkMessagebox(title=title, message=message, icon=icon)
 
   def ShowVideoFrame(self):
     try:
