@@ -35,13 +35,14 @@ class Attendance(FaceRecognitionModal):
       )
 
       report = pandas.DataFrame(
-        DatabaseManager.Report, columns=[
-        "Student ID",
-        "First Name",
-        "Middle Name",
-        "Last Name",
-        "Attendance Time",
-        "Lateness"
+        DatabaseManager.Report,
+        columns=[
+          "Student ID",
+          "First Name",
+          "Middle Name",
+          "Last Name",
+          "Attendance Time",
+          "Lateness"
         ]
       )
 

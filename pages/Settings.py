@@ -32,7 +32,18 @@ class Settings(CameraManager):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
   
+  def UpdateCurrentCamerass(self, choise):
+    try:
+      self.UpdateCurrentCamera(
+        self.cameras_key_map[choise]
+      )
 
+    except Exception as e:
+      exc_type, exc_obj, exc_tb = sys.exc_info()
+      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+      print(exc_type, fname, exc_tb.tb_lineno)
+      print(exc_obj)
+  
   def UpdateSettings(self):
     try:
       if not self.CurrentLectureEntry.get():
@@ -65,10 +76,6 @@ class Settings(CameraManager):
       ]
       DatabaseManager.AllowedMinutes = self.AllowedMinutesEntry.get()
       # threading.Thread(target=self.checkCustomerLicenseStatus).start()
-
-      self.UpdateCurrentCamera(
-        self.cameras_key_map[self.AvailableCamerasEntry.get()]
-      )
 
       self.GetStudents()
       self.GetAttendance()
@@ -160,10 +167,11 @@ class Settings(CameraManager):
       )
       self.AvailableCamerasEntry.configure(
         values = list(self.cameras_key_map.keys()),
-        width = 400
+        width = 400,
+        command = self.UpdateCurrentCamerass
       )
       self.AvailableCamerasEntry.set(
-        next(iter(self.cameras_key_map))
+        "None"
       )
 
       ViewCameraButton = customtkinter.CTkButton(ContentFrame)
