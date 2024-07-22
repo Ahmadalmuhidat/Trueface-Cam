@@ -103,25 +103,27 @@ class Settings(CameraManager):
         pady = 20
       )
 
-      CurrentLecturelabel = customtkinter.CTkLabel(ContentFrame)
+      CurrentLecturelabel = customtkinter.CTkLabel(
+        ContentFrame,
+        text = "Current Lecture:"
+      )
       CurrentLecturelabel.grid(
         row = 5,
         column = 0,
         padx = 10,
         pady = 10
       )
-      CurrentLecturelabel.configure(text = "Current Lecture:")
 
-      self.CurrentLectureEntry = customtkinter.CTkComboBox(ContentFrame)
+      self.CurrentLectureEntry = customtkinter.CTkComboBox(
+        ContentFrame,
+        values = [f"{x[1]} {x[2]}-{x[3]}" for x in self.Classes],
+        width = 400
+      )
       self.CurrentLectureEntry.grid(
         row = 5,
         column = 1,
         padx = 10,
         pady = 10
-      )
-      self.CurrentLectureEntry.configure(
-        values = [f"{x[1]} {x[2]}-{x[3]}" for x in self.Classes],
-        width = 400
       )
       self.CurrentLectureEntry.set("None")
 
@@ -158,23 +160,27 @@ class Settings(CameraManager):
         pady = 10
       )
 
-      self.AvailableCamerasEntry = customtkinter.CTkComboBox(ContentFrame)
+      self.AvailableCamerasEntry = customtkinter.CTkComboBox(
+        ContentFrame,
+        values = list(self.cameras_key_map.keys()),
+        width = 400,
+        command = self.UpdateCurrentCamerass
+      )
       self.AvailableCamerasEntry.grid(
         row = 7,
         column = 1,
         padx = 10,
         pady = 10
       )
-      self.AvailableCamerasEntry.configure(
-        values = list(self.cameras_key_map.keys()),
-        width = 400,
-        command = self.UpdateCurrentCamerass
-      )
       self.AvailableCamerasEntry.set(
         "None"
       )
 
-      ViewCameraButton = customtkinter.CTkButton(ContentFrame)
+      ViewCameraButton = customtkinter.CTkButton(
+        ContentFrame,
+        text = "Test Current Camera",
+        command = self.viewCam
+      )
       ViewCameraButton.grid(
         row = 8,
         columnspan = 2,
@@ -182,22 +188,18 @@ class Settings(CameraManager):
         pady = 10,
         sticky = "nsew",
       )
-      ViewCameraButton.configure(
-        text = "Test Current Camera",
-        command = self.viewCam
-      )
 
-      SaveButton = customtkinter.CTkButton(ContentFrame)
+      SaveButton = customtkinter.CTkButton(
+        ContentFrame,
+        text = "Update Settings",
+        command = self.UpdateSettings
+      )
       SaveButton.grid(
         row = 9,
         columnspan = 2,
         padx = 10,
         pady = 10,
         sticky = "nsew",
-      )
-      SaveButton.configure(
-        text = "Update Settings",
-        command = self.UpdateSettings
       )
 
     except Exception as e:

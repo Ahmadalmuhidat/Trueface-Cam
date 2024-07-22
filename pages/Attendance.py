@@ -90,16 +90,16 @@ class Attendance(FaceRecognitionModal):
           ]
 
           for col, data in enumerate(attendance_data):
-              DataLabel = customtkinter.CTkLabel(self.AttendanceTableFrame)
+              DataLabel = customtkinter.CTkLabel(
+                self.AttendanceTableFrame,
+                text = data,
+                padx = 10,
+                pady = 5   
+              )
               DataLabel.grid(
                 row = row,
                 column = col,
                 sticky = "nsew"
-              )
-              DataLabel.configure(
-                text = data,
-                padx = 10,
-                pady = 5   
               )
               self.AttendanceRows.append(DataLabel)
 
@@ -112,11 +112,11 @@ class Attendance(FaceRecognitionModal):
   def Refresh(self):
     try:
       if not DatabaseManager.CurrentClass:
-          title = "Error"
-          message = "Please select a lecture from the settings"
-          icon = "cancel"
-          CTkMessagebox(title=title, message=message, icon=icon)
-          return
+        title = "Error"
+        message = "Please select a lecture from the settings"
+        icon = "cancel"
+        CTkMessagebox(title=title, message=message, icon=icon)
+        return
 
       self.GetAttendance()
       self.DisplayAttendanceTable()
@@ -140,14 +140,20 @@ class Attendance(FaceRecognitionModal):
 
   def Create(self, parent):
     try:
-      SearchBarFrame = customtkinter.CTkFrame(parent)
+      SearchBarFrame = customtkinter.CTkFrame(
+        parent,
+        bg_color = "transparent"
+      )
       SearchBarFrame.pack(
         fill = "x",
         expand = False
       )
-      SearchBarFrame.configure(bg_color = "transparent")
 
-      SearchButton = customtkinter.CTkButton(SearchBarFrame)
+      SearchButton = customtkinter.CTkButton(
+        SearchBarFrame,
+        command = lambda: self.Search(SearchBar.get()),
+        text = "Search"
+      )
       SearchButton.grid(
         row = 0,
         column = 0,
@@ -155,24 +161,25 @@ class Attendance(FaceRecognitionModal):
         pady = 10,
         padx = 5
       )
-      SearchButton.configure(
-        command = lambda: self.Search(SearchBar.get()),
-        text = "Search"
-      )
 
-      SearchBar = customtkinter.CTkEntry(SearchBarFrame)
+      SearchBar = customtkinter.CTkEntry(
+        SearchBarFrame,
+        width = 400,
+        placeholder_text = "Search for Students..."
+      )
       SearchBar.grid(
         row = 0,
         column = 1,
         sticky = "nsew",
         pady = 10
       )
-      SearchBar.configure(
-        width = 400,
-        placeholder_text = "Search for Students..."
-      )
 
-      RefreshButton = customtkinter.CTkButton(SearchBarFrame)
+      RefreshButton = customtkinter.CTkButton(
+        SearchBarFrame,
+        command = self.Refresh,
+        width = 100,
+        text = "Refresh"
+      )
       RefreshButton.grid(
         row = 0,
         column = 2,
@@ -180,24 +187,19 @@ class Attendance(FaceRecognitionModal):
         pady = 10,
         padx = 5
       )
-      RefreshButton.configure(
-        command = self.Refresh,
-        width = 100,
-        text = "Refresh"
-      )
 
-      ReportButton = customtkinter.CTkButton(SearchBarFrame)
+      ReportButton = customtkinter.CTkButton(
+        SearchBarFrame,
+        command = self.GenerateReport,
+        width = 100,
+        text = "Generate Report"
+      )
       ReportButton.grid(
         row = 0,
         column = 3,
         sticky = "nsew",
         pady = 10,
         padx = 5
-      )
-      ReportButton.configure(
-        command = self.GenerateReport,
-        width = 100,
-        text = "Generate Report"
       )
 
       self.AttendanceTableFrame = customtkinter.CTkScrollableFrame(parent)
@@ -207,16 +209,16 @@ class Attendance(FaceRecognitionModal):
       )
 
       for col, header in enumerate(self.headers):
-        HeaderLabel = customtkinter.CTkLabel(self.AttendanceTableFrame)
+        HeaderLabel = customtkinter.CTkLabel(
+          self.AttendanceTableFrame,
+          text = header,
+          padx = 10,
+          pady = 5   
+        )
         HeaderLabel.grid(
           row = 0,
           column = col,
           sticky = "nsew"
-        )
-        HeaderLabel.configure(
-          text = header,
-          padx = 10,
-          pady = 5   
         )
 
       for col in range(len(self.headers)):

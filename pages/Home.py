@@ -129,118 +129,122 @@ class Home(FaceRecognitionModal):
       ContentFrame.columnconfigure(2, weight = 1)
       ContentFrame.columnconfigure(3, weight = 1)
 
-      capture_button = customtkinter.CTkButton(ContentFrame)
+      capture_button = customtkinter.CTkButton(
+        ContentFrame,
+        text = "Start Capture",
+        command = self.StartCapturing,
+        font=customtkinter.CTkFont(size=15)
+      )
       capture_button.grid(
         row = 0,
         column = 0,
         columnspan = 2,
         sticky = "nswe"
       )
-      capture_button.configure(
-        text = "Start Capture",
-        command = self.StartCapturing,
-        font=customtkinter.CTkFont(size=15)
-      )
 
-      StopCaptureButton = customtkinter.CTkButton(ContentFrame)
-      StopCaptureButton.grid(
-        row = 0,
-        column = 2,
-        columnspan = 2,
-        sticky = "nswe"
-      )
-      StopCaptureButton.configure(
+      StopCaptureButton = customtkinter.CTkButton(
+        ContentFrame,
         text = "Stop Capture",
         command = self.StopCapturing,
         height = 50,
         fg_color = "red",
         font = customtkinter.CTkFont(size = 15)
       )
+      StopCaptureButton.grid(
+        row = 0,
+        column = 2,
+        columnspan = 2,
+        sticky = "nswe"
+      )
 
-      CamerasStatusFrame = customtkinter.CTkFrame(ContentFrame)
+      CamerasStatusFrame = customtkinter.CTkFrame(ContentFrame, corner_radius = 0)
       CamerasStatusFrame.grid(
         row = 1,
         column = 0,
         sticky = "nsew"
       )
       CamerasStatusFrame.grid_propagate(False)
-      CamerasStatusFrame.configure(corner_radius = 0)
 
-      self.CamerasStatusHeader = customtkinter.CTkLabel(CamerasStatusFrame)
-      self.CamerasStatusHeader.pack(
-        padx = 5,
-        pady = 10
-      )
-      self.CamerasStatusHeader.configure(
+      self.CamerasStatusHeader = customtkinter.CTkLabel(
+        CamerasStatusFrame,
         bg_color = "transparent",
         font = customtkinter.CTkFont(size = 15),
         text = "Camera Status"
       )
-
+      self.CamerasStatusHeader.pack(
+        padx = 5,
+        pady = 10
+      )
       self.CameraStatus = customtkinter.CTkLabel(CamerasStatusFrame)
       self.CameraStatus.pack()
 
-      DatabaseStatusFrame = customtkinter.CTkFrame(ContentFrame)
+      DatabaseStatusFrame = customtkinter.CTkFrame(
+        ContentFrame,
+        corner_radius = 0
+      )
       DatabaseStatusFrame.grid(
         row = 1,
         column = 1,
         sticky = "nsew"
       )
       DatabaseStatusFrame.grid_propagate(False)
-      DatabaseStatusFrame.configure(corner_radius = 0)
 
-      self.DatabaseStatusHeader = customtkinter.CTkLabel(DatabaseStatusFrame)
-      self.DatabaseStatusHeader.pack(
-        padx = 5,
-        pady = 10
-      )
-      self.DatabaseStatusHeader.configure(
+      self.DatabaseStatusHeader = customtkinter.CTkLabel(
+        DatabaseStatusFrame,
         bg_color = "transparent",
         font = customtkinter.CTkFont(size = 15),
         text = "Database Status"
       )
+      self.DatabaseStatusHeader.pack(
+        padx = 5,
+        pady = 10
+      )
+
 
       self.DatabaseStatus = customtkinter.CTkLabel(DatabaseStatusFrame)
       self.DatabaseStatus.pack()
 
-      AttendanceCountFrame = customtkinter.CTkFrame(ContentFrame)
+      AttendanceCountFrame = customtkinter.CTkFrame(
+        ContentFrame,
+        corner_radius = 0
+      )
       AttendanceCountFrame.grid(
         row = 1,
         column = 2,
         sticky = "nsew"
       )
       AttendanceCountFrame.grid_propagate(False)
-      AttendanceCountFrame.configure(corner_radius = 0)
 
-      self.AttendanceCount = customtkinter.CTkLabel(AttendanceCountFrame)
-      self.AttendanceCount.pack(
-        padx = 5,
-        pady = 15
-      )
-      self.AttendanceCount.configure(
+      self.AttendanceCount = customtkinter.CTkLabel(
+        AttendanceCountFrame,
         bg_color = "transparent",
         font = customtkinter.CTkFont(size = 15),
         text = "Attendance \n\n0"
       )
-
-      CPUCountFrame = customtkinter.CTkFrame(ContentFrame)
+      self.AttendanceCount.pack(
+        padx = 5,
+        pady = 15
+      )
+      CPUCountFrame = customtkinter.CTkFrame(
+        ContentFrame,
+        corner_radius = 0
+      )
       CPUCountFrame.grid(
         row = 1,
         column = 3,
         sticky = "nsew"
       )
       CPUCountFrame.grid_propagate(False)
-      CPUCountFrame.configure(corner_radius = 0)
 
-      self.CPUCount = customtkinter.CTkLabel(CPUCountFrame)
-      self.CPUCount.pack(
-        padx = 5,
-        pady = 15
-      )
-      self.CPUCount.configure(
+      self.CPUCount = customtkinter.CTkLabel(
+        CPUCountFrame,
         bg_color = "transparent",
         font = customtkinter.CTkFont(size = 15),
         text = "CPU Usage \n\n0"
+      )
+      self.CPUCount.pack(
+        padx = 5,
+        pady = 15
       )
 
       threading.Thread(target = self.UpdateCPUMetrics).start()

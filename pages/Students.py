@@ -47,16 +47,16 @@ class Students(DatabaseManager):
           ]
 
           for col, data in enumerate(Student_data):
-              DataLabel = customtkinter.CTkLabel(self.StudentsTableFrame)
+              DataLabel = customtkinter.CTkLabel(
+                self.StudentsTableFrame,
+                text = data,
+                padx = 10,
+                pady = 5
+              )
               DataLabel.grid(
                 row = row,
                 column = col,
                 sticky = "nsew"
-              )
-              DataLabel.configure(
-                text = data,
-                padx = 10,
-                pady = 5   
               )
               self.StudentsRows.append(DataLabel)
 
@@ -86,25 +86,27 @@ class Students(DatabaseManager):
 
   def Create(self, parent):
     try:
-      SearchBarFrame = customtkinter.CTkFrame(parent)
+      SearchBarFrame = customtkinter.CTkFrame(
+        parent,
+        bg_color = "transparent"
+      )
       SearchBarFrame.pack(
         fill = "x",
         expand = False
       )
-      SearchBarFrame.configure(bg_color = "transparent")
 
-      RefreshButton = customtkinter.CTkButton(SearchBarFrame)
+      RefreshButton = customtkinter.CTkButton(
+        SearchBarFrame,
+        command = self.Refresh,
+        width = 100,
+        text = "Refresh"
+      )
       RefreshButton.grid(
         row = 0,
         column = 2,
         sticky = "nsew",
         pady = 10,
         padx = 5
-      )
-      RefreshButton.configure(
-        command = self.Refresh,
-        width = 100,
-        text = "Refresh"
       )
 
       self.StudentsTableFrame = customtkinter.CTkScrollableFrame(parent)
@@ -114,16 +116,16 @@ class Students(DatabaseManager):
       )
 
       for col, header in enumerate(self.headers):
-        HeaderLabel = customtkinter.CTkLabel(self.StudentsTableFrame)
+        HeaderLabel = customtkinter.CTkLabel(
+          self.StudentsTableFrame,
+          text = header,
+          padx = 10,
+          pady = 5
+        )
         HeaderLabel.grid(
           row = 0,
           column = col,
           sticky = "nsew"
-        )
-        HeaderLabel.configure(
-          text = header,
-          padx = 10,
-          pady = 5   
         )
 
       for col in range(len(self.headers)):

@@ -31,32 +31,32 @@ class UserInterface(CameraManager):
       navbar = customtkinter.CTkFrame(window)
       navbar.pack(fill=customtkinter.X)
 
-      HomeButton = customtkinter.CTkButton(navbar)
-      HomeButton.configure(
+      HomeButton = customtkinter.CTkButton(
+        navbar,
         corner_radius = 0,
         command = lambda: self.ShowPage("Home"),
         text = "Home"
       )
       HomeButton.pack(side = customtkinter.LEFT)
 
-      AttendanceButton = customtkinter.CTkButton(navbar)
-      AttendanceButton.configure(
+      AttendanceButton = customtkinter.CTkButton(
+        navbar,
         corner_radius = 0,
         command = lambda: self.ShowPage("Attendance"),
         text = "Attendance"
       )
       AttendanceButton.pack(side = customtkinter.LEFT)
 
-      StudentsButton = customtkinter.CTkButton(navbar)
-      StudentsButton.configure(
+      StudentsButton = customtkinter.CTkButton(
+        navbar,
         corner_radius = 0,
         command = lambda: self.ShowPage("Students"),
         text = "Students"
       )
       StudentsButton.pack(side = customtkinter.LEFT)
 
-      SettingsButton = customtkinter.CTkButton(navbar)
-      SettingsButton.configure(
+      SettingsButton = customtkinter.CTkButton(
+        navbar,
         corner_radius = 0,
         command = lambda: self.ShowPage("Settings"),
         text = "Settings"
