@@ -16,7 +16,7 @@ class Home(FaceRecognitionModal):
 
       self.GetSettings()
       self.Connect()
-      self.CheckLicenseStatus()
+      self.checkLicenseStatus()
       self.ListWorkingCameras()
 
     except Exception as e:

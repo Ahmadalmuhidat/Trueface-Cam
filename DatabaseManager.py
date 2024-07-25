@@ -2,6 +2,8 @@ import os
 import sys
 import mysql.connector
 import uuid
+import requests
+import json
 
 from Configrations import Configrations
 from CTkMessagebox import CTkMessagebox
@@ -93,25 +95,18 @@ class DatabaseManager(Configrations):
         print(exc_type, fname, exc_tb.tb_lineno)
         print(exc_obj)
 
-  def CheckLicenseStatus(self):
+  def checkLicenseStatus(self):
     try:
-      data = (self.ActivationKey,)
-      query = '''
-        SELECT
-          LicenseActive
-        FROM
-          Licenses
-        WHERE
-          LicenseActivationKey = %s
-      '''
+      data = {
+        "License": self.ActivationKey
+      }
+      response = requests.get(
+        "https://timewizeai-license-api.azurewebsites.net/check_license",
+        data
+      ).content
+      response_str = response.decode('utf-8')
 
-      DatabaseManager.cursor = DatabaseManager.db.cursor()
-
-      DatabaseManager.cursor.execute(query, data)
-      CustomerLicenseStatus = DatabaseManager.cursor.fetchall()
-
-      if len(CustomerLicenseStatus) > 0:
-        if CustomerLicenseStatus[0][0] == 0:
+      if not json.loads(response_str):
           title="License not active"
           message="Please Renew your License"
           icon="cancel"
@@ -124,23 +119,7 @@ class DatabaseManager(Configrations):
           response = msg.get()
 
           if response=="ok":
-            sys.exit(0)     
-      else:
-          title="License not found"
-          message="The Activation Key is not valid, please contact the technical team"
-          icon="cancel"
-          msg = CTkMessagebox(
-            title=title,
-            message=message,
-            icon=icon,
-            option_1="ok"
-          )
-          response = msg.get()
-
-          if response == "ok":
-            sys.exit(0)     
-
-      DatabaseManager.cursor.close()
+            sys.exit(0)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -148,7 +127,6 @@ class DatabaseManager(Configrations):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
       pass
-
   def GetAttendance(self):
     try:
       data = (DatabaseManager.CurrentClass, date.today())

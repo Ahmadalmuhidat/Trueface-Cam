@@ -22,14 +22,6 @@ class Configrations:
   
   def GetSettings(self):
     try:
-      # with open('configrations.json', 'r') as file:
-      #   Settings = json.load(file)
-      #   self.Host = Settings['Database']['host']
-      #   self.User = Settings['Database']['user']
-      #   self.Password = Settings['Database']['password']
-      #   self.Database = Settings['Database']['database']
-      #   self.ActivationKey = Settings['Activation_Key']
-
       self.Host = "localhost"
       self.User = "root"
       self.Password = "root"
