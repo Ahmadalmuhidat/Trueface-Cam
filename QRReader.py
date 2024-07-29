@@ -2,6 +2,7 @@ import os
 import sys
 import cv2
 import json
+import time
 
 from DatabaseManager import DatabaseManager
 
@@ -30,16 +31,18 @@ class QRReader(DatabaseManager):
         raise ValueError("Unexpected number of values returned")
 
       if points is not None:
-          points = points.astype(int)
-          for i in range(len(decoded_info)):
-              points_array = points[i].reshape((-1, 1, 2))
-              image = cv2.polylines(image, [points_array], True, (0, 255, 0), 2)
-              info = json.loads(decoded_info[i])
+        points = points.astype(int)
+        for i in range(len(decoded_info)):
+          points_array = points[i].reshape((-1, 1, 2))
+          image = cv2.polylines(image, [points_array], True, (0, 255, 0), 2)
+          info = json.loads(decoded_info[i])
 
-              if info["Provider"] == "TimeWizeAI":
-                self.InsertAttendance(info["StudentID"], info["StudentName"])
-              else:
-                pass
+          if info["Provider"] == "TimeWizeAI":
+            self.InsertAttendance(info["StudentID"], info["StudentName"])
+          else:
+            pass
+
+          time.sleep(1)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

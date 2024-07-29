@@ -83,10 +83,16 @@ class DatabaseManager(Configrations):
           if str(User[0][1]) == str(password):
             return User[0][0]
           else:
-            CTkMessagebox(title="Info", message="Incorrect password")
+            CTkMessagebox(
+              title = "Info",
+              message = "Incorrect password"
+            )
             return False
         else:
-          CTkMessagebox(title="Info", message="Email was not found")
+          CTkMessagebox(
+            title = "Info",
+            message = "Email was not found"
+          )
           return False
 
     except Exception as e: 
@@ -107,18 +113,18 @@ class DatabaseManager(Configrations):
       response_str = response.decode('utf-8')
 
       if not json.loads(response_str):
-          title="License not active"
-          message="Please Renew your License"
-          icon="cancel"
-          msg = CTkMessagebox(
-            title=title,
-            message=message,
-            icon=icon,
-            option_1="ok"
+          title = "License not active"
+          message = "Please Renew your License"
+          icon = "cancel"
+          msg  =  CTkMessagebox(
+            title = title,
+            message = message,
+            icon = icon,
+            option_1 = "ok"
           )
           response = msg.get()
 
-          if response=="ok":
+          if response == "ok":
             sys.exit(0)
 
     except Exception as e:
@@ -129,7 +135,10 @@ class DatabaseManager(Configrations):
       pass
   def GetAttendance(self):
     try:
-      data = (DatabaseManager.CurrentClass, date.today())
+      data = (
+        DatabaseManager.CurrentClass,
+        date.today()
+      )
       query = '''
         SELECT
           Students.StudentID,
@@ -214,7 +223,10 @@ class DatabaseManager(Configrations):
 
   def SearchAttendance(self, term):
     try:
-      data = (term, date.today())
+      data = (
+        term,
+        date.today()
+      )
       query = '''
         SELECT
           Attendance.AttendanceTime,
@@ -340,9 +352,16 @@ class DatabaseManager(Configrations):
 
         DatabaseManager.cursor.close()
 
-        CTkMessagebox(title="Match Found", message="{} has been signed".format(StudentName), icon="check")
+        CTkMessagebox(
+          title = "Match Found",
+          message = "{} has been signed".format(StudentName),
+          icon = "check"
+        )
       else:
-        CTkMessagebox(title="Info", message="{} has been already signed".format(StudentName))
+        CTkMessagebox(
+          title = "Info",
+          message = "{} has been already signed".format(StudentName)
+        )
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -367,7 +386,10 @@ class DatabaseManager(Configrations):
     
       DatabaseManager.cursor = DatabaseManager.db.cursor()
 
-      data = (DatabaseManager.CurrentClass, today)
+      data = (
+        DatabaseManager.CurrentClass,
+        today
+      )
       query = '''
         SELECT
           Students.*      
@@ -411,7 +433,10 @@ class DatabaseManager(Configrations):
     
       DatabaseManager.cursor = DatabaseManager.db.cursor()
 
-      data = (DatabaseManager.CurrentClass, today)
+      data = (
+        DatabaseManager.CurrentClass,
+        today
+      )
       query = '''
         SELECT
           Students.StudentID,

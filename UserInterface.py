@@ -124,8 +124,8 @@ class UserInterface(CameraManager):
     try:
       self.window = customtkinter.CTk()
       
-      width =  self.window.winfo_screenwidth()
-      height =  self.window.winfo_screenheight()
+      width = self.window.winfo_screenwidth()
+      height = self.window.winfo_screenheight()
       self.window.geometry("%dx%d" % (width, height))
 
       self.window.title("TimeWizeAI Camera")

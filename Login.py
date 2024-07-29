@@ -33,64 +33,72 @@ class Login(DatabaseManager):
     try:
       self.window = customtkinter.CTk()
       self.window.geometry("400x350")
-      self.window.resizable(width=0, height=0)
+      self.window.resizable(
+        width = 0,
+        height = 0
+      )
 
       self.window.title("Login To TimeWizeAI")
 
       ContentFrame = customtkinter.CTkFrame(self.window)
       ContentFrame.pack(
-        padx=20,
-        pady=20
+        padx = 20,
+        pady = 20
       )
 
       Emaillabel = customtkinter.CTkLabel(
         ContentFrame,
-        text="Email:"
+        text = "Email:"
       )
-      Emaillabel.grid(row=0, column=0, padx=10, pady=10)
+      Emaillabel.grid(
+        row = 0,
+        column = 0,
+        padx = 10,
+        pady = 10
+      )
 
       self.EmailEntry = customtkinter.CTkEntry(
         ContentFrame,
-        width=250
+        width = 250
       )
       self.EmailEntry.grid(
-        row=0,
-        column=1,
-        padx=10
+        row = 0,
+        column = 1,
+        padx = 10
       )
 
       Passwordlabel = customtkinter.CTkLabel(
         ContentFrame,
-        text="Password:"
+        text = "Password:"
       )
       Passwordlabel.grid(
-        row=1,
-        column=0,
-        padx=10,
+        row = 1,
+        column = 0,
+        padx = 10,
       )
 
       self.PasswordEntry = customtkinter.CTkEntry(
         ContentFrame,
-        width=250,
-        show="*"
+        width = 250,
+        show = "*"
       )
       self.PasswordEntry.grid(
-        row=1,
-        column=1,
-        padx=10,
+        row = 1,
+        column = 1,
+        padx = 10,
       )
 
       save_button = customtkinter.CTkButton(
         ContentFrame,
-        text="Login",
-        command=self.Login
+        text = "Login",
+        command = self.Login
       )
       save_button.grid(
-        row=6,
-        columnspan=2,
-        padx=10,
-        pady=10,
-        sticky="nsew",
+        row = 6,
+        columnspan = 2,
+        padx = 10,
+        pady = 10,
+        sticky = "nsew",
       )
 
       self.window.mainloop()
@@ -102,4 +110,4 @@ class Login(DatabaseManager):
       print(exc_obj)
 
 if __name__ ==  "__main__":
-  l = Login().Create()
+  login = Login().Create()

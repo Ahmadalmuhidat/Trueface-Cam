@@ -66,13 +66,21 @@ class CameraManager(DatabaseManager):
           title = "Camera Activated"
           message = "Camera has been tested successfully"
           icon = "check"
-          CTkMessagebox(title=title, message=message, icon=icon)
+          CTkMessagebox(
+            title=title,
+            message=message,
+            icon=icon
+          )
 
       if not self.CameraActive:
         title = "Camera Not Activate"
         message = "Camera testing has failed"
         icon = "cancel"
-        CTkMessagebox(title=title, message=message, icon=icon)
+        CTkMessagebox(
+          title=title,
+          message=message,
+          icon=icon
+        )
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -105,7 +113,11 @@ class CameraManager(DatabaseManager):
       title = "No Camera Selected"
       message = "Please select camera before testing"
       icon = "cancel"
-      CTkMessagebox(title=title, message=message, icon=icon)
+      CTkMessagebox(
+        title=title,
+        message=message,
+        icon=icon
+      )
 
   def ShowVideoFrame(self):
     try:

@@ -41,10 +41,16 @@ class FaceRecognitionModal(CameraManager, QRReader):
 					img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 					self.FramesQueue.put(img_rgb)
 
-					FR_thread = threading.Thread(target=self.AnalyzeFace, args=(frame,))
+					FR_thread = threading.Thread(
+						target = self.AnalyzeFace,
+						args = (frame,)
+					)
 					FR_thread.start()
 
-					QR_thread = threading.Thread(target=self.ReadQRCode, args=(frame,))
+					QR_thread = threading.Thread(
+						target = self.ReadQRCode,
+						args = (frame,)
+					)
 					QR_thread.start()
 
 				time.sleep(0.1)
@@ -62,7 +68,11 @@ class FaceRecognitionModal(CameraManager, QRReader):
 					title = "Error"
 					message = "Please select a lecture from the settings"
 					icon = "cancel"
-					CTkMessagebox(title=title, message=message, icon=icon)
+					CTkMessagebox(
+						title = title,
+						message = message,
+						icon = icon
+					)
 					return
 
 			if not CameraManager.ActivateCapturing:
@@ -70,7 +80,7 @@ class FaceRecognitionModal(CameraManager, QRReader):
 					CameraManager.ActivateCapturing = True
 
 					StopEvent = threading.Event()
-					CaptureThread = threading.Thread(target=self.CaptureAndAnalyze)
+					CaptureThread = threading.Thread(target = self.CaptureAndAnalyze)
 
 					CameraManager.CaptureThreads.append(CaptureThread)
 					CameraManager.CaptureEvents.append(StopEvent)
@@ -80,13 +90,20 @@ class FaceRecognitionModal(CameraManager, QRReader):
 					title = "Error"
 					message = "Failed to find active cameras"
 					icon = "cancel"
-					CTkMessagebox(title=title, message=message, icon=icon)
+					CTkMessagebox(
+						title = title,
+						message = message,
+						icon = icon
+					)
 			else:
 				title = "Action Failed"
 				message = "Camera is already capturing"
 				icon = "cancel"
-				CTkMessagebox(title=title, message=message, icon=icon)       
-
+				CTkMessagebox(
+					title=title,
+					message=message,
+					icon=icon
+				)
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()
 			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -109,8 +126,11 @@ class FaceRecognitionModal(CameraManager, QRReader):
 				title = "Action Failed"
 				message = "Camera is not capturing"
 				icon = "cancel"
-				CTkMessagebox(title=title, message=message, icon=icon)    
-
+				CTkMessagebox(
+					title = title,
+					message = message,
+					icon = icon
+				)
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()
 			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -152,7 +172,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 				DatabaseManager.Students.pop(index)
 				frequency = 2500
 				duration = 500  # 1 second
-				winsound.Beep(frequency, duration)
+				winsound.Beep(
+					frequency,
+					duration
+				)
 
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -177,7 +200,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 					index
 				)
 
-				threading.Thread(target=self.CompareFaces, args=args).start()
+				threading.Thread(
+					target=self.CompareFaces,
+					args=args
+				).start()
 
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -189,7 +215,12 @@ class FaceRecognitionModal(CameraManager, QRReader):
 	def AnalyzeFace(self, frame) -> bool:
 		try:
 			if self.FrameCounter % self.n_frames == 0:
-				small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+				small_frame = cv2.resize(
+					frame,
+					(0, 0),
+					fx = 0.25,
+					fy = 0.25
+				)
 				face = self.GetTheFace(small_frame)
 
 				if (face):
@@ -212,7 +243,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
               index
 						)
 
-						threading.Thread(target=self.CompareFaces, args=args).start()
+						threading.Thread(
+							target = self.CompareFaces,
+							args = args
+						).start()
 				else:
 					self.CloseLoadingScreen()
 
@@ -233,7 +267,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 				self.LoadingScreen = customtkinter.CTkToplevel()
 				self.LoadingScreen.geometry("300x200")
 
-				self.LoadingScreen.resizable(width=0, height=0)
+				self.LoadingScreen.resizable(
+					width = 0,
+					height = 0
+				)
 
 				self.LoadingScreen.title("")
 
@@ -241,9 +278,9 @@ class FaceRecognitionModal(CameraManager, QRReader):
 					label = customtkinter.CTkLabel(
 						self.LoadingScreen,
 						text="scanning....",
-						font=customtkinter.CTkFont(size=15)
+						font=customtkinter.CTkFont(size = 15)
 					)
-					label.pack(pady=60)
+					label.pack(pady = 60)
 
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()

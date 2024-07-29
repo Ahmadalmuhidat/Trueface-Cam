@@ -36,7 +36,7 @@ class Attendance(FaceRecognitionModal):
 
       report = pandas.DataFrame(
         DatabaseManager.Report,
-        columns=[
+        columns = [
           "Student ID",
           "First Name",
           "Middle Name",
@@ -49,15 +49,18 @@ class Attendance(FaceRecognitionModal):
       DownloadsFolder = os.path.join(os.path.expanduser("~"), "Downloads")
       FileName = "Attendance Report.xlsx"
       FilePath = os.path.join(DownloadsFolder, FileName)
-      report.to_excel(FilePath, index=False)
+      report.to_excel(
+        FilePath,
+        index = False
+      )
 
-      title="Generate complete"
-      message="you can find the report in {}".format(DownloadsFolder)
-      icon="check"
+      title = "Generate complete"
+      message = "you can find the report in {}".format(DownloadsFolder)
+      icon = "check"
       CTkMessagebox(
-        title=title,
-        message=message,
-        icon=icon
+        title = title,
+        message = message,
+        icon = icon
       )
 
       DatabaseManager.Report.clear()
@@ -90,18 +93,18 @@ class Attendance(FaceRecognitionModal):
           ]
 
           for col, data in enumerate(attendance_data):
-              DataLabel = customtkinter.CTkLabel(
-                self.AttendanceTableFrame,
-                text = data,
-                padx = 10,
-                pady = 5   
-              )
-              DataLabel.grid(
-                row = row,
-                column = col,
-                sticky = "nsew"
-              )
-              self.AttendanceRows.append(DataLabel)
+            DataLabel = customtkinter.CTkLabel(
+              self.AttendanceTableFrame,
+              text = data,
+              padx = 10,
+              pady = 5   
+            )
+            DataLabel.grid(
+              row = row,
+              column = col,
+              sticky = "nsew"
+            )
+            self.AttendanceRows.append(DataLabel)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -115,7 +118,11 @@ class Attendance(FaceRecognitionModal):
         title = "Error"
         message = "Please select a lecture from the settings"
         icon = "cancel"
-        CTkMessagebox(title=title, message=message, icon=icon)
+        CTkMessagebox(
+          title=title,
+          message=message,
+          icon=icon
+        )
         return
 
       self.GetAttendance()
