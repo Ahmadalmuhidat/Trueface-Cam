@@ -16,7 +16,7 @@ class Home(FaceRecognitionModal):
 
       self.GetSettings()
       self.Connect()
-      self.checkLicenseStatus()
+      # self.checkLicenseStatus()
       self.ListWorkingCameras()
 
     except Exception as e:
@@ -47,16 +47,10 @@ class Home(FaceRecognitionModal):
 
   def UpdateDatabaseStatus(self):
     try:
-      if self.ReturnCursor():
-        self.DatabaseStatus.configure(
-          text = "Connected",
-          text_color = "green"
-        )
-      else:
-        self.DatabaseStatus.configure(
-          text = "Disconnected",
-          text_color = "red"
-        )
+      self.DatabaseStatus.configure(
+        text = "Connected",
+        text_color = "green"
+      )
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

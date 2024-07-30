@@ -1,6 +1,5 @@
 import os
 import sys
-import json
 
 class Configrations:
   CloseThreads = False
@@ -22,9 +21,9 @@ class Configrations:
   
   def GetSettings(self):
     try:
-      self.Host = "localhost"
-      self.User = "root"
-      self.Password = "root"
+      self.Host = "timewizeai.mysql.database.azure.com"
+      self.User = "timewizeai"
+      self.Password = "system@admin99"
       self.Database = "TimeWizeAI"
       self.ActivationKey = "1234"
 

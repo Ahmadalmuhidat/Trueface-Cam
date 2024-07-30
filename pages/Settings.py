@@ -12,7 +12,7 @@ class Settings(CameraManager):
       super().__init__()
 
       self.GetSettings()
-      self.GetClasses()
+      self.GetCurrentTeacherClasses()
 
       self.class_id_title_map = {
         f"{x[1]} {x[2]}-{x[3]}": x[0] for x in self.Classes
@@ -77,8 +77,8 @@ class Settings(CameraManager):
       DatabaseManager.AllowedMinutes = self.AllowedMinutesEntry.get()
       # threading.Thread(target=self.checkCustomerLicenseStatus).start()
 
-      self.GetStudents()
-      self.GetAttendance()
+      self.GetStudentsWithFaceEncode()
+      self.GetCurrentClassAttendance()
 
       title = "Info"
       message="Settings has been updated"

@@ -11,7 +11,6 @@ class Login(DatabaseManager):
       super().__init__()
 
       self.GetSettings()
-      self.Connect()
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -26,8 +25,9 @@ class Login(DatabaseManager):
     )
 
     if result:
+      DatabaseManager.token 
       self.window.destroy()
-      UserInterface(result).StartTheProgram()
+      UserInterface().StartTheProgram()
 
   def Create(self):
     try:

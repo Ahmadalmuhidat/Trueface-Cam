@@ -125,7 +125,7 @@ class Attendance(FaceRecognitionModal):
         )
         return
 
-      self.GetAttendance()
+      self.GetCurrentClassAttendance()
       self.DisplayAttendanceTable()
 
     except Exception as e:

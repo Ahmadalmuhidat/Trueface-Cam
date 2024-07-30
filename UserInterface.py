@@ -11,11 +11,9 @@ from DatabaseManager import DatabaseManager
 from Configrations import Configrations
 
 class UserInterface(CameraManager):
-  def __init__(self, UserID):
+  def __init__(self):
     try:
       super().__init__()
-
-      DatabaseManager.CurrentTeacher = UserID
 
       self.CurrentPage = None
       self.pages = {}
