@@ -7,6 +7,7 @@ import threading
 import pickle
 import time
 import winsound
+import base64
 
 from queue import Queue
 from CameraManager import CameraManager
@@ -160,7 +161,7 @@ class FaceRecognitionModal(CameraManager, QRReader):
 		):
 		try:
 			cam_face_encodings = face_recognition.face_encodings(small_frame, face)
-			stored_face_encoding = pickle.loads(TargetFaceEncode)
+			stored_face_encoding = pickle.loads(base64.b64decode(TargetFaceEncode))
 
 			results = face_recognition.compare_faces(
 				stored_face_encoding,

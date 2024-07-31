@@ -1,12 +1,10 @@
 import os
 import sys
-import mysql.connector
 import requests
 import json
 
 from Configrations import Configrations
 from CTkMessagebox import CTkMessagebox
-from datetime import date
 
 class DatabaseManager(Configrations):
   cursor = None
@@ -33,23 +31,6 @@ class DatabaseManager(Configrations):
       print(exc_type, fname, exc_tb.tb_lineno)
       print(exc_obj)
       pass
-
-  def Connect(self):
-    try:
-      DatabaseManager.db = mysql.connector.connect(
-        host = self.Host,
-        user = self.User,
-        password = self.Password,
-        database = self.Database
-      )
-
-      DatabaseManager.cursor = DatabaseManager.db.cursor()
-
-    except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
 
   def CheckUser(self, email, password):
     try:
@@ -231,11 +212,6 @@ class DatabaseManager(Configrations):
             message = "{} has been signed".format(StudentName),
             icon = "check"
           )
-      # else:
-      #   CTkMessagebox(
-      #     title = "Info",
-      #     message = "{} has been already signed".format(StudentName)
-      #   )
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -246,42 +222,16 @@ class DatabaseManager(Configrations):
 
   def GetStudentsWithFaceEncode(self):
     try:
-      days = {
-        0: "Monday",
-        1: "Tuesday",
-        2: "Wednesday",
-        3: "Thursday",
-        4: "Friday",
-        5: "Saturday",
-        6: "Sunday"
+      data = {
+        "CurrentClass": DatabaseManager.CurrentClass,
       }
-      today = days[date.today().weekday()]
-      
-      DatabaseManager.cursor = DatabaseManager.db.cursor()
+      response = requests.get(
+        self.BaseURL + "/get_students_with_face_encode",
+        params = data
+      ).content
+      response_str = response.decode('utf-8')
 
-      data = (
-        DatabaseManager.CurrentClass,
-        today
-      )
-      query = '''
-        SELECT
-          Students.*      
-        FROM
-          Students
-        JOIN
-          ClassStudentRelation
-        ON
-          ClassStudentRelation.StudentID = Students.StudentID
-        WHERE
-          ClassStudentRelation.ClassID = %s
-        AND
-          ClassStudentRelation.ClassDay = %s
-      '''
-
-      DatabaseManager.cursor.execute(query, data)
-      DatabaseManager.Students = DatabaseManager.cursor.fetchall()
-
-      DatabaseManager.cursor.close()
+      DatabaseManager.Students = json.loads(response_str)
 
     except Exception as e:
       exc_type, exc_obj, exc_tb = sys.exc_info()

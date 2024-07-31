@@ -15,7 +15,6 @@ class Home(FaceRecognitionModal):
       super().__init__()
 
       self.GetSettings()
-      self.Connect()
       # self.checkLicenseStatus()
       self.ListWorkingCameras()
 
