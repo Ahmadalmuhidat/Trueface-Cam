@@ -26,10 +26,10 @@ class DatabaseManager(Configrations):
       self.ClassStudents = []
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def CheckUser(self, email, password):
@@ -42,19 +42,19 @@ class DatabaseManager(Configrations):
         self.BaseURL + "/check_user",
         params = data
       ).content
-      response_str = response.decode('utf-8')
+      response = json.loads(response.decode('utf-8'))
 
-      token =  json.loads(response_str)
+      token = response
 
       if token:
         DatabaseManager.token = token
         return True
 
     except Exception as e: 
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print(exc_type, fname, exc_tb.tb_lineno)
-        print(exc_obj)
+        ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+        fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+        print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+        print(ExceptionObject)
 
   def CheckLicenseStatus(self):
     try:
@@ -65,9 +65,9 @@ class DatabaseManager(Configrations):
          "https://timewizeai-license-api.azurewebsites.net/check_license",
         params = data
       ).content
-      response_str = response.decode('utf-8')
+      response = json.loads(response.decode('utf-8'))
 
-      if not json.loads(response_str):
+      if not response:
           title = "License not active"
           message = "Please Renew your License"
           icon = "cancel"
@@ -83,10 +83,10 @@ class DatabaseManager(Configrations):
             sys.exit(0)
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def GetCurrentClassAttendance(self):
@@ -98,15 +98,16 @@ class DatabaseManager(Configrations):
         self.BaseURL + "/get_current_class_attendance",
         params = data
       ).content
-      response_str = response.decode('utf-8')
+      response = json.loads(response.decode('utf-8'))
 
-      DatabaseManager.Attendance = json.loads(response_str)
+      if response.get("status_code") == 200:
+        DatabaseManager.Attendance = response.get("data")
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def GetReport(self, StartTime, AllowedMinutes):
@@ -120,15 +121,16 @@ class DatabaseManager(Configrations):
         self.BaseURL + "/get_report",
         params = data
       ).content
-      response_str = response.decode('utf-8')
+      response = json.loads(response.decode('utf-8'))
 
-      DatabaseManager.Report = json.loads(response_str)
+      if response.get("status_code") == 200:
+        DatabaseManager.Report = response.get("data")
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def SearchAttendance(self, StudentID):
@@ -140,15 +142,16 @@ class DatabaseManager(Configrations):
         self.BaseURL + "/search_attendance",
         params = data
       ).content
-      response_str = response.decode('utf-8')
+      response = json.loads(response.decode('utf-8'))
 
-      DatabaseManager.Attendance = json.loads(response_str)
+      if response.get("status_code") == 200:
+        DatabaseManager.Attendance = response.get("data")
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def GetCurrentTeacherClasses(self):
@@ -160,15 +163,16 @@ class DatabaseManager(Configrations):
         self.BaseURL + "/get_current_teacher_classes",
         params = data
       ).content
-      response_str = response.decode('utf-8')
+      response = json.loads(response.decode('utf-8'))
 
-      self.Classes = json.loads(response_str)
+      if response.get("status_code") == 200:
+        self.Classes = response.get("data")
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def CheckAttendance(self, StudentID):
@@ -181,16 +185,16 @@ class DatabaseManager(Configrations):
         self.BaseURL + "/check_attendance",
         params = data
       ).content
-      response_str = response.decode('utf-8')
+      response = json.loads(response.decode('utf-8'))
 
-      result = json.loads(response_str)
-      return result
+      if response.get("status_code") == 200:
+        return response.get("data")
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def InsertAttendance(self, StudentID, StudentName):
@@ -204,9 +208,9 @@ class DatabaseManager(Configrations):
           self.BaseURL + "/insert_attendance",
           params = data
         ).content
-        response_str = response.decode('utf-8')
-        
-        if response_str:
+        response = json.loads(response.decode('utf-8'))
+
+        if response.get("status_code") == 200:
           CTkMessagebox(
             title = "Match Found",
             message = "{} has been signed".format(StudentName),
@@ -214,10 +218,10 @@ class DatabaseManager(Configrations):
           )
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def GetStudentsWithFaceEncode(self):
@@ -229,15 +233,16 @@ class DatabaseManager(Configrations):
         self.BaseURL + "/get_students_with_face_encode",
         params = data
       ).content
-      response_str = response.decode('utf-8')
+      response = json.loads(response.decode('utf-8'))
 
-      DatabaseManager.Students = json.loads(response_str)
+      if response.get("status_code") == 200:
+        DatabaseManager.Students = response.get("data")
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def GetClassStudents(self):
@@ -249,13 +254,14 @@ class DatabaseManager(Configrations):
         self.BaseURL + "/get_class_students",
         params = data
       ).content
-      response_str = response.decode('utf-8')
+      response = json.loads(response.decode('utf-8'))
 
-      self.ClassStudents = json.loads(response_str)
+      if response.get("status_code") == 200:
+        self.ClassStudents = response.get("data")
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
