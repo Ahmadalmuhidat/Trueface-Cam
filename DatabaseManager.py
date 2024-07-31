@@ -44,12 +44,18 @@ class DatabaseManager(Configrations):
       ).content
       response = json.loads(response.decode('utf-8'))
 
-      token = response
-
-      if token:
-        DatabaseManager.token = token
-        return True
-
+      if response.get("status_code") == 200:
+        DatabaseManager.token =  response.get("data")
+      else:
+        title = "Error"
+        message = response.get("Error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
+  
     except Exception as e: 
         ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
         fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
@@ -67,7 +73,7 @@ class DatabaseManager(Configrations):
       ).content
       response = json.loads(response.decode('utf-8'))
 
-      if not response:
+      if response.get("status_code") != 200:
           title = "License not active"
           message = "Please Renew your License"
           icon = "cancel"
@@ -102,6 +108,15 @@ class DatabaseManager(Configrations):
 
       if response.get("status_code") == 200:
         DatabaseManager.Attendance = response.get("data")
+      else:
+        title = "Error"
+        message = response.get("Error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -125,6 +140,15 @@ class DatabaseManager(Configrations):
 
       if response.get("status_code") == 200:
         DatabaseManager.Report = response.get("data")
+      else:
+        title = "Error"
+        message = response.get("Error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -146,6 +170,15 @@ class DatabaseManager(Configrations):
 
       if response.get("status_code") == 200:
         DatabaseManager.Attendance = response.get("data")
+      else:
+        title = "Error"
+        message = response.get("Error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -167,6 +200,15 @@ class DatabaseManager(Configrations):
 
       if response.get("status_code") == 200:
         self.Classes = response.get("data")
+      else:
+        title = "Error"
+        message = response.get("Error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -189,6 +231,15 @@ class DatabaseManager(Configrations):
 
       if response.get("status_code") == 200:
         return response.get("data")
+      else:
+        title = "Error"
+        message = response.get("Error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -216,6 +267,15 @@ class DatabaseManager(Configrations):
             message = "{} has been signed".format(StudentName),
             icon = "check"
           )
+      else:
+        title = "Error"
+        message = response.get("Error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -237,6 +297,15 @@ class DatabaseManager(Configrations):
 
       if response.get("status_code") == 200:
         DatabaseManager.Students = response.get("data")
+      else:
+        title = "Error"
+        message = response.get("Error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -258,6 +327,15 @@ class DatabaseManager(Configrations):
 
       if response.get("status_code") == 200:
         self.ClassStudents = response.get("data")
+      else:
+        title = "Error"
+        message = response.get("Error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message,
+          icon = icon
+        )
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
