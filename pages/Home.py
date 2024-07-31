@@ -3,7 +3,9 @@ import sys
 import customtkinter
 import psutil
 import time
+import requests
 import threading
+import json
 
 from FaceRecognitionModal import FaceRecognitionModal
 from DatabaseManager import DatabaseManager
@@ -19,10 +21,10 @@ class Home(FaceRecognitionModal):
       self.ListWorkingCameras()
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
   def UpdateCamerasStatus(self):
     try:
@@ -38,24 +40,34 @@ class Home(FaceRecognitionModal):
       )
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def UpdateDatabaseStatus(self):
     try:
-      self.DatabaseStatus.configure(
-        text = "Connected",
-        text_color = "green"
-      )
+      response = requests.get(self.BaseURL + "/",).content
+      response_str = response.decode('utf-8')
+      APIActive = json.loads(response_str)
+
+      if not APIActive:
+        self.DatabaseStatus.configure(
+          text = "Disconnected",
+          text_color = "red"
+        )
+      else:
+        self.DatabaseStatus.configure(
+          text = "Connected",
+          text_color = "green"
+        )   
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass 
 
   def UpdateCPUMetrics(self):
@@ -72,10 +84,10 @@ class Home(FaceRecognitionModal):
         time.sleep(1)
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def UpdateAttendanceCount(self):
@@ -91,10 +103,10 @@ class Home(FaceRecognitionModal):
         time.sleep(5)
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def Create(self, parent):
@@ -246,7 +258,7 @@ class Home(FaceRecognitionModal):
       threading.Thread(target = self.UpdateCamerasStatus).start()
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)  
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)  

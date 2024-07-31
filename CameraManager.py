@@ -23,10 +23,10 @@ class CameraManager(DatabaseManager):
       self.LoadingScreen = None
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def UpdateCurrentCamera(self, index):
@@ -34,10 +34,10 @@ class CameraManager(DatabaseManager):
       CameraManager.CurrentCamera = index
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def ReturnActivateCapturing(self):
@@ -45,10 +45,10 @@ class CameraManager(DatabaseManager):
       return CameraManager.ActivateCapturing
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def ListWorkingCameras(self):
@@ -83,10 +83,10 @@ class CameraManager(DatabaseManager):
         )
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass
 
   def viewCam(self):
@@ -124,10 +124,10 @@ class CameraManager(DatabaseManager):
       threading.Thread(target=self.viewCam).start()
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
   def CloseLoadingScreen(self):
     try:
@@ -137,8 +137,8 @@ class CameraManager(DatabaseManager):
         self.LoadingScreen = None
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
       pass

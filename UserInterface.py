@@ -19,10 +19,10 @@ class UserInterface(CameraManager):
       self.pages = {}
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
   def Navbar(self, window):
     try:
@@ -62,10 +62,10 @@ class UserInterface(CameraManager):
       SettingsButton.pack(side = customtkinter.LEFT)
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
   def ShowPage(self, name):
     try:
@@ -76,10 +76,10 @@ class UserInterface(CameraManager):
       self.CurrentPage.pack(fill=customtkinter.BOTH, expand=True)
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
   def CreatePage(self, window, name):
     try:
@@ -96,10 +96,10 @@ class UserInterface(CameraManager):
         Students.Students().Create(page)
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
   def OnClosing(self):
     try:
@@ -113,10 +113,10 @@ class UserInterface(CameraManager):
       sys.exit(0)
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
   def StartTheProgram(self):
     try:
@@ -141,9 +141,9 @@ class UserInterface(CameraManager):
       self.window.mainloop()
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
     except KeyboardInterrupt:
       pass

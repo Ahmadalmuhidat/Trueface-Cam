@@ -27,10 +27,10 @@ class Settings(CameraManager):
       }
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
   
   def UpdateCurrentCamerass(self, choise):
     try:
@@ -39,10 +39,10 @@ class Settings(CameraManager):
       )
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
   
   def UpdateSettings(self):
     try:
@@ -90,10 +90,10 @@ class Settings(CameraManager):
       )
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
   def Create(self, parent):
     try:
@@ -203,7 +203,7 @@ class Settings(CameraManager):
       )
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)

@@ -13,10 +13,10 @@ class Login(DatabaseManager):
       self.GetSettings()
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
   def Login(self):
     result = self.CheckUser(
@@ -104,10 +104,10 @@ class Login(DatabaseManager):
       self.window.mainloop()
 
     except Exception as e:
-      exc_type, exc_obj, exc_tb = sys.exc_info()
-      fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-      print(exc_type, fname, exc_tb.tb_lineno)
-      print(exc_obj)
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
 
 if __name__ ==  "__main__":
   login = Login().Create()

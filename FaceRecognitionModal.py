@@ -25,10 +25,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 			self.FramesQueue = Queue()
 
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
+			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+			print(ExceptionObject)
 			pass
 
 	def CaptureAndAnalyze(self):
@@ -57,10 +57,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 				time.sleep(0.1)
 
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
+			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+			print(ExceptionObject)
 			pass
   
 	def StartCapturing(self):
@@ -106,10 +106,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 					icon=icon
 				)
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
+			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+			print(ExceptionObject)
 			pass
 
 	def StopCapturing(self):
@@ -133,10 +133,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 					icon = icon
 				)
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
+			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+			print(ExceptionObject)
 			pass
 
 	def GetTheFace(self, frame):
@@ -144,10 +144,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 			return face_recognition.face_locations(frame)
 
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
+			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+			print(ExceptionObject)
 			pass
 
 	def CompareFaces(
@@ -179,10 +179,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 				)
 
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
+			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+			print(ExceptionObject)
 			pass
 	
 	def FindFace(self, face, small_frame):
@@ -207,10 +207,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 				).start()
 
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
+			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+			print(ExceptionObject)
 			pass
 	
 	def AnalyzeFace(self, frame) -> bool:
@@ -254,10 +254,10 @@ class FaceRecognitionModal(CameraManager, QRReader):
 			self.FrameCounter += 1
 
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
+			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+			print(ExceptionObject)
 			pass
 
 	def CreateLoadingScreen(self):
@@ -284,8 +284,8 @@ class FaceRecognitionModal(CameraManager, QRReader):
 					label.pack(pady = 60)
 
 		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			print(exc_type, fname, exc_tb.tb_lineno)
-			print(exc_obj)
+			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+			print(ExceptionObject)
 			pass
