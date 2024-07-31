@@ -7,7 +7,6 @@ import pages.Settings as Settings
 import pages.Students as Students
 
 from CameraManager import CameraManager
-from DatabaseManager import DatabaseManager
 from Configrations import Configrations
 
 class UserInterface(CameraManager):
