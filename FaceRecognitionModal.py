@@ -101,9 +101,9 @@ class FaceRecognitionModal(CameraManager, QRReader):
 				message = "Camera is already capturing"
 				icon = "cancel"
 				CTkMessagebox(
-					title=title,
-					message=message,
-					icon=icon
+					title = title,
+					message = message,
+					icon = icon
 				)
 		except Exception as e:
 			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

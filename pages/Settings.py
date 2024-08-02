@@ -48,8 +48,8 @@ class Settings(CameraManager):
     try:
       if not self.CurrentLectureEntry.get():
         title = "Missing Entries"
-        message="Please Select Current Lecture"
-        icon="cancel"
+        message = "Please Select Current Lecture"
+        icon = "cancel"
         CTkMessagebox(
           title = title,
           message = message,
@@ -59,7 +59,7 @@ class Settings(CameraManager):
 
       if not self.AllowedMinutesEntry.get():
         title = "Missing Entries"
-        message="Please Enter Allowed Late Time"
+        message = "Please Enter Allowed Late Time"
         icon="cancel"
         CTkMessagebox(
           title = title,
@@ -81,8 +81,8 @@ class Settings(CameraManager):
       self.GetCurrentClassAttendance()
 
       title = "Info"
-      message="Settings has been updated"
-      icon="check"
+      message = "Settings has been updated"
+      icon = "check"
       CTkMessagebox(
         title = title,
         message = message,

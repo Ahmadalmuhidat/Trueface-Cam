@@ -67,9 +67,9 @@ class CameraManager(DatabaseManager):
           message = "Camera has been tested successfully"
           icon = "check"
           CTkMessagebox(
-            title=title,
-            message=message,
-            icon=icon
+            title = title,
+            message = message,
+            icon = icon
           )
 
       if not self.CameraActive:
@@ -77,9 +77,9 @@ class CameraManager(DatabaseManager):
         message = "Camera testing has failed"
         icon = "cancel"
         CTkMessagebox(
-          title=title,
-          message=message,
-          icon=icon
+          title = title,
+          message = message,
+          icon = icon
         )
 
     except Exception as e:
@@ -114,9 +114,9 @@ class CameraManager(DatabaseManager):
       message = "Please select camera before testing"
       icon = "cancel"
       CTkMessagebox(
-        title=title,
-        message=message,
-        icon=icon
+        title = title,
+        message = message,
+        icon = icon
       )
 
   def ShowVideoFrame(self):

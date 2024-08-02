@@ -119,9 +119,9 @@ class Attendance(FaceRecognitionModal):
         message = "Please select a lecture from the settings"
         icon = "cancel"
         CTkMessagebox(
-          title=title,
-          message=message,
-          icon=icon
+          title = title,
+          message = message,
+          icon = icon
         )
         return
 

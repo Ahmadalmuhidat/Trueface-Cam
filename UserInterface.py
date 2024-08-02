@@ -72,7 +72,10 @@ class UserInterface(CameraManager):
         self.CurrentPage.pack_forget()
 
       self.CurrentPage = self.pages[name]
-      self.CurrentPage.pack(fill=customtkinter.BOTH, expand=True)
+      self.CurrentPage.pack(
+        fill=customtkinter.BOTH,
+        expand=True
+      )
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -108,7 +111,6 @@ class UserInterface(CameraManager):
       self.window.destroy()
 
       Configrations.CloseThreads = True
-
       sys.exit(0)
 
     except Exception as e:
@@ -127,7 +129,10 @@ class UserInterface(CameraManager):
 
       self.window.title("TimeWizeAI Camera")
 
-      self.window.protocol("WM_DELETE_WINDOW", self.OnClosing)
+      self.window.protocol(
+        "WM_DELETE_WINDOW",
+        self.OnClosing
+      )
 
       self.Navbar(self.window)
       self.CreatePage(self.window, "Home")

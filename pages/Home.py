@@ -17,7 +17,7 @@ class Home(FaceRecognitionModal):
       super().__init__()
 
       self.GetSettings()
-      # self.checkLicenseStatus()
+      self.CheckLicenseStatus()
       self.ListWorkingCameras()
 
     except Exception as e:

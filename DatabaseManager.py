@@ -68,7 +68,7 @@ class DatabaseManager(Configrations):
         "License": self.ActivationKey
       }
       response = requests.get(
-         "https://timewizeai-license-api.azurewebsites.net/check_license",
+        "https://timewizeai-license-api.azurewebsites.net/check_license",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))
