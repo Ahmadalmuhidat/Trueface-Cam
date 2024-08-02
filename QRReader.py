@@ -34,11 +34,20 @@ class QRReader(DatabaseManager):
         points = points.astype(int)
         for i in range(len(decoded_info)):
           points_array = points[i].reshape((-1, 1, 2))
-          image = cv2.polylines(image, [points_array], True, (0, 255, 0), 2)
+          image = cv2.polylines(
+            image,
+            [points_array],
+            True,
+            (0, 255, 0),
+            2
+          )
           info = json.loads(decoded_info[i])
 
           if info["Provider"] == "TimeWizeAI":
-            self.InsertAttendance(info["StudentID"], info["StudentName"])
+            self.InsertAttendance(
+              info["StudentID"],
+              info["StudentName"]
+            )
           else:
             pass
 
