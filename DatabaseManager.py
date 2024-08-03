@@ -48,11 +48,11 @@ class DatabaseManager(Configrations):
         DatabaseManager.token =  response.get("data")
       else:
         title = "Error"
-        message = response.get("Error")
+        message = response.get("error")
         icon = "cancel"
         CTkMessagebox(
           title = title,
-          message = message,
+          message = message if message else "Something went wrong while checking user info",
           icon = icon
         )
   
@@ -73,20 +73,18 @@ class DatabaseManager(Configrations):
       ).content
       response = json.loads(response.decode('utf-8'))
 
-      if response.get("status_code") != 200:
-          title = "License not active"
-          message = "Please Renew your License"
-          icon = "cancel"
-          msg  =  CTkMessagebox(
-            title = title,
-            message = message,
-            icon = icon,
-            option_1 = "ok"
-          )
-          response = msg.get()
-
-          if response == "ok":
-            sys.exit(0)
+      if response.get("status_code") == 200:
+        pass
+      else:
+        title = "Error"
+        message = response.get("error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message if message else "Something went wrong while checking license status",
+          icon = icon
+        )
+        sys.exit(0)
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -110,11 +108,11 @@ class DatabaseManager(Configrations):
         DatabaseManager.Attendance = response.get("data")
       else:
         title = "Error"
-        message = response.get("Error")
+        message = response.get("error")
         icon = "cancel"
         CTkMessagebox(
           title = title,
-          message = message,
+          message = message if message else "Something went wrong while getting the attendance",
           icon = icon
         )
 
@@ -142,11 +140,11 @@ class DatabaseManager(Configrations):
         DatabaseManager.Report = response.get("data")
       else:
         title = "Error"
-        message = response.get("Error")
+        message = response.get("error")
         icon = "cancel"
         CTkMessagebox(
           title = title,
-          message = message,
+          message = message if message else "Something went wrong while getting the report",
           icon = icon
         )
 
@@ -172,11 +170,11 @@ class DatabaseManager(Configrations):
         DatabaseManager.Attendance = response.get("data")
       else:
         title = "Error"
-        message = response.get("Error")
+        message = response.get("error")
         icon = "cancel"
         CTkMessagebox(
           title = title,
-          message = message,
+          message = message if message else "Something went wrong while searching in the attendance",
           icon = icon
         )
 
@@ -202,11 +200,11 @@ class DatabaseManager(Configrations):
         self.Classes = response.get("data")
       else:
         title = "Error"
-        message = response.get("Error")
+        message = response.get("error")
         icon = "cancel"
         CTkMessagebox(
           title = title,
-          message = message,
+          message = message if message else "Something went wrong while getting the classes",
           icon = icon
         )
 
@@ -233,11 +231,11 @@ class DatabaseManager(Configrations):
         return response.get("data")
       else:
         title = "Error"
-        message = response.get("Error")
+        message = response.get("error")
         icon = "cancel"
         CTkMessagebox(
           title = title,
-          message = message,
+          message = message if message else "Something went wrong while checking student attendance",
           icon = icon
         )
 
@@ -269,11 +267,11 @@ class DatabaseManager(Configrations):
           )
       else:
         title = "Error"
-        message = response.get("Error")
+        message = response.get("error")
         icon = "cancel"
         CTkMessagebox(
           title = title,
-          message = message,
+          message = message if message else "Something went wrong while inserting attendance",
           icon = icon
         )
 
@@ -299,11 +297,11 @@ class DatabaseManager(Configrations):
         DatabaseManager.Students = response.get("data")
       else:
         title = "Error"
-        message = response.get("Error")
+        message = response.get("error")
         icon = "cancel"
         CTkMessagebox(
           title = title,
-          message = message,
+          message = message if message else "Something went wrong while getting the students",
           icon = icon
         )
 
@@ -329,11 +327,11 @@ class DatabaseManager(Configrations):
         self.ClassStudents = response.get("data")
       else:
         title = "Error"
-        message = response.get("Error")
+        message = response.get("error")
         icon = "cancel"
         CTkMessagebox(
           title = title,
-          message = message,
+          message = message if message else "Something went wrong while getting the students",
           icon = icon
         )
 
