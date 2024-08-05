@@ -127,7 +127,7 @@ class UserInterface(CameraManager):
       height = self.window.winfo_screenheight()
       self.window.geometry("%dx%d" % (width, height))
 
-      self.window.title("TimeWizeAI Camera")
+      self.window.title("TrueFace Camera")
 
       self.window.protocol(
         "WM_DELETE_WINDOW",

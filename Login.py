@@ -32,13 +32,13 @@ class Login(DatabaseManager):
   def Create(self):
     try:
       self.window = customtkinter.CTk()
-      self.window.geometry("400x350")
+      self.window.geometry("400x170")
       self.window.resizable(
         width = 0,
         height = 0
       )
 
-      self.window.title("Login To TimeWizeAI")
+      self.window.title("Login To TrueFace")
 
       ContentFrame = customtkinter.CTkFrame(self.window)
       ContentFrame.pack(

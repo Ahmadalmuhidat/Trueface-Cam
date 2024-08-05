@@ -19,6 +19,6 @@ pip install dlib-19.22.99-cp39-cp39-win_amd64.whl
 Finally, compile the Python script (`Login.py`) into a standalone executable. Run the following command:
 
 ```bash
-python -m PyInstaller .\Login.py -w -F --collect-all face_recognition_models
+python -m PyInstaller .\Login.py -w -F --collect-all face_recognition_models --icon logo.ico
 ```
 

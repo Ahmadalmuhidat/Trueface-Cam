@@ -43,7 +43,7 @@ class QRReader(DatabaseManager):
           )
           info = json.loads(decoded_info[i])
 
-          if info["Provider"] == "TimeWizeAI":
+          if info["Provider"] == "TrueFace":
             self.InsertAttendance(
               info["StudentID"],
               info["StudentName"]

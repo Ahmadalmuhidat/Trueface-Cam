@@ -20,7 +20,7 @@ class DatabaseManager(Configrations):
 
   def __init__(self) -> None:
     try:
-      # self.BaseURL = "https://timewizeai-license-api.azurewebsites.net"
+      # self.BaseURL = "https://timewizeai-api.azurewebsites.net"
       self.BaseURL = "http://192.168.1.112:8000"
       self.Classes = []
       self.ClassStudents = []
@@ -45,7 +45,7 @@ class DatabaseManager(Configrations):
       response = json.loads(response.decode('utf-8'))
 
       if response.get("status_code") == 200:
-        DatabaseManager.token =  response.get("data")
+        return response.get("data")
       else:
         title = "Error"
         message = response.get("error")
@@ -73,18 +73,21 @@ class DatabaseManager(Configrations):
       ).content
       response = json.loads(response.decode('utf-8'))
 
-      if response.get("status_code") == 200:
-        pass
-      else:
+      if response.get("status_code") != 200:
         title = "Error"
         message = response.get("error")
         icon = "cancel"
-        CTkMessagebox(
+        WarningMessage = CTkMessagebox(
           title = title,
           message = message if message else "Something went wrong while checking license status",
-          icon = icon
+          icon = icon,
+          option_1 = "ok"
         )
-        sys.exit(0)
+
+        if WarningMessage.get() == "ok":
+          sys.exit(0)
+        else:
+          sys.exit(0)
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
