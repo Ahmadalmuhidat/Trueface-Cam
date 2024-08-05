@@ -2,7 +2,6 @@ import os
 import sys
 import cv2
 import json
-import time
 
 from DatabaseManager import DatabaseManager
 
