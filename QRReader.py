@@ -48,10 +48,7 @@ class QRReader(DatabaseManager):
               info["StudentID"],
               info["StudentName"]
             )
-          else:
-            pass
-
-          time.sleep(1)
+            break
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

@@ -122,6 +122,7 @@ class UserInterface(CameraManager):
   def StartTheProgram(self):
     try:
       self.window = customtkinter.CTk()
+      self.window.iconbitmap("logo.ico")
       
       width = self.window.winfo_screenwidth()
       height = self.window.winfo_screenheight()
