@@ -25,7 +25,7 @@ class Login(DatabaseManager):
     )
 
     if result:
-      DatabaseManager.token 
+      DatabaseManager.token = result
       self.window.destroy()
       UserInterface().StartTheProgram()
 

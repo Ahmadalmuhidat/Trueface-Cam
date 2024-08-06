@@ -1,6 +1,7 @@
 import os
 import sys
 import requests
+import winsound
 import json
 
 from Configrations import Configrations
@@ -20,8 +21,8 @@ class DatabaseManager(Configrations):
 
   def __init__(self) -> None:
     try:
-      self.BaseURL = "https://timewizeai-api.azurewebsites.net"
-      # self.BaseURL = "http://192.168.1.112:8000"
+      # self.BaseURL = "https://timewizeai-api.azurewebsites.net"
+      self.BaseURL = "http://192.168.1.112:8000"
       self.Classes = []
       self.ClassStudents = []
 
@@ -263,6 +264,12 @@ class DatabaseManager(Configrations):
         response = json.loads(response.decode('utf-8'))
 
         if response.get("status_code") == 200:
+          frequency = 2500
+          duration = 500  # 1 second
+          winsound.Beep(
+            frequency,
+            duration
+          )
           CTkMessagebox(
             title = "Match Found",
             message = "{} has been signed".format(StudentName),

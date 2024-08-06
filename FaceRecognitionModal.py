@@ -6,7 +6,6 @@ import face_recognition
 import threading
 import pickle
 import time
-import winsound
 import base64
 
 from queue import Queue
@@ -171,12 +170,6 @@ class FaceRecognitionModal(CameraManager, QRReader):
 			if results[0]:
 				self.InsertAttendance(TargetID, TargetName)
 				DatabaseManager.Students.pop(index)
-				frequency = 2500
-				duration = 500  # 1 second
-				winsound.Beep(
-					frequency,
-					duration
-				)
 
 		except Exception as e:
 			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

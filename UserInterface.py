@@ -8,6 +8,7 @@ import pages.Students as Students
 
 from CameraManager import CameraManager
 from Configrations import Configrations
+from CTkMessagebox import CTkMessagebox
 
 class UserInterface(CameraManager):
   def __init__(self):
@@ -106,7 +107,14 @@ class UserInterface(CameraManager):
   def OnClosing(self):
     try:
       if self.ReturnActivateCapturing():
-        self.StopCapturing()
+        title = "Error"
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = "Please stop the camera first",
+          icon = icon
+        )
+        return
 
       self.window.destroy()
 
