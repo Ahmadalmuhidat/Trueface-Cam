@@ -32,8 +32,8 @@ class Login(DatabaseManager):
   def Create(self):
     try:
       self.window = customtkinter.CTk()
-      self.window.iconbitmap("logo.ico")
       self.window.geometry("400x170")
+      self.window.iconbitmap("logo.ico")
       self.window.resizable(
         width = 0,
         height = 0

@@ -130,11 +130,11 @@ class UserInterface(CameraManager):
   def StartTheProgram(self):
     try:
       self.window = customtkinter.CTk()
-      self.window.iconbitmap("logo.ico")
-      
+    
       width = self.window.winfo_screenwidth()
       height = self.window.winfo_screenheight()
       self.window.geometry("%dx%d" % (width, height))
+      self.window.iconbitmap("logo.ico")
 
       self.window.title("TrueFace Camera")
 

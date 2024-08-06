@@ -21,8 +21,8 @@ class DatabaseManager(Configrations):
 
   def __init__(self) -> None:
     try:
-      # self.BaseURL = "https://timewizeai-api.azurewebsites.net"
-      self.BaseURL = "http://192.168.1.112:8000"
+      self.BaseURL = "https://timewizeai-api.azurewebsites.net"
+      # self.BaseURL = "http://192.168.1.112:8000"
       self.Classes = []
       self.ClassStudents = []
 
