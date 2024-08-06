@@ -33,36 +33,6 @@ class DatabaseManager(Configrations):
       print(ExceptionObject)
       pass
 
-  def CheckUser(self, email, password):
-    try:
-      data = {
-        "email": email,
-        "password": password
-      }
-      response = requests.get(
-        self.BaseURL + "/check_user",
-        params = data
-      ).content
-      response = json.loads(response.decode('utf-8'))
-
-      if response.get("status_code") == 200:
-        return response.get("data")
-      else:
-        title = "Error"
-        message = response.get("error")
-        icon = "cancel"
-        CTkMessagebox(
-          title = title,
-          message = message if message else "Something went wrong while checking user info",
-          icon = icon
-        )
-  
-    except Exception as e: 
-        ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-        fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-        print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-        print(ExceptionObject)
-
   def CheckLicenseStatus(self):
     try:
       data = {
@@ -96,6 +66,36 @@ class DatabaseManager(Configrations):
       print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
       print(ExceptionObject)
       pass
+
+  def CheckUser(self, email, password):
+    try:
+      data = {
+        "email": email,
+        "password": password
+      }
+      response = requests.get(
+        self.BaseURL + "/check_user",
+        params = data
+      ).content
+      response = json.loads(response.decode('utf-8'))
+
+      if response.get("status_code") == 200:
+        return response.get("data")
+      else:
+        title = "Error"
+        message = response.get("error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message if message else "Something went wrong while checking user info",
+          icon = icon
+        )
+  
+    except Exception as e: 
+        ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+        fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+        print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
+        print(ExceptionObject)
 
   def GetCurrentClassAttendance(self):
     try:
