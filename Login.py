@@ -2,7 +2,7 @@ import os
 import sys
 import customtkinter
 
-from UserInterface import UserInterface
+from main import UserInterface
 from DatabaseManager import DatabaseManager
 
 class Login(DatabaseManager):

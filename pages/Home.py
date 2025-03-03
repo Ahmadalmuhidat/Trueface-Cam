@@ -9,7 +9,6 @@ import json
 
 from FaceRecognitionModal import FaceRecognitionModal
 from DatabaseManager import DatabaseManager
-from Configrations import Configrations
 
 class Home(FaceRecognitionModal):
   def __init__(self):
@@ -17,7 +16,6 @@ class Home(FaceRecognitionModal):
       super().__init__()
 
       self.GetSettings()
-      self.CheckLicenseStatus()
       self.ListWorkingCameras()
 
     except Exception as e:
@@ -204,7 +202,6 @@ class Home(FaceRecognitionModal):
         padx = 5,
         pady = 10
       )
-
 
       self.DatabaseStatus = customtkinter.CTkLabel(DatabaseStatusFrame)
       self.DatabaseStatus.pack()

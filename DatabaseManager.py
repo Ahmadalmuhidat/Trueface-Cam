@@ -1,64 +1,29 @@
 import os
 import sys
 import requests
-import winsound
+# import winsound
 import json
 
 from Configrations import Configrations
 from CTkMessagebox import CTkMessagebox
 
 class DatabaseManager(Configrations):
+  Students = []
+  Attendance = []
+  Report = []
   cursor = None
   db = None
   CurrentClass = None
   StartTime = None
   AllowedMinutes = None
   CurrentTeacher = None
-  Students = []
-  Attendance = []
-  Report = []
   token = ""
 
   def __init__(self) -> None:
     try:
-      self.BaseURL = "https://trueface-demo-api-ddgsfvefgmfhb9aa.uaenorth-01.azurewebsites.net/"
-      # self.BaseURL = "http://192.168.1.112:8000"
+      self.BaseURL = "http://localhost:8000"
       self.Classes = []
       self.ClassStudents = []
-
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
-      pass
-
-  def CheckLicenseStatus(self):
-    try:
-      data = {
-        "License": self.ActivationKey
-      }
-      response = requests.get(
-        "https://trueface-license-api-cqh8fphkcccthfe7.uaenorth-01.azurewebsites.net/check_license",
-        params = data
-      ).content
-      response = json.loads(response.decode('utf-8'))
-
-      if response.get("status_code") != 200:
-        title = "Error"
-        message = response.get("error")
-        icon = "cancel"
-        WarningMessage = CTkMessagebox(
-          title = title,
-          message = message if message else "Something went wrong while checking license status",
-          icon = icon,
-          option_1 = "ok"
-        )
-
-        if WarningMessage.get() == "ok":
-          sys.exit(0)
-        else:
-          sys.exit(0)
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -74,7 +39,7 @@ class DatabaseManager(Configrations):
         "password": password
       }
       response = requests.get(
-        self.BaseURL + "/check_user",
+        self.BaseURL + "/teacher/check_user",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))
@@ -103,7 +68,7 @@ class DatabaseManager(Configrations):
         "CurrentClass": DatabaseManager.CurrentClass
       }
       response = requests.get(
-        self.BaseURL + "/get_current_class_attendance",
+        self.BaseURL + "/teacher/get_current_class_attendance",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))
@@ -135,7 +100,7 @@ class DatabaseManager(Configrations):
         "CurrentClass": DatabaseManager.CurrentClass
       }
       response = requests.get(
-        self.BaseURL + "/get_report",
+        self.BaseURL + "/teacher/get_report",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))
@@ -165,7 +130,7 @@ class DatabaseManager(Configrations):
         "StudentID": StudentID,
       }
       response = requests.get(
-        self.BaseURL + "/search_attendance",
+        self.BaseURL + "/teacher/search_attendance",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))
@@ -195,7 +160,7 @@ class DatabaseManager(Configrations):
         "CurrentTeacher": DatabaseManager.token
       }
       response = requests.get(
-        self.BaseURL + "/get_current_teacher_classes",
+        self.BaseURL + "/teacher/get_current_teacher_classes",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))
@@ -226,7 +191,7 @@ class DatabaseManager(Configrations):
         "CurrentClass": DatabaseManager.CurrentClass
       }
       response = requests.get(
-        self.BaseURL + "/check_attendance",
+        self.BaseURL + "/teacher/check_attendance",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))
@@ -258,7 +223,7 @@ class DatabaseManager(Configrations):
           "CurrentClass": DatabaseManager.CurrentClass
         }
         response = requests.post(
-          self.BaseURL + "/insert_attendance",
+          self.BaseURL + "/teacher/insert_attendance",
           params = data
         ).content
         response = json.loads(response.decode('utf-8'))
@@ -266,10 +231,10 @@ class DatabaseManager(Configrations):
         if response.get("status_code") == 200:
           frequency = 2500
           duration = 500  # 1 second
-          winsound.Beep(
-            frequency,
-            duration
-          )
+          # winsound.Beep(
+          #   frequency,
+          #   duration
+          # )
           CTkMessagebox(
             title = "Match Found",
             message = "{} has been signed".format(StudentName),
@@ -298,7 +263,7 @@ class DatabaseManager(Configrations):
         "CurrentClass": DatabaseManager.CurrentClass,
       }
       response = requests.get(
-        self.BaseURL + "/get_students_with_face_encode",
+        self.BaseURL + "/teacher/get_students_with_face_encode",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))
@@ -328,7 +293,7 @@ class DatabaseManager(Configrations):
         "CurrentClass": DatabaseManager.CurrentClass
       }
       response = requests.get(
-        self.BaseURL + "/get_class_students",
+        self.BaseURL + "/teacher/get_class_students",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))

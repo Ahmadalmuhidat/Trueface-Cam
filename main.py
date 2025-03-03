@@ -7,7 +7,6 @@ import pages.Settings as Settings
 import pages.Students as Students
 
 from CameraManager import CameraManager
-from Configrations import Configrations
 from CTkMessagebox import CTkMessagebox
 
 class UserInterface(CameraManager):
@@ -118,7 +117,6 @@ class UserInterface(CameraManager):
 
       self.window.destroy()
 
-      Configrations.CloseThreads = True
       sys.exit(0)
 
     except Exception as e:
