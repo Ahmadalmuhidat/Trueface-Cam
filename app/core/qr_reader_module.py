@@ -3,20 +3,10 @@ import sys
 import cv2
 import json
 
-from DatabaseManager import DatabaseManager
+from app.core.data_manager import DataManager
+from app.controllers.attendance import insert_attendance
 
-class QRReader(DatabaseManager):
-  def __init__(self) -> None:
-    try:
-      super().__init__()
-
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
-      pass
-
+class QR_ReaderModule(DataManager):
   def ReadQRCode(self, image):
     try:
       qrcode = cv2.QRCodeDetector()
@@ -43,9 +33,9 @@ class QRReader(DatabaseManager):
           info = json.loads(decoded_info[i])
 
           if info["Provider"] == "TrueFace":
-            self.InsertAttendance(
-              info["StudentID"],
-              info["StudentName"]
+            insert_attendance(
+              info["student_id"],
+              info["student_name"]
             )
             break
 

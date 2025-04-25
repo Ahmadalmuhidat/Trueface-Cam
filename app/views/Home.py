@@ -7,16 +7,16 @@ import requests
 import threading
 import json
 
-from FaceRecognitionModal import FaceRecognitionModal
-from DatabaseManager import DatabaseManager
+from app.config.configrations import Configrations
+from app.core.data_manager import DataManager
+from app.core.camera_module import CameraManagerModule
 
-class Home(FaceRecognitionModal):
+class Home():
   def __init__(self):
     try:
       super().__init__()
 
-      self.GetSettings()
-      self.ListWorkingCameras()
+      self.camera_manager = CameraManagerModule()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -24,15 +24,15 @@ class Home(FaceRecognitionModal):
       print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
       print(ExceptionObject)
 
-  def UpdateCamerasStatus(self):
+  def update_camera_status(self):
     try:
-      if self.CameraActive:
-        self.CameraStatus.configure(
+      if self.camera_manager.camera_active:
+        self.camera_status.configure(
           text = "Connected",
           text_color = "green"
         )
       else:
-        self.CameraStatus.configure(
+        self.camera_status.configure(
           text= "Disconnected",
           text_color = "red"
       )
@@ -44,19 +44,19 @@ class Home(FaceRecognitionModal):
       print(ExceptionObject)
       pass
 
-  def UpdateDatabaseStatus(self):
+  def update_database_status(self):
     try:
       response = requests.get(self.BaseURL + "/",).content
       response_str = response.decode('utf-8')
       APIActive = json.loads(response_str)
 
       if not APIActive:
-        self.DatabaseStatus.configure(
+        self.database_status.configure(
           text = "Disconnected",
           text_color = "red"
         )
       else:
-        self.DatabaseStatus.configure(
+        self.database_status.configure(
           text = "Connected",
           text_color = "green"
         )   
@@ -68,11 +68,11 @@ class Home(FaceRecognitionModal):
       print(ExceptionObject)
       pass 
 
-  def UpdateCPUMetrics(self):
+  def update_cpu_metrics(self):
     try:
       while True:
         metrics = psutil.cpu_percent(interval=1)
-        self.CPUCount.configure(
+        self.cpu_count.configure(
           text = "CPU Usage \n\n{}%".format(metrics)
         )
 
@@ -88,11 +88,11 @@ class Home(FaceRecognitionModal):
       print(ExceptionObject)
       pass
 
-  def UpdateAttendanceCount(self):
+  def update_attendance_count(self):
     try:
       while True:
-        self.AttendanceCount.configure(
-          text = "Attendance \n\n{}".format(len(DatabaseManager.Attendance))
+        self.attendance_count.configure(
+          text = "Attendance \n\n{}".format(len(DataManager.Attendance))
         )
 
         if Configrations.CloseThreads:
@@ -107,7 +107,7 @@ class Home(FaceRecognitionModal):
       print(ExceptionObject)
       pass
 
-  def Create(self, parent):
+  def lunch_view(self, parent):
     try:
       parent.rowconfigure(0, weight = 1)
       parent.rowconfigure(1, weight = 3)
@@ -117,25 +117,25 @@ class Home(FaceRecognitionModal):
       parent.columnconfigure(1, weight = 3)
       parent.columnconfigure(2, weight = 1)
 
-      ContentFrame = customtkinter.CTkFrame(parent)
-      ContentFrame.grid(
+      content_frame = customtkinter.CTkFrame(parent)
+      content_frame.grid(
         row = 1,
         column = 1,
         sticky = "new"
       )
 
-      ContentFrame.rowconfigure(0, weight = 1)
-      ContentFrame.rowconfigure(1, weight = 1)
+      content_frame.rowconfigure(0, weight = 1)
+      content_frame.rowconfigure(1, weight = 1)
 
-      ContentFrame.columnconfigure(0, weight = 1)
-      ContentFrame.columnconfigure(1, weight = 1)
-      ContentFrame.columnconfigure(2, weight = 1)
-      ContentFrame.columnconfigure(3, weight = 1)
+      content_frame.columnconfigure(0, weight = 1)
+      content_frame.columnconfigure(1, weight = 1)
+      content_frame.columnconfigure(2, weight = 1)
+      content_frame.columnconfigure(3, weight = 1)
 
       capture_button = customtkinter.CTkButton(
-        ContentFrame,
+        content_frame,
         text = "Start Capture",
-        command = self.StartCapturing,
+        command = self.camera_manager.start_capturing,
         font=customtkinter.CTkFont(size=15)
       )
       capture_button.grid(
@@ -145,114 +145,114 @@ class Home(FaceRecognitionModal):
         sticky = "nswe"
       )
 
-      StopCaptureButton = customtkinter.CTkButton(
-        ContentFrame,
+      stop_capture_button = customtkinter.CTkButton(
+        content_frame,
         text = "Stop Capture",
-        command = self.StopCapturing,
+        command = self.camera_manager.stop_capturing,
         height = 50,
         fg_color = "red",
         font = customtkinter.CTkFont(size = 15)
       )
-      StopCaptureButton.grid(
+      stop_capture_button.grid(
         row = 0,
         column = 2,
         columnspan = 2,
         sticky = "nswe"
       )
 
-      CamerasStatusFrame = customtkinter.CTkFrame(ContentFrame, corner_radius = 0)
-      CamerasStatusFrame.grid(
+      camera_status_frame = customtkinter.CTkFrame(content_frame, corner_radius = 0)
+      camera_status_frame.grid(
         row = 1,
         column = 0,
         sticky = "nsew"
       )
-      CamerasStatusFrame.grid_propagate(False)
+      camera_status_frame.grid_propagate(False)
 
-      self.CamerasStatusHeader = customtkinter.CTkLabel(
-        CamerasStatusFrame,
+      self.camera_status_header = customtkinter.CTkLabel(
+        camera_status_frame,
         bg_color = "transparent",
         font = customtkinter.CTkFont(size = 15),
         text = "Camera Status"
       )
-      self.CamerasStatusHeader.pack(
+      self.camera_status_header.pack(
         padx = 5,
         pady = 10
       )
-      self.CameraStatus = customtkinter.CTkLabel(CamerasStatusFrame)
-      self.CameraStatus.pack()
+      self.camera_status = customtkinter.CTkLabel(camera_status_frame)
+      self.camera_status.pack()
 
-      DatabaseStatusFrame = customtkinter.CTkFrame(
-        ContentFrame,
+      database_status_frame = customtkinter.CTkFrame(
+        content_frame,
         corner_radius = 0
       )
-      DatabaseStatusFrame.grid(
+      database_status_frame.grid(
         row = 1,
         column = 1,
         sticky = "nsew"
       )
-      DatabaseStatusFrame.grid_propagate(False)
+      database_status_frame.grid_propagate(False)
 
-      self.DatabaseStatusHeader = customtkinter.CTkLabel(
-        DatabaseStatusFrame,
+      self.database_status_header = customtkinter.CTkLabel(
+        database_status_frame,
         bg_color = "transparent",
         font = customtkinter.CTkFont(size = 15),
         text = "Database Status"
       )
-      self.DatabaseStatusHeader.pack(
+      self.database_status_header.pack(
         padx = 5,
         pady = 10
       )
 
-      self.DatabaseStatus = customtkinter.CTkLabel(DatabaseStatusFrame)
-      self.DatabaseStatus.pack()
+      self.database_status = customtkinter.CTkLabel(database_status_frame)
+      self.database_status.pack()
 
-      AttendanceCountFrame = customtkinter.CTkFrame(
-        ContentFrame,
+      attendance_count_frame = customtkinter.CTkFrame(
+        content_frame,
         corner_radius = 0
       )
-      AttendanceCountFrame.grid(
+      attendance_count_frame.grid(
         row = 1,
         column = 2,
         sticky = "nsew"
       )
-      AttendanceCountFrame.grid_propagate(False)
+      attendance_count_frame.grid_propagate(False)
 
-      self.AttendanceCount = customtkinter.CTkLabel(
-        AttendanceCountFrame,
+      self.attendance_count = customtkinter.CTkLabel(
+        attendance_count_frame,
         bg_color = "transparent",
         font = customtkinter.CTkFont(size = 15),
         text = "Attendance \n\n0"
       )
-      self.AttendanceCount.pack(
+      self.attendance_count.pack(
         padx = 5,
         pady = 15
       )
-      CPUCountFrame = customtkinter.CTkFrame(
-        ContentFrame,
+      cpu_count_frame = customtkinter.CTkFrame(
+        content_frame,
         corner_radius = 0
       )
-      CPUCountFrame.grid(
+      cpu_count_frame.grid(
         row = 1,
         column = 3,
         sticky = "nsew"
       )
-      CPUCountFrame.grid_propagate(False)
+      cpu_count_frame.grid_propagate(False)
 
-      self.CPUCount = customtkinter.CTkLabel(
-        CPUCountFrame,
+      self.cpu_count = customtkinter.CTkLabel(
+        cpu_count_frame,
         bg_color = "transparent",
         font = customtkinter.CTkFont(size = 15),
         text = "CPU Usage \n\n0"
       )
-      self.CPUCount.pack(
+      self.cpu_count.pack(
         padx = 5,
         pady = 15
       )
 
-      threading.Thread(target = self.UpdateCPUMetrics).start()
-      threading.Thread(target = self.UpdateAttendanceCount).start()
-      threading.Thread(target = self.UpdateDatabaseStatus).start()
-      threading.Thread(target = self.UpdateCamerasStatus).start()
+      threading.Thread(target = self.update_cpu_metrics).start()
+      threading.Thread(target = self.update_attendance_count).start()
+      threading.Thread(target = self.update_database_status).start()
+      threading.Thread(target = self.update_camera_status).start()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

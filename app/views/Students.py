@@ -2,15 +2,16 @@ import sys
 import os
 import customtkinter
 
-from DatabaseManager import DatabaseManager
+from app.core.data_manager import DataManager
+from app.controllers.students import get_classes_students
 from CTkMessagebox import CTkMessagebox
 
-class Students(DatabaseManager):
+class Students(DataManager):
   def __init__(self):
     try:
       super().__init__()
 
-      self.StudentsRows = []
+      self.students = []
       self.headers = [
         "Student ID",
         "First Name",
@@ -25,40 +26,34 @@ class Students(DatabaseManager):
       print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
       print(ExceptionObject)
 
-  def DisplayStudentsTable(self):
+  def display_students_table(self):
     try:
-      for label in self.StudentsRows:
+      for label in self.students:
         label.destroy()
 
       if len(self.ClassStudents) > 0:
-        for row, Student in enumerate(self.ClassStudents, start = 1):
-          StudentID, \
-          StudentFirstName, \
-          StudentMiddleName, \
-          StudentLastName, \
-          StudentGender = Student
-
-          Student_data = [
-            StudentID,
-            StudentFirstName,
-            StudentMiddleName,
-            StudentLastName,
-            StudentGender
+        for row, student in enumerate(self.ClassStudents, start = 1):
+          student_row = [
+            student.id,
+            student.first_name,
+            student.middle_name,
+            student.last_name,
+            student.gender
           ]
 
-          for col, data in enumerate(Student_data):
-              DataLabel = customtkinter.CTkLabel(
-                self.StudentsTableFrame,
+          for col, data in enumerate(student_row):
+              student_data = customtkinter.CTkLabel(
+                self.students_table_frame,
                 text = data,
                 padx = 10,
                 pady = 5
               )
-              DataLabel.grid(
+              student_data.grid(
                 row = row,
                 column = col,
                 sticky = "nsew"
               )
-              self.StudentsRows.append(DataLabel)
+              self.students.append(student_data)
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -66,17 +61,21 @@ class Students(DatabaseManager):
       print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
       print(ExceptionObject)
   
-  def Refresh(self):
+  def refresh(self):
     try:
-      if not DatabaseManager.CurrentClass:
+      if not DataManager.current_class:
           title = "Error"
           message = "Please select a lecture from the settings"
           icon = "cancel"
-          CTkMessagebox(title=title, message=message, icon=icon)
+          CTkMessagebox(
+            title=title,
+            message=message,
+            icon=icon
+          )
           return
 
-      self.GetClassStudents()
-      self.DisplayStudentsTable()
+      get_classes_students()
+      self.display_students_table()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -84,24 +83,24 @@ class Students(DatabaseManager):
       print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
       print(ExceptionObject)
 
-  def Create(self, parent):
+  def lunch_view(self, parent):
     try:
-      SearchBarFrame = customtkinter.CTkFrame(
+      search_bar_frame = customtkinter.CTkFrame(
         parent,
         bg_color = "transparent"
       )
-      SearchBarFrame.pack(
+      search_bar_frame.pack(
         fill = "x",
         expand = False
       )
 
-      RefreshButton = customtkinter.CTkButton(
-        SearchBarFrame,
-        command = self.Refresh,
+      refresh_button = customtkinter.CTkButton(
+        search_bar_frame,
+        command = self.refresh,
         width = 100,
         text = "Refresh"
       )
-      RefreshButton.grid(
+      refresh_button.grid(
         row = 0,
         column = 2,
         sticky = "nsew",
@@ -109,27 +108,27 @@ class Students(DatabaseManager):
         padx = 5
       )
 
-      self.StudentsTableFrame = customtkinter.CTkScrollableFrame(parent)
-      self.StudentsTableFrame.pack(
+      self.students_table_frame = customtkinter.CTkScrollableFrame(parent)
+      self.students_table_frame.pack(
         fill = "both",
         expand = True
       )
 
       for col, header in enumerate(self.headers):
-        HeaderLabel = customtkinter.CTkLabel(
-          self.StudentsTableFrame,
+        header_label = customtkinter.CTkLabel(
+          self.students_table_frame,
           text = header,
           padx = 10,
           pady = 5
         )
-        HeaderLabel.grid(
+        header_label.grid(
           row = 0,
           column = col,
           sticky = "nsew"
         )
 
       for col in range(len(self.headers)):
-        self.StudentsTableFrame.columnconfigure(
+        self.students_table_frame.columnconfigure(
           col,
           weight = 1
         )
