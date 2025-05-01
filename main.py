@@ -2,14 +2,12 @@ import os
 import sys
 import customtkinter
 
-from app.config.configrations import Configrations
-from app.core.camera_module import CameraManagerModule
-
 import app.views.Home as Home
 import app.views.Attendance as Attendance
 import app.views.Settings as Settings
 import app.views.Students as Students
 
+from app.config.configrations import Configrations
 from app.core.camera_module import CameraManagerModule
 from CTkMessagebox import CTkMessagebox
 
@@ -27,15 +25,15 @@ class Main():
       print(ExceptionType, FileName, ExceptionTraceBack.tb_lineno)
       print(ExceptionObject)
 
-  def create_navbar(self, window):
+  def create_navbar(self):
     try:
-      navbar = customtkinter.CTkFrame(window)
+      navbar = customtkinter.CTkFrame(self.window)
       navbar.pack(fill=customtkinter.X)
 
       home_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = self.config.router.navigate(Home.Home),
+        command = lambda: self.config.router.navigate(Home.Home),
         text = "Home"
       )
       home_view.pack(side = customtkinter.LEFT)
@@ -43,7 +41,7 @@ class Main():
       attendance_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = self.config.router.navigate(Attendance.Attendance),
+        command = lambda: self.config.router.navigate(Attendance.Attendance),
         text = "Attendance"
       )
       attendance_view.pack(side = customtkinter.LEFT)
@@ -51,7 +49,7 @@ class Main():
       students_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = self.config.router.navigate(Students.Students),
+        command = lambda: self.config.router.navigate(Students.Students),
         text = "Students"
       )
       students_view.pack(side = customtkinter.LEFT)
@@ -59,7 +57,7 @@ class Main():
       settings_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = self.config.router.navigate(Settings.Settings),
+        command = lambda: self.config.router.navigate(Settings.Settings),
         text = "Settings"
       )
       settings_view.pack(side = customtkinter.LEFT)
@@ -95,6 +93,9 @@ class Main():
   def start_program(self):
     try:
       self.window = customtkinter.CTk()
+
+      self.config.set_window(self.window)
+      self.camera_manager.get_working_cameras()
     
       width = self.window.winfo_screenwidth()
       height = self.window.winfo_screenheight()
@@ -108,7 +109,7 @@ class Main():
         self.when_app_close
       )
 
-      self.create_navbar(self.window)
+      self.create_navbar()
       self.config.router.navigate(Home.Home)
 
       self.window.mainloop()
@@ -120,3 +121,6 @@ class Main():
       print(ExceptionObject)
     except KeyboardInterrupt:
       pass
+
+if __name__ == "__main__":
+  Main().start_program()

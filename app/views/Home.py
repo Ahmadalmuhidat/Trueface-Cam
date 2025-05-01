@@ -17,6 +17,7 @@ class Home():
       super().__init__()
 
       self.camera_manager = CameraManagerModule()
+      self.config = Configrations()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -26,7 +27,7 @@ class Home():
 
   def update_camera_status(self):
     try:
-      if self.camera_manager.camera_active:
+      if self.camera_manager.found_active_connected_camera:
         self.camera_status.configure(
           text = "Connected",
           text_color = "green"
@@ -46,7 +47,7 @@ class Home():
 
   def update_database_status(self):
     try:
-      response = requests.get(self.BaseURL + "/",).content
+      response = requests.get(self.config.get_base_url() + "/",).content
       response_str = response.decode('utf-8')
       APIActive = json.loads(response_str)
 
@@ -76,7 +77,7 @@ class Home():
           text = "CPU Usage \n\n{}%".format(metrics)
         )
 
-        if Configrations.CloseThreads:
+        if Configrations.close_threads:
           break
 
         time.sleep(1)
@@ -92,10 +93,10 @@ class Home():
     try:
       while True:
         self.attendance_count.configure(
-          text = "Attendance \n\n{}".format(len(DataManager.Attendance))
+          text = "Attendance \n\n{}".format(len(DataManager.current_lecture_attendance))
         )
 
-        if Configrations.CloseThreads:
+        if Configrations.close_threads:
           break
 
         time.sleep(5)
@@ -249,10 +250,10 @@ class Home():
         pady = 15
       )
 
-      threading.Thread(target = self.update_cpu_metrics).start()
-      threading.Thread(target = self.update_attendance_count).start()
-      threading.Thread(target = self.update_database_status).start()
-      threading.Thread(target = self.update_camera_status).start()
+      # threading.Thread(target = self.update_cpu_metrics).start()
+      # threading.Thread(target = self.update_attendance_count).start()
+      # threading.Thread(target = self.update_database_status).start()
+      # threading.Thread(target = self.update_camera_status).start()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

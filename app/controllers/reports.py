@@ -20,7 +20,7 @@ def get_report(start_time, allowed_minutes):
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      DataManager.Report = response.get("data")
+      DataManager.current_lecture_attendance_report = response.get("data")
     else:
       title = "Error"
       message = response.get("error")

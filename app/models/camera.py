@@ -12,9 +12,11 @@ class Camera:
       camera = cv2.VideoCapture(self.index)
 
       if camera.isOpened():
-        is_reading, img = camera.read()
+        is_reading, frame = camera.read()
 
         if is_reading:
+          camera.release() 
+          cv2.destroyAllWindows()
           return True
       return False
 
@@ -31,9 +33,9 @@ class Camera:
       WindowTitle = "Camera View"
 
       while True:
-        ret, frame = cap.read()
+        is_reading, frame = cap.read()
 
-        if ret:
+        if is_reading:
           cv2.imshow(WindowTitle, frame)
           UserQuit = cv2.waitKey(1) & 0xFF == ord('q')
           UserClosedWindow = cv2.getWindowProperty(WindowTitle, cv2.WND_PROP_VISIBLE) < 1

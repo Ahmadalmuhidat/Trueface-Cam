@@ -5,7 +5,7 @@ import winsound
 import json
 
 from CTkMessagebox import CTkMessagebox
-from models import student, attendance
+from app.models import student, attendance
 from app.core.data_manager import DataManager
 
 def get_current_class_attendance():
@@ -20,7 +20,7 @@ def get_current_class_attendance():
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      DataManager.Attendance = [
+      DataManager.current_lecture_attendance = [
         attendance.Attendance(
           student.Student(
             data['ID'],
@@ -59,7 +59,7 @@ def search_attendance(student_id):
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      DataManager.Attendance = [
+      DataManager.current_lecture_attendance = [
         attendance.Attendance(
           student.Student(
             data['ID'],

@@ -6,10 +6,12 @@ from app.core.data_manager import DataManager
 from app.controllers.students import get_classes_students
 from CTkMessagebox import CTkMessagebox
 
-class Students(DataManager):
+class Students():
   def __init__(self):
     try:
       super().__init__()
+
+      self.data_manager = DataManager()
 
       self.students = []
       self.headers = [
@@ -31,8 +33,8 @@ class Students(DataManager):
       for label in self.students:
         label.destroy()
 
-      if len(self.ClassStudents) > 0:
-        for row, student in enumerate(self.ClassStudents, start = 1):
+      if len(self.data_manager.current_class_students) > 0:
+        for row, student in enumerate(self.current_class_students, start = 1):
           student_row = [
             student.id,
             student.first_name,
@@ -63,7 +65,7 @@ class Students(DataManager):
   
   def refresh(self):
     try:
-      if not DataManager.current_class:
+      if not self.data_manager.current_class:
           title = "Error"
           message = "Please select a lecture from the settings"
           icon = "cancel"

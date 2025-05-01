@@ -2,14 +2,14 @@ import os
 import sys
 import customtkinter
 
-from app.core.data_manager import DataManager
 from CTkMessagebox import CTkMessagebox
 from app.core.camera_module import CameraManagerModule
+from app.core.data_manager import DataManager
 from app.controllers.classes import get_current_teacher_classes
 from app.controllers.attendance import get_current_class_attendance
 from app.controllers.students import get_students_with_face_encode
 
-class Settings(CameraManagerModule):
+class Settings():
   def __init__(self):
     try:
       super().__init__()
@@ -20,15 +20,15 @@ class Settings(CameraManagerModule):
       get_current_teacher_classes()
 
       self.class_id_title_map = {
-        f"{x[1]} {x[2]}-{x[3]}": x[0] for x in self.Classes
+        f"{class_.subject_area} {class_.start_time}-{class_.end_time}": class_.class_id for class_ in self.data_manager.current_teacher_classes
       }
       
       self.class_start_time_map = {
-        f"{x[1]} {x[2]}-{x[3]}": x[2] for x in self.Classes
+        f"{class_.subject_area} {class_.start_time}-{class_.end_time}": class_.start_time for class_ in self.data_manager.current_teacher_classes
       }
       
       self.cameras_key_map = {
-        value: key for key, value in CameraManagerModule.available_cameras.items()
+        camera.name: camera.index for camera in self.camera_manager.available_cameras
       }
 
     except Exception as e:
@@ -39,9 +39,7 @@ class Settings(CameraManagerModule):
   
   def update_current_camera(self, choise):
     try:
-      self.set_current_camera(
-        self.cameras_key_map[choise]
-      )
+      self.set_current_camera(self.cameras_key_map[choise])
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -76,10 +74,10 @@ class Settings(CameraManagerModule):
       DataManager.current_class = self.class_id_title_map[
         self.current_lecture_entry.get()
       ]
-      DataManager.StartTime = self.class_start_time_map[
+      DataManager.start_time = self.class_start_time_map[
         self.current_lecture_entry.get()
       ]
-      DataManager.AllowedMinutes = self.allowed_minutes_entry.get()
+      DataManager.allowed_minutes = self.allowed_minutes_entry.get()
 
       get_students_with_face_encode()
       get_current_class_attendance()
@@ -99,7 +97,7 @@ class Settings(CameraManagerModule):
       print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
       print(ExceptionObject)
 
-  def lunch_vimew(self, parent):
+  def lunch_view(self, parent):
     try:
       content_frame = customtkinter.CTkFrame(parent)
       content_frame.pack(
@@ -120,7 +118,7 @@ class Settings(CameraManagerModule):
 
       self.current_lecture_entry = customtkinter.CTkComboBox(
         content_frame,
-        values = [f"{x[1]} {x[2]}-{x[3]}" for x in self.Classes],
+        values = [f"{class_.subject_area} {class_.start_time}-{class_.end_time}" for class_ in self.data_manager.current_teacher_classes],
         width = 400
       )
       self.current_lecture_entry.grid(
@@ -129,7 +127,7 @@ class Settings(CameraManagerModule):
         padx = 10,
         pady = 10
       )
-      self.current_lecture_entry.set("None")
+      self.current_lecture_entry.set("none")
 
       allowed_minutes_label = customtkinter.CTkLabel(
         content_frame,
@@ -177,7 +175,7 @@ class Settings(CameraManagerModule):
         pady = 10
       )
       self.available_cameras_entry.set(
-        "None"
+        "none"
       )
 
       view_camera_button = customtkinter.CTkButton(

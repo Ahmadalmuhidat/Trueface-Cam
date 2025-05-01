@@ -3,16 +3,17 @@ import os
 import customtkinter
 import pandas
 
-from app.core.face_recognition_module import FaceRecognitionModule
 from CTkMessagebox import CTkMessagebox
 from app.core.data_manager import DataManager
 from app.controllers.attendance import get_current_class_attendance, search_attendance
 from app.controllers.reports import get_report
 
-class Attendance(FaceRecognitionModule):
+class Attendance():
   def __init__(self):
     try:
       super().__init__()
+
+      self.data_manager = DataManager()
 
       self.attendance = []
       self.headers = [
@@ -32,12 +33,12 @@ class Attendance(FaceRecognitionModule):
   def generate_report(self):
     try:
       get_report(
-        DataManager.StartTime,
-        DataManager.AllowedMinutes
+        self.data_manager.start_time,
+        self.data_manager.allowed_minutes
       )
 
       report = pandas.DataFrame(
-        DataManager.Report,
+        self.data_manager.current_lecture_attendance_report,
         columns = [
           "Student ID",
           "First Name",
@@ -65,7 +66,7 @@ class Attendance(FaceRecognitionModule):
         icon = icon
       )
 
-      DataManager.Report.clear()
+      self.data_manager.current_lecture_attendance_report.clear()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -78,8 +79,8 @@ class Attendance(FaceRecognitionModule):
       for label in self.attendance:
         label.destroy()
 
-      if len(self.Attendance) > 0:
-        for row, attendance in enumerate(self.Attendance, start = 1):
+      if len(self.data_manager.current_lecture_attendance) > 0:
+        for row, attendance in enumerate(self.current_lecture_attendance, start = 1):
           attendance_row = [
             attendance.student.id,
             attendance.student.first_name,
@@ -110,7 +111,7 @@ class Attendance(FaceRecognitionModule):
   
   def refresh(self):
     try:
-      if not DataManager.current_class:
+      if not self.data_manager.current_class:
         title = "Error"
         message = "Please select a lecture from the settings"
         icon = "cancel"

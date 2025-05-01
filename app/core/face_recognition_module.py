@@ -8,7 +8,7 @@ import pickle
 import base64
 
 from queue import Queue
-from app.core.camera_module import CameraManagerModule
+# from app.core.camera_module import CameraManagerModule
 from app.core.data_manager import DataManager
 from app.core.qr_reader_module import QR_ReaderModule
 from app.controllers.attendance import insert_attendance
@@ -21,7 +21,7 @@ class FaceRecognitionModule(QR_ReaderModule):
 			self.n_frames = 5
 			self.FrameCounter = 0
 			self.FramesQueue = Queue()
-			self.camera_manager = CameraManagerModule()
+			# self.camera_manager = CameraManagerModule()
 
 		except Exception as e:
 			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -53,7 +53,7 @@ class FaceRecognitionModule(QR_ReaderModule):
 
 			if results[0]:
 				insert_attendance(target_id, target_name)
-				DataManager.Students.pop(index)
+				DataManager.current_class_students.pop(index)
 
 		except Exception as e:
 			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -64,8 +64,8 @@ class FaceRecognitionModule(QR_ReaderModule):
 	
 	def detect_face(self, face, small_frame):
 		try:
-			for index in range(len(DataManager.Students)):
-				student = DataManager.Students[index]
+			for index in range(len(DataManager.current_class_students)):
+				student = DataManager.current_class_students[index]
 				args = (
 					student.id,
 					student.first_name,
@@ -89,6 +89,9 @@ class FaceRecognitionModule(QR_ReaderModule):
 	
 	def analyze_face(self, frame) -> bool:
 		try:
+			from app.core.camera_module import CameraManagerModule
+			self.camera_manager = CameraManagerModule()
+
 			if self.FrameCounter % self.n_frames == 0:
 				small_frame = cv2.resize(
 					frame,
@@ -104,8 +107,8 @@ class FaceRecognitionModule(QR_ReaderModule):
 					# args = (face, small_frame)
 					# threading.Thread(target=self.findFace, args=args).start()
 
-					for index in range(len(DataManager.Students)):
-						student = DataManager.Students[index]
+					for index in range(len(DataManager.current_class_students)):
+						student = DataManager.current_class_students[index]
 						args = (
               student.id,
               student.first_name,

@@ -13,7 +13,7 @@ def login(email, password):
       "password": password
     }
     response = requests.get(
-      DataManager.config.get_base_url() + "/teacher/check_user",
+      DataManager.config.get_base_url() + "/admin/check_user",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))

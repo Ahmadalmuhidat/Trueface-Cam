@@ -29,10 +29,11 @@ class Router:
 
 class Configrations:
   window = None
+  close_threads = False
 
   def __init__(self) -> None:
     try:
-      self.BaseURL = "http://localhost:8000"
+      self.base_url = "http://localhost:8000"
       self.router = Router()
       self.token = ""
 
@@ -56,7 +57,7 @@ class Configrations:
 
   def get_base_url(self):
     try:
-      return self.BaseURL
+      return self.base_url
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

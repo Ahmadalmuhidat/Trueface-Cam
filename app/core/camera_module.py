@@ -5,13 +5,15 @@ import time
 import threading
 
 from CTkMessagebox import CTkMessagebox
+from cv2_enumerate_cameras import enumerate_cameras
 from app.core.data_manager import DataManager
 from app.core.face_recognition_module import FaceRecognitionModule
-from cv2_enumerate_cameras import enumerate_cameras
 from app.models.camera import Camera
 
-class CameraManagerModule():
+class CameraManagerModule:
   activate_capturing = False
+  found_active_connected_camera = False
+
   capture_events = []
   capture_threads = []
   available_cameras = []
@@ -21,8 +23,7 @@ class CameraManagerModule():
     try:
       self.face_recognition_module = FaceRecognitionModule()
 
-      self.camera_active = False
-      self.ScanningLoadingScreenRunning = False
+      self.scanning_loading_screen_running = False
       self.LoadingScreen = None
 
     except Exception as e:
@@ -60,23 +61,17 @@ class CameraManagerModule():
         new_camera = Camera(camera.index, camera.name)
         if new_camera.test():
           CameraManagerModule.available_cameras.append(new_camera)
-          self.camera_active = True
-          title = "Camera activated"
-          message = "Camera has been tested successfully"
-          icon = "check"
+          CameraManagerModule.found_active_connected_camera = True
           CTkMessagebox(
-            title = title,
-            message = message,
-            icon = icon
+            title = "Camera activated",
+            message = "Camera has been tested successfully",
+            icon = "check"
           )
         else:
-          title = "Camera not activate"
-          message = "Camera testing has failed"
-          icon = "cancel"
           CTkMessagebox(
-            title = title,
-            message = message,
-            icon = icon
+            title = "Camera not activate",
+            message = "Camera testing has failed",
+            icon = "cancel"
           )
 
     except Exception as e:
@@ -90,25 +85,19 @@ class CameraManagerModule():
     try:
       if not CameraManagerModule.activate_capturing:
         if CameraManagerModule.current_camera_index:
-          cam = CameraManagerModule.available_cameras[self.current_camera_index]
+          cam = next((camera for camera in CameraManagerModule.available_cameras if camera.index == self.current_camera_index), None)
           cam.view()
         else:
-          title = "No Camera Selected"
-          message = "Please select camera before testing"
-          icon = "cancel"
           CTkMessagebox(
-            title = title,
-            message = message,
-            icon = icon
+            title = "No Camera Selected",
+            message = "Please select camera before testing",
+            icon = "cancel"
           )
       else:
-          title = "Not Allowed"
-          message = "Please make sure the camera is not already operating"
-          icon = "cancel"
           CTkMessagebox(
-            title = title,
-            message = message,
-            icon = icon
+            title = "Not Allowed",
+            message = "Please make sure the camera is not already operating",
+            icon = "cancel"
           )
 
     except Exception as e:
@@ -130,18 +119,15 @@ class CameraManagerModule():
   def start_capturing(self):
     try:
       if not DataManager.current_class:
-        title = "Error"
-        message = "Please select a lecture from the settings"
-        icon = "cancel"
         CTkMessagebox(
-          title = title,
-          message = message,
-          icon = icon
+          title = "Error",
+          message = "Please select a lecture from the settings",
+          icon = "cancel"
         )
         return
 
       if not CameraManagerModule.activate_capturing:
-        if self.camera_active:
+        if CameraManagerModule.found_active_connected_camera:
           CameraManagerModule.activate_capturing = True
 
           StopEvent = threading.Event()
@@ -152,22 +138,16 @@ class CameraManagerModule():
 
           CaptureThread.start()
         else:
-          title = "Error"
-          message = "Failed to find active cameras"
-          icon = "cancel"
           CTkMessagebox(
-            title = title,
-            message = message,
-            icon = icon
+            title = "Error",
+            message = "Failed to find active cameras",
+            icon = "cancel"
           )
       else:
-        title = "Action Failed"
-        message = "Camera is already capturing"
-        icon = "cancel"
         CTkMessagebox(
-          title = title,
-          message = message,
-          icon = icon
+          title = "Action Failed",
+          message = "Camera is already capturing",
+          icon = "cancel"
         )
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -188,13 +168,10 @@ class CameraManagerModule():
         CameraManagerModule.capture_events.clear()
 
       else:
-        title = "Action Failed"
-        message = "Camera is not capturing"
-        icon = "cancel"
         CTkMessagebox(
-          title = title,
-          message = message,
-          icon = icon
+          title = "Action Failed",
+          message = "Camera is not capturing",
+          icon = "cancel"
         )
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -237,8 +214,8 @@ class CameraManagerModule():
 
   def close_loading_stream(self):
     try:
-      if self.ScanningLoadingScreenRunning and self.LoadingScreen:
-        self.ScanningLoadingScreenRunning = False
+      if self.scanning_loading_screen_running and self.LoadingScreen:
+        self.scanning_loading_screen_running = False
         self.LoadingScreen.destroy()
         self.LoadingScreen = None
 

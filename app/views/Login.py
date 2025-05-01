@@ -6,7 +6,10 @@ from main import Main
 from app.core.data_manager import DataManager
 from app.controllers.auth import login
 
-class Login(DataManager):
+class Login():
+  def __init__(self):
+    self.data_manager = DataManager()
+
   def check_user(self):
     result = login(
       self.email_entry.get(),
@@ -14,11 +17,11 @@ class Login(DataManager):
     )
 
     if result:
-      DataManager.token = result
+      self.data_manager.token = result
       self.window.destroy()
       Main().start_program()
 
-  def Create(self):
+  def lunch_view(self):
     try:
       self.window = customtkinter.CTk()
       self.window.geometry("400x170")
@@ -100,4 +103,4 @@ class Login(DataManager):
       print(ExceptionObject)
 
 if __name__ ==  "__main__":
-  login = Login().Create()
+  login = Login().lunch_view()
