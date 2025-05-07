@@ -10,17 +10,18 @@ from app.core.data_manager import DataManager
 
 def get_current_class_attendance():
   try:
+    database_manager = DataManager()
     data = {
-      "current_class": DataManager.current_class
+      "current_class": database_manager.current_class
     }
     response = requests.get(
-      DataManager.config.get_base_url() + "/teacher/get_current_class_attendance",
+      database_manager.config.get_base_url() + "/teacher/get_current_class_attendance",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      DataManager.current_lecture_attendance = [
+      database_manager.current_lecture_attendance = [
         attendance.Attendance(
           student.Student(
             data['ID'],
@@ -49,17 +50,18 @@ def get_current_class_attendance():
 
 def search_attendance(student_id):
   try:
+    database_manager = DataManager()
     data = {
       "student_id": student_id,
     }
     response = requests.get(
-      DataManager.config.get_base_url() + "/teacher/search_attendance",
+      database_manager.config.get_base_url() + "/teacher/search_attendance",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      DataManager.current_lecture_attendance = [
+      database_manager.current_lecture_attendance = [
         attendance.Attendance(
           student.Student(
             data['ID'],
@@ -89,12 +91,13 @@ def search_attendance(student_id):
 
 def check_attendance(student_id):
   try:
+    database_manager = DataManager()
     data = {
       "student_id": student_id,
-      "current_class": DataManager.current_class
+      "current_class": database_manager.current_class
     }
     response = requests.get(
-      DataManager.config.get_base_url() + "/teacher/check_attendance",
+      database_manager.config.get_base_url() + "/teacher/check_attendance",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
@@ -121,12 +124,13 @@ def check_attendance(student_id):
 def insert_attendance(student_id, StudentName):
   try:
     if not check_attendance(student_id):
+      database_manager = DataManager()
       data = {
         "student_id": student_id,
-        "current_class": DataManager.current_class
+        "current_class": database_manager.current_class
       }
       response = requests.post(
-        DataManager.config.get_base_url() + "/teacher/insert_attendance",
+        database_manager.config.get_base_url() + "/teacher/insert_attendance",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))

@@ -2,6 +2,7 @@ import os
 import sys
 import customtkinter
 
+import app.views.Login as Login
 import app.views.Home as Home
 import app.views.Attendance as Attendance
 import app.views.Settings as Settings
@@ -10,6 +11,7 @@ import app.views.Students as Students
 from app.config.configrations import Configrations
 from app.core.camera_module import CameraManagerModule
 from CTkMessagebox import CTkMessagebox
+from app.config.router import Router
 
 class Main():
   def __init__(self):
@@ -18,6 +20,7 @@ class Main():
 
       self.config = Configrations()
       self.camera_manager = CameraManagerModule()
+      self.router = Router()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -33,7 +36,7 @@ class Main():
       home_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = lambda: self.config.router.navigate(Home.Home),
+        command = lambda: self.router.navigate(Home.Home),
         text = "Home"
       )
       home_view.pack(side = customtkinter.LEFT)
@@ -41,7 +44,7 @@ class Main():
       attendance_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = lambda: self.config.router.navigate(Attendance.Attendance),
+        command = lambda: self.router.navigate(Attendance.Attendance),
         text = "Attendance"
       )
       attendance_view.pack(side = customtkinter.LEFT)
@@ -49,7 +52,7 @@ class Main():
       students_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = lambda: self.config.router.navigate(Students.Students),
+        command = lambda: self.router.navigate(Students.Students),
         text = "Students"
       )
       students_view.pack(side = customtkinter.LEFT)
@@ -57,7 +60,7 @@ class Main():
       settings_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = lambda: self.config.router.navigate(Settings.Settings),
+        command = lambda: self.router.navigate(Settings.Settings),
         text = "Settings"
       )
       settings_view.pack(side = customtkinter.LEFT)
@@ -110,7 +113,7 @@ class Main():
       )
 
       self.create_navbar()
-      self.config.router.navigate(Home.Home)
+      self.router.navigate(Home.Home)
 
       self.window.mainloop()
 
@@ -123,4 +126,5 @@ class Main():
       pass
 
 if __name__ == "__main__":
-  Main().start_program()
+  # Main().start_program()
+  Login.Login().lunch_view()

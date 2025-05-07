@@ -8,12 +8,13 @@ from CTkMessagebox import CTkMessagebox
 
 def login(email, password):
   try:
+    database_manager = DataManager()
     data = {
       "email": email,
       "password": password
     }
     response = requests.get(
-      DataManager.config.get_base_url() + "/admin/check_user",
+      database_manager.config.get_base_url() + "/admin/check_user",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))

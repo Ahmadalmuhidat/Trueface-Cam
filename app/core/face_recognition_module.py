@@ -8,7 +8,6 @@ import pickle
 import base64
 
 from queue import Queue
-# from app.core.camera_module import CameraManagerModule
 from app.core.data_manager import DataManager
 from app.core.qr_reader_module import QR_ReaderModule
 from app.controllers.attendance import insert_attendance
@@ -21,7 +20,6 @@ class FaceRecognitionModule(QR_ReaderModule):
 			self.n_frames = 5
 			self.FrameCounter = 0
 			self.FramesQueue = Queue()
-			# self.camera_manager = CameraManagerModule()
 
 		except Exception as e:
 			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

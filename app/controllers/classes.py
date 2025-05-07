@@ -9,17 +9,18 @@ from app.models.class_ import Class
 
 def get_current_teacher_classes():
   try:
+    database_manager = DataManager()
     data = {
-      "current_teacher": DataManager.token
+      "current_teacher": database_manager.token
     }
     response = requests.get(
-      DataManager.config.get_base_url() + "/teacher/get_current_teacher_classes",
+      database_manager.config.get_base_url() + "/teacher/get_current_teacher_classes",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      DataManager.current_teacher_classes = [
+      database_manager.current_teacher_classes = [
         Class(
           data['ID'],
           data['SubjectArea'],

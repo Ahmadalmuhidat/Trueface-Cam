@@ -17,6 +17,7 @@ class Home():
       super().__init__()
 
       self.camera_manager = CameraManagerModule()
+      self.data_manager = DataManager()
       self.config = Configrations()
 
     except Exception as e:
@@ -93,7 +94,7 @@ class Home():
     try:
       while True:
         self.attendance_count.configure(
-          text = "Attendance \n\n{}".format(len(DataManager.current_lecture_attendance))
+          text = "Attendance \n\n{}".format(len(self.data_manager.current_lecture_attendance))
         )
 
         if Configrations.close_threads:

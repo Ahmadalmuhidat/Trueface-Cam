@@ -3,7 +3,7 @@ import os
 import customtkinter
 
 from app.core.data_manager import DataManager
-from app.controllers.students import get_classes_students
+from app.controllers.students import get_current_class_students
 from CTkMessagebox import CTkMessagebox
 
 class Students():
@@ -76,7 +76,7 @@ class Students():
           )
           return
 
-      get_classes_students()
+      get_current_class_students()
       self.display_students_table()
 
     except Exception as e:

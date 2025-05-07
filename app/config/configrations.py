@@ -1,31 +1,5 @@
 import sys
 import os
-import customtkinter
-
-class Router:
-  def __init__(self):
-    self.current_page = None
-
-  def clear_window(self):
-    if self.current_page:
-      self.current_page.pack_forget()
-
-  def navigate(self, view_class):
-    self.clear_window()
-
-    Configrations.window.configure(cursor="watch")
-    Configrations.window.update()
-
-    frame = customtkinter.CTkFrame(Configrations.window)
-    view_instance = view_class()
-
-    Configrations.window.configure(cursor="")
-    Configrations.window.update()
-
-    view_instance.lunch_view(frame)
-
-    self.current_page = frame
-    self.current_page.pack(fill="both", expand=True)
 
 class Configrations:
   window = None
@@ -34,7 +8,6 @@ class Configrations:
   def __init__(self) -> None:
     try:
       self.base_url = "http://localhost:8000"
-      self.router = Router()
       self.token = ""
 
     except Exception as e:
@@ -44,9 +17,10 @@ class Configrations:
       print(ExceptionObject)
       pass
   
-  def set_window(self, window):
+  @classmethod
+  def set_window(cls, window):
     try:
-      Configrations.window = window
+      cls.window = window
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

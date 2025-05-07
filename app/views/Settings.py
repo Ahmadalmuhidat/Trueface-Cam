@@ -71,13 +71,13 @@ class Settings():
         )
         return
 
-      DataManager.current_class = self.class_id_title_map[
+      self.data_manager.current_class = self.class_id_title_map[
         self.current_lecture_entry.get()
       ]
-      DataManager.start_time = self.class_start_time_map[
+      self.data_manager.start_time = self.class_start_time_map[
         self.current_lecture_entry.get()
       ]
-      DataManager.allowed_minutes = self.allowed_minutes_entry.get()
+      self.data_manager.allowed_minutes = self.allowed_minutes_entry.get()
 
       get_students_with_face_encode()
       get_current_class_attendance()
@@ -181,7 +181,7 @@ class Settings():
       view_camera_button = customtkinter.CTkButton(
         content_frame,
         text = "Test Current Camera",
-        command = self.view_current_camera_stream
+        command = self.camera_manager.view_current_camera_stream
       )
       view_camera_button.grid(
         row = 8,
