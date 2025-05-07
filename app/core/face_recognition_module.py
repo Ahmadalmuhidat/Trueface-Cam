@@ -18,6 +18,7 @@ class Face_Recognition_Module():
 		self._frame_counter = 0
 		self._frames_queue = Queue()
 		self.qr_reader = QR_Reader_Module()
+		self.data_manager = Data_Manager()
 
 	def extract_face(self, frame):
 		return face_recognition.face_locations(frame)
@@ -45,12 +46,12 @@ class Face_Recognition_Module():
 	
 	def detect_face(self, face, small_frame):
 		try:
-			for index in range(len(Data_Manager.current_class_students)):
-				student = Data_Manager.current_class_students[index]
+			for index in range(len(self.data_manager.get_current_class_students())):
+				student = self.data_manager.get_current_class_students()[index]
 				args = (
-					student.id,
-					student.first_name,
-					student.face_encode,
+					student.get_student_id(),
+					student.get_first_name(),
+					student.get_face_encode(),
 					small_frame,
 					face,
 					index
@@ -85,12 +86,12 @@ class Face_Recognition_Module():
 				if (face):
 					self.create_loaing_screen()
 
-					for index in range(len(Data_Manager.current_class_students)):
-						student = Data_Manager.current_class_students[index]
+					for index in range(len(self.data_manager.get_current_class_students())):
+						student = self.data_manager.get_current_class_students()[index]
 						args = (
-              student.id,
-              student.first_name,
-              student.face_encode,
+							student.get_student_id(),
+							student.get_first_name(),
+							student.get_face_encode(),
               small_frame,
               face,
               index
@@ -114,22 +115,22 @@ class Face_Recognition_Module():
 
 	def create_loaing_screen(self):
 		try:
-			if not self.ScanningLoadingScreenRunning and not self.LoadingScreen:
-				self.ScanningLoadingScreenRunning = True
+			if not self.scanning_loading_screen_running and not self.loading_screen:
+				self.scanning_loading_screen_running = True
 
-				self.LoadingScreen = customtkinter.CTkToplevel()
-				self.LoadingScreen.geometry("300x200")
+				self.loading_screen = customtkinter.CTkToplevel()
+				self.loading_screen.geometry("300x200")
 
-				self.LoadingScreen.resizable(
+				self.loading_screen.resizable(
 					width = 0,
 					height = 0
 				)
 
-				self.LoadingScreen.title("")
+				self.loading_screen.title("")
 
-				if self.LoadingScreen:
+				if self.loading_screen:
 					label = customtkinter.CTkLabel(
-						self.LoadingScreen,
+						self.loading_screen,
 						text="scanning....",
 						font=customtkinter.CTkFont(size = 15)
 					)

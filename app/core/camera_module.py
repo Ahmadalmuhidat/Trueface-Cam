@@ -31,8 +31,8 @@ class Camera_Manager_Module:
     self._available_cameras = []
     self._current_camera_index = 0
 
-    self._scanning_loading_screen_running = False
-    self._loading_screen = None
+    self.scanning_loading_screen_running = False
+    self.loading_screen = None
 
   def set_current_camera(self, index):
     self._current_camera_index = index
