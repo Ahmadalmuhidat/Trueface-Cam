@@ -1,29 +1,45 @@
+import os
+import sys
 import customtkinter
 
 from app.config.configrations import Configrations
 
 class Router:
   def __init__(self):
-    self.current_page = None
-    self.config = Configrations()
+    self._current_page = None
+    self._config = Configrations()
 
   def clear_window(self):
-    if self.current_page:
-      self.current_page.pack_forget()
+    if self._current_page:
+      self._current_page.pack_forget()
+  
+  def get_current_page(self):
+    return self._current_page
+  
+  def get_router_configrations(self):
+    return self._config
 
   def navigate(self, view_class):
-    self.clear_window()
+    try:
+      self.clear_window()
 
-    self.config.window.configure(cursor="watch")
-    self.config.window.update()
+      self._config.window.configure(cursor="watch")
+      self._config.window.update()
 
-    frame = customtkinter.CTkFrame(self.config.window)
-    view_instance = view_class()
+      frame = customtkinter.CTkFrame(self._config.window)
+      view_instance = view_class()
 
-    self.config.window.configure(cursor="")
-    self.config.window.update()
+      self._config.window.configure(cursor="")
+      self._config.window.update()
 
-    view_instance.lunch_view(frame)
+      view_instance.lunch_view(frame)
 
-    self.current_page = frame
-    self.current_page.pack(fill="both", expand=True)
+      self._current_page = frame
+      self._current_page.pack(fill="both", expand=True)
+
+    except Exception as e:
+      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
+      FileName = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
+      print(ExceptionType, FileName, ExceptionTraceBack.tb_lineno)
+      print(ExceptionObject)
+      pass

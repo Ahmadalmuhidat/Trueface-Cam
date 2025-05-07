@@ -3,11 +3,14 @@ import sys
 import cv2
 import json
 
-from app.core.data_manager import DataManager
+from app.core.data_manager import Data_Manager
 from app.controllers.attendance import insert_attendance
 
-class QR_ReaderModule(DataManager):
-  def ReadQRCode(self, image):
+class QR_Reader_Module(Data_Manager):
+  def __init__(self) -> None:
+    super().__init__()
+
+  def read_qr_code(self, image):
     try:
       qrcode = cv2.QRCodeDetector()
       result = qrcode.detectAndDecodeMulti(image)

@@ -3,43 +3,34 @@ import sys
 import customtkinter
 
 from CTkMessagebox import CTkMessagebox
-from app.core.camera_module import CameraManagerModule
-from app.core.data_manager import DataManager
+from app.core.camera_module import Camera_Manager_Module
+from app.core.data_manager import Data_Manager
 from app.controllers.classes import get_current_teacher_classes
 from app.controllers.attendance import get_current_class_attendance
 from app.controllers.students import get_students_with_face_encode
 
 class Settings():
   def __init__(self):
-    try:
-      super().__init__()
+    self.camera_manager = Camera_Manager_Module()
+    self.data_manager = Data_Manager()
 
-      self.camera_manager = CameraManagerModule()
-      self.data_manager = DataManager()
+    get_current_teacher_classes()
 
-      get_current_teacher_classes()
-
-      self.class_id_title_map = {
-        f"{class_.subject_area} {class_.start_time}-{class_.end_time}": class_.class_id for class_ in self.data_manager.current_teacher_classes
-      }
-      
-      self.class_start_time_map = {
-        f"{class_.subject_area} {class_.start_time}-{class_.end_time}": class_.start_time for class_ in self.data_manager.current_teacher_classes
-      }
-      
-      self.cameras_key_map = {
-        camera.name: camera.index for camera in self.camera_manager.available_cameras
-      }
-
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
+    self.class_id_title_map = {
+      f"{class_.get_subject_area()} {class_.get_start_time()}-{class_.get_end_time()}": class_.get_class_id() for class_ in self.data_manager.get_current_teacher_classes()
+    }
+    
+    self.class_start_time_map = {
+      f"{class_.get_subject_area()} {class_.get_start_time()}-{class_.get_end_time()}": class_.get_start_time() for class_ in self.data_manager.get_current_teacher_classes()
+    }
+    
+    self.cameras_key_map = {
+      camera.get_name(): camera.get_index() for camera in self.camera_manager.get_available_cameras()
+    }
   
   def update_current_camera(self, choise):
     try:
-      self.set_current_camera(self.cameras_key_map[choise])
+      self.camera_manager.set_current_camera(self.cameras_key_map[choise])
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -71,13 +62,9 @@ class Settings():
         )
         return
 
-      self.data_manager.current_class = self.class_id_title_map[
-        self.current_lecture_entry.get()
-      ]
-      self.data_manager.start_time = self.class_start_time_map[
-        self.current_lecture_entry.get()
-      ]
-      self.data_manager.allowed_minutes = self.allowed_minutes_entry.get()
+      self.data_manager.set_current_class(self.class_id_title_map[self.current_lecture_entry.get()])
+      self.data_manager.set_start_time(self.class_start_time_map[self.current_lecture_entry.get()])
+      self.data_manager.set_allowed_minutes(self.allowed_minutes_entry.get())
 
       get_students_with_face_encode()
       get_current_class_attendance()
@@ -118,7 +105,7 @@ class Settings():
 
       self.current_lecture_entry = customtkinter.CTkComboBox(
         content_frame,
-        values = [f"{class_.subject_area} {class_.start_time}-{class_.end_time}" for class_ in self.data_manager.current_teacher_classes],
+        values = [f"{class_.get_subject_area()} {class_.get_start_time()}-{class_.get_end_time()}" for class_ in self.data_manager.get_current_teacher_classes()],
         width = 400
       )
       self.current_lecture_entry.grid(

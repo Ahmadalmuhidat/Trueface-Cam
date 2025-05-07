@@ -2,45 +2,36 @@ import sys
 import os
 import customtkinter
 
-from app.core.data_manager import DataManager
+from app.core.data_manager import Data_Manager
 from app.controllers.students import get_current_class_students
 from CTkMessagebox import CTkMessagebox
 
 class Students():
   def __init__(self):
-    try:
-      super().__init__()
+    self.data_manager = Data_Manager()
 
-      self.data_manager = DataManager()
-
-      self.students = []
-      self.headers = [
-        "Student ID",
-        "First Name",
-        "Middle Name",
-        "Last Name",
-        "Gender"
-      ]
-
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
+    self.students = []
+    self.headers = [
+      "Student ID",
+      "First Name",
+      "Middle Name",
+      "Last Name",
+      "Gender"
+    ]
 
   def display_students_table(self):
     try:
       for label in self.students:
         label.destroy()
 
-      if len(self.data_manager.current_class_students) > 0:
-        for row, student in enumerate(self.current_class_students, start = 1):
+      if len(self.data_manager.get_current_class_students()) > 0:
+        for row, student in enumerate(self.data_manager.get_current_class_students(), start = 1):
           student_row = [
-            student.id,
-            student.first_name,
-            student.middle_name,
-            student.last_name,
-            student.gender
+            student.get_student_id(),
+            student.get_first_name(),
+            student.get_middle_name(),
+            student.get_last_name(),
+            student.get_gender()
           ]
 
           for col, data in enumerate(student_row):
@@ -65,7 +56,7 @@ class Students():
   
   def refresh(self):
     try:
-      if not self.data_manager.current_class:
+      if not self.data_manager.get_current_class():
           title = "Error"
           message = "Please select a lecture from the settings"
           icon = "cancel"

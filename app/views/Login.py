@@ -3,12 +3,12 @@ import sys
 import customtkinter
 
 from main import Main
-from app.core.data_manager import DataManager
+from app.core.data_manager import Data_Manager
 from app.controllers.auth import login
 
 class Login():
   def __init__(self):
-    self.data_manager = DataManager()
+    self.data_manager = Data_Manager()
 
   def check_user(self):
     result = login(
@@ -101,6 +101,3 @@ class Login():
       fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
       print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
       print(ExceptionObject)
-
-if __name__ ==  "__main__":
-  login = Login().lunch_view()

@@ -8,23 +8,14 @@ import threading
 import json
 
 from app.config.configrations import Configrations
-from app.core.data_manager import DataManager
-from app.core.camera_module import CameraManagerModule
+from app.core.data_manager import Data_Manager
+from app.core.camera_module import Camera_Manager_Module
 
 class Home():
   def __init__(self):
-    try:
-      super().__init__()
-
-      self.camera_manager = CameraManagerModule()
-      self.data_manager = DataManager()
-      self.config = Configrations()
-
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
+    self.camera_manager = Camera_Manager_Module()
+    self.data_manager = Data_Manager()
+    self.config = Configrations()
 
   def update_camera_status(self):
     try:
@@ -94,7 +85,7 @@ class Home():
     try:
       while True:
         self.attendance_count.configure(
-          text = "Attendance \n\n{}".format(len(self.data_manager.current_lecture_attendance))
+          text = "Attendance \n\n{}".format(len(self.data_manager.get_current_lecture_attendance()))
         )
 
         if Configrations.close_threads:

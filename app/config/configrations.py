@@ -6,36 +6,23 @@ class Configrations:
   close_threads = False
 
   def __init__(self) -> None:
-    try:
-      self.base_url = "http://localhost:8000"
-      self.token = ""
+    self._base_url = "http://localhost:8000"
 
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      FileName = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, FileName, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
-      pass
-  
+  @classmethod
+  def set_close_threads(cls, close_threads):
+    cls.close_threads = close_threads
+
+  @classmethod
+  def get_close_threads(cls):
+    return cls.close_threads
+
   @classmethod
   def set_window(cls, window):
-    try:
-      cls.window = window
+    cls.window = window
 
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      FileName = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, FileName, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
-      pass
+  @classmethod
+  def get_window(cls):
+    return cls.window
 
   def get_base_url(self):
-    try:
-      return self.base_url
-
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      FileName = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, FileName, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
-      pass
+    return self._base_url

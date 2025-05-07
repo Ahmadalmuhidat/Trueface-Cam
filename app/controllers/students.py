@@ -3,13 +3,12 @@ import sys
 import requests
 import json
 
-from app.core.data_manager import DataManager
+from app.core.data_manager import Data_Manager
 from CTkMessagebox import CTkMessagebox
-from app.models.student import Student
 
 def get_students_with_face_encode():
   try:
-    database_manager = DataManager()
+    database_manager = Data_Manager()
     data = {
       "current_class": database_manager.current_class,
     }
@@ -20,17 +19,7 @@ def get_students_with_face_encode():
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      database_manager.current_class_students = [
-        Student(
-          data['ID'],
-          data['FirstName'],
-          data['MiddleName'],
-          data['LastName'],
-          data['Gender'],
-          data['FaceID'],
-          data['Createdate'],
-        ) for data in response.get("data")
-      ]
+      database_manager.set_current_class_students(response.get("data"))
     else:
       title = "Error"
       message = response.get("error")
@@ -50,7 +39,7 @@ def get_students_with_face_encode():
 
 def get_current_class_students():
   try:
-    database_manager = DataManager()
+    database_manager = Data_Manager()
     data = {
       "current_class": database_manager.current_class
     }
@@ -61,15 +50,7 @@ def get_current_class_students():
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      database_manager.current_lecture_students = [
-        Student(
-          data['ID'],
-          data['FirstName'],
-          data['MiddleName'],
-          data['LastName'],
-          data['Gender']
-        ) for data in response.get("data")
-      ]
+      database_manager.set_current_class_students(response.get("data"))
     else:
       title = "Error"
       message = response.get("error")

@@ -7,6 +7,12 @@ class Camera:
     self.name = name
     self.index = index
   
+  def get_name(self):
+    return self.name
+  
+  def get_index(self):
+    return self.index
+  
   def test(self):
     try:
       camera = cv2.VideoCapture(self.index)

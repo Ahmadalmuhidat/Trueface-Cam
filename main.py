@@ -9,7 +9,7 @@ import app.views.Settings as Settings
 import app.views.Students as Students
 
 from app.config.configrations import Configrations
-from app.core.camera_module import CameraManagerModule
+from app.core.camera_module import Camera_Manager_Module
 from CTkMessagebox import CTkMessagebox
 from app.config.router import Router
 
@@ -19,7 +19,7 @@ class Main():
       super().__init__()
 
       self.config = Configrations()
-      self.camera_manager = CameraManagerModule()
+      self.camera_manager = Camera_Manager_Module()
       self.router = Router()
 
     except Exception as e:
@@ -73,7 +73,7 @@ class Main():
 
   def when_app_close(self):
     try:
-      if self.camera_manager.return_activate_capturing():
+      if self.camera_manager.get_activate_capturing():
         title = "Error"
         icon = "cancel"
         CTkMessagebox(

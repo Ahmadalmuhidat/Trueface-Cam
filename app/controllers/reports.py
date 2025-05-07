@@ -4,11 +4,11 @@ import requests
 import json
 
 from CTkMessagebox import CTkMessagebox
-from app.core.data_manager import DataManager
+from app.core.data_manager import Data_Manager
 
 def get_report(start_time, allowed_minutes):
   try:
-    database_manager = DataManager()
+    database_manager = Data_Manager()
     data = {
       "start_time": start_time,
       "allowed_minutes": allowed_minutes,

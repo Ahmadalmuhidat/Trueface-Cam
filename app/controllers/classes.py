@@ -4,12 +4,11 @@ import requests
 import json
 
 from CTkMessagebox import CTkMessagebox
-from app.core.data_manager import DataManager
-from app.models.class_ import Class
+from app.core.data_manager import Data_Manager
 
 def get_current_teacher_classes():
   try:
-    database_manager = DataManager()
+    database_manager = Data_Manager()
     data = {
       "current_teacher": database_manager.token
     }
@@ -20,14 +19,7 @@ def get_current_teacher_classes():
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      database_manager.current_teacher_classes = [
-        Class(
-          data['ID'],
-          data['SubjectArea'],
-          data['StartTime'],
-          data['EndTime']
-        ) for data in response.get("data")
-      ]
+      database_manager.set_current_teacher_classes(response.get("data"))
     else:
       title = "Error"
       message = response.get("error")

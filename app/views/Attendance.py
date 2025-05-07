@@ -4,41 +4,32 @@ import customtkinter
 import pandas
 
 from CTkMessagebox import CTkMessagebox
-from app.core.data_manager import DataManager
+from app.core.data_manager import Data_Manager
 from app.controllers.attendance import get_current_class_attendance, search_attendance
 from app.controllers.reports import get_report
 
 class Attendance():
   def __init__(self):
-    try:
-      super().__init__()
+    self.data_manager = Data_Manager()
 
-      self.data_manager = DataManager()
-
-      self.attendance = []
-      self.headers = [
-        "Student ID",
-        "First Name",
-        "Middle Name",
-        "Last Name",
-        "Attendance Time"
-      ]
-
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
+    self.attendance = []
+    self.headers = [
+      "Student ID",
+      "First Name",
+      "Middle Name",
+      "Last Name",
+      "Attendance Time"
+    ]
 
   def generate_report(self):
     try:
       get_report(
-        self.data_manager.start_time,
-        self.data_manager.allowed_minutes
+        self.data_manager.get_start_time(),
+        self.data_manager.get_allowed_minutes()
       )
 
       report = pandas.DataFrame(
-        self.data_manager.current_lecture_attendance_report,
+        self.data_manager.get_current_lecture_attendance_report(),
         columns = [
           "Student ID",
           "First Name",
@@ -66,7 +57,7 @@ class Attendance():
         icon = icon
       )
 
-      self.data_manager.current_lecture_attendance_report.clear()
+      self.data_manager.get_current_lecture_attendance_report().clear()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -79,14 +70,14 @@ class Attendance():
       for label in self.attendance:
         label.destroy()
 
-      if len(self.data_manager.current_lecture_attendance) > 0:
-        for row, attendance in enumerate(self.current_lecture_attendance, start = 1):
+      if len(self.data_manager.get_current_lecture_attendance()) > 0:
+        for row, attendance in enumerate(self.data_manager.get_current_lecture_attendance(), start = 1):
           attendance_row = [
-            attendance.student.id,
-            attendance.student.first_name,
-            attendance.student.middle_name,
-            attendance.student.last_name,
-            attendance.time
+            attendance.get_student().get_student_id(),
+            attendance.get_student().get_first_name(),
+            attendance.get_student().get_middle_name(),
+            attendance.get_student().get_last_name(),
+            attendance.get_time()
           ]
 
           for col, data in enumerate(attendance_row):
@@ -111,7 +102,7 @@ class Attendance():
   
   def refresh(self):
     try:
-      if not self.data_manager.current_class:
+      if not self.data_manager.get_current_class():
         title = "Error"
         message = "Please select a lecture from the settings"
         icon = "cancel"

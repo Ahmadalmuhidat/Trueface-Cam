@@ -5,32 +5,22 @@ import winsound
 import json
 
 from CTkMessagebox import CTkMessagebox
-from app.models import student, attendance
-from app.core.data_manager import DataManager
+from app.core.data_manager import Data_Manager
 
 def get_current_class_attendance():
   try:
-    database_manager = DataManager()
+    database_manager = Data_Manager()
     data = {
       "current_class": database_manager.current_class
     }
     response = requests.get(
-      database_manager.config.get_base_url() + "/teacher/get_current_class_attendance",
+      database_manager.get_config().get_base_url() + "/teacher/get_current_class_attendance",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      database_manager.current_lecture_attendance = [
-        attendance.Attendance(
-          student.Student(
-            data['ID'],
-            data['FirstName'],
-            data['MiddleName'],data['LastName']
-          ),
-          data['Time']
-        ) for data in response.get("data")
-      ]
+      database_manager.set_current_lecture_attendance(response.get("data"))
     else:
       title = "Error"
       message = response.get("error")
@@ -50,7 +40,7 @@ def get_current_class_attendance():
 
 def search_attendance(student_id):
   try:
-    database_manager = DataManager()
+    database_manager = Data_Manager()
     data = {
       "student_id": student_id,
     }
@@ -61,17 +51,7 @@ def search_attendance(student_id):
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      database_manager.current_lecture_attendance = [
-        attendance.Attendance(
-          student.Student(
-            data['ID'],
-            data['FirstName'],
-            data['MiddleName'],
-            data['LastName']
-          ),
-          data['Time']
-        ) for data in response.get("data")
-      ]
+      database_manager.set_current_lecture_attendance(response.get("data"))
     else:
       title = "Error"
       message = response.get("error")
@@ -91,7 +71,7 @@ def search_attendance(student_id):
 
 def check_attendance(student_id):
   try:
-    database_manager = DataManager()
+    database_manager = Data_Manager()
     data = {
       "student_id": student_id,
       "current_class": database_manager.current_class
@@ -124,7 +104,7 @@ def check_attendance(student_id):
 def insert_attendance(student_id, StudentName):
   try:
     if not check_attendance(student_id):
-      database_manager = DataManager()
+      database_manager = Data_Manager()
       data = {
         "student_id": student_id,
         "current_class": database_manager.current_class

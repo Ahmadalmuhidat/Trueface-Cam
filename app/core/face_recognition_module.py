@@ -8,36 +8,19 @@ import pickle
 import base64
 
 from queue import Queue
-from app.core.data_manager import DataManager
-from app.core.qr_reader_module import QR_ReaderModule
+from app.core.data_manager import Data_Manager
+from app.core.qr_reader_module import QR_Reader_Module
 from app.controllers.attendance import insert_attendance
 
-class FaceRecognitionModule(QR_ReaderModule):
+class Face_Recognition_Module():
 	def __init__(self) -> None:
-		try:
-			super().__init__()
-
-			self.n_frames = 5
-			self.FrameCounter = 0
-			self.FramesQueue = Queue()
-
-		except Exception as e:
-			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-			print(ExceptionObject)
-			pass
+		self._n_frames = 5
+		self._frame_counter = 0
+		self._frames_queue = Queue()
+		self.qr_reader = QR_Reader_Module()
 
 	def extract_face(self, frame):
-		try:
-			return face_recognition.face_locations(frame)
-
-		except Exception as e:
-			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-			fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-			print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-			print(ExceptionObject)
-			pass
+		return face_recognition.face_locations(frame)
 
 	def compare_face(self, target_id, target_name, target_face_encode, small_frame, face, index):
 		try:
@@ -51,7 +34,7 @@ class FaceRecognitionModule(QR_ReaderModule):
 
 			if results[0]:
 				insert_attendance(target_id, target_name)
-				DataManager.current_class_students.pop(index)
+				Data_Manager.current_class_students.pop(index)
 
 		except Exception as e:
 			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -62,8 +45,8 @@ class FaceRecognitionModule(QR_ReaderModule):
 	
 	def detect_face(self, face, small_frame):
 		try:
-			for index in range(len(DataManager.current_class_students)):
-				student = DataManager.current_class_students[index]
+			for index in range(len(Data_Manager.current_class_students)):
+				student = Data_Manager.current_class_students[index]
 				args = (
 					student.id,
 					student.first_name,
@@ -87,10 +70,10 @@ class FaceRecognitionModule(QR_ReaderModule):
 	
 	def analyze_face(self, frame) -> bool:
 		try:
-			from app.core.camera_module import CameraManagerModule
-			self.camera_manager = CameraManagerModule()
+			from app.core.camera_module import Camera_Manager_Module
+			self.camera_manager = Camera_Manager_Module()
 
-			if self.FrameCounter % self.n_frames == 0:
+			if self._frame_counter % self._n_frames == 0:
 				small_frame = cv2.resize(
 					frame,
 					(0, 0),
@@ -102,11 +85,8 @@ class FaceRecognitionModule(QR_ReaderModule):
 				if (face):
 					self.create_loaing_screen()
 
-					# args = (face, small_frame)
-					# threading.Thread(target=self.findFace, args=args).start()
-
-					for index in range(len(DataManager.current_class_students)):
-						student = DataManager.current_class_students[index]
+					for index in range(len(Data_Manager.current_class_students)):
+						student = Data_Manager.current_class_students[index]
 						args = (
               student.id,
               student.first_name,
@@ -123,7 +103,7 @@ class FaceRecognitionModule(QR_ReaderModule):
 				else:
 					self.camera_manager.close_loading_stream()
 
-			self.FrameCounter += 1
+			self._frame_counter += 1
 
 		except Exception as e:
 			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

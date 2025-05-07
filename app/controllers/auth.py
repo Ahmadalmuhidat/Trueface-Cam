@@ -3,12 +3,12 @@ import sys
 import requests
 import json
 
-from app.core.data_manager import DataManager
+from app.core.data_manager import Data_Manager
 from CTkMessagebox import CTkMessagebox
 
 def login(email, password):
   try:
-    database_manager = DataManager()
+    database_manager = Data_Manager()
     data = {
       "email": email,
       "password": password

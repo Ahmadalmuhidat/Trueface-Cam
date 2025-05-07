@@ -6,66 +6,54 @@ import threading
 
 from CTkMessagebox import CTkMessagebox
 from cv2_enumerate_cameras import enumerate_cameras
-from app.core.data_manager import DataManager
-from app.core.face_recognition_module import FaceRecognitionModule
+from app.core.data_manager import Data_Manager
+from app.core.face_recognition_module import Face_Recognition_Module
 from app.models.camera import Camera
 
-class CameraManagerModule:
-  activate_capturing = False
-  found_active_connected_camera = False
+class Camera_Manager_Module:
+  _instance = None
 
-  capture_events = []
-  capture_threads = []
-  available_cameras = []
-  current_camera_index = 0
+  def __new__(cls):
+    if cls._instance is None:
+      cls._instance = super(Data_Manager, cls).__new__(cls)
+      cls._instance.__init__()
+    return cls._instance
 
   def __init__(self) -> None:
-    try:
-      self.data_manager = DataManager()
-      self.face_recognition_module = FaceRecognitionModule()
+    self.data_manager = Data_Manager()
+    self.face_recognition_module = Face_Recognition_Module()
 
-      self.scanning_loading_screen_running = False
-      self.LoadingScreen = None
+    self.found_active_connected_camera = False
 
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
-      pass
+    self._activate_capturing = False
+    self._capture_events = []
+    self._capture_threads = []
+    self._available_cameras = []
+    self._current_camera_index = 0
 
-  @classmethod
-  def set_current_camera(cls, index):
-    try:
-      cls.current_camera_index = index
+    self._scanning_loading_screen_running = False
+    self._loading_screen = None
 
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
-      pass
+  def set_current_camera(self, index):
+    self._current_camera_index = index
 
-  @classmethod
-  def return_activate_capturing(cls):
-    try:
-      return cls.activate_capturing
+  def get_current_camera(self):
+    return self._current_camera_index
 
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
-      pass
+  def set_activate_capturing(self, activate_capturing):
+    self._activate_capturing = activate_capturing
+
+  def get_activate_capturing(self):
+    return self._activate_capturing
 
   @classmethod
-  def get_working_cameras(cls):
+  def get_working_cameras(self):
     try:
       for camera in enumerate_cameras():
         new_camera = Camera(camera.index, camera.name)
         if new_camera.test():
-          cls.available_cameras.append(new_camera)
-          cls.found_active_connected_camera = True
+          self._available_cameras.append(new_camera)
+          self.found_active_connected_camera = True
           CTkMessagebox(
             title = "Camera activated",
             message = "Camera has been tested successfully",
@@ -85,12 +73,11 @@ class CameraManagerModule:
       print(ExceptionObject)
       pass
 
-  @classmethod
-  def view_current_camera_stream(cls):
+  def view_current_camera_stream(self):
     try:
-      if not cls.activate_capturing:
-        if cls.current_camera_index:
-          cam = next((camera for camera in cls.available_cameras if camera.index == cls.current_camera_index), None)
+      if not self._activate_capturing:
+        if self._current_camera_index:
+          cam = next((camera for camera in self._available_cameras if camera.index == self._current_camera_index), None)
           cam.view()
         else:
           CTkMessagebox(
@@ -111,15 +98,11 @@ class CameraManagerModule:
       print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
       print(ExceptionObject)
 
-  def show_video_frame(self):
-    try:
-      threading.Thread(target=self.view_current_camera_stream).start()
+  def get_available_cameras(self):
+    return self._available_cameras
 
-    except Exception as e:
-      ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
-      fname = os.path.split(ExceptionTraceBack.tb_frame.f_code.co_filename)[1]
-      print(ExceptionType, fname, ExceptionTraceBack.tb_lineno)
-      print(ExceptionObject)
+  def show_video_frame(self):
+    threading.Thread(target=self.view_current_camera_stream).start()
 
   def start_capturing(self):
     try:
@@ -131,15 +114,15 @@ class CameraManagerModule:
         )
         return
 
-      if not self.__class__.activate_capturing:
-        if self.__class__.found_active_connected_camera:
-          self.__class__.activate_capturing = True
+      if not self._activate_capturing:
+        if self.found_active_connected_camera:
+          self._activate_capturing = True
 
           StopEvent = threading.Event()
           CaptureThread = threading.Thread(target = self.capture_and_analyze)
 
-          self.__class__.capture_threads.append(CaptureThread)
-          self.__class__.capture_events.append(StopEvent)
+          self._capture_threads.append(CaptureThread)
+          self._capture_events.append(StopEvent)
 
           CaptureThread.start()
         else:
@@ -163,14 +146,14 @@ class CameraManagerModule:
 
   def stop_capturing(self):
     try:
-      if self.__class__.activate_capturing:
+      if self._activate_capturing:
         self.close_loading_stream()
 
-        self.__class__.activate_capturing = False
-        self.__class__.capture_events[0].set()
-        self.__class__.capture_threads[0].join(timeout=5)
-        self.__class__.capture_threads.clear()
-        self.__class__.capture_events.clear()
+        self._activate_capturing = False
+        self._capture_events[0].set()
+        self._capture_threads[0].join(timeout=5)
+        self._capture_threads.clear()
+        self._capture_events.clear()
 
       else:
         CTkMessagebox(
@@ -187,9 +170,9 @@ class CameraManagerModule:
 
   def capture_and_analyze(self):
     try:
-      cap = cv2.VideoCapture(self.__class__.current_camera_index)
+      cap = cv2.VideoCapture(self._current_camera_index)
 
-      while self.__class__.activate_capturing:
+      while self._activate_capturing:
         ret, frame = cap.read()
 
         if ret:
@@ -219,10 +202,10 @@ class CameraManagerModule:
 
   def close_loading_stream(self):
     try:
-      if self.scanning_loading_screen_running and self.LoadingScreen:
-        self.scanning_loading_screen_running = False
-        self.LoadingScreen.destroy()
-        self.LoadingScreen = None
+      if self._scanning_loading_screen_running and self._loading_screen:
+        self._scanning_loading_screen_running = False
+        self._loading_screen.destroy()
+        self._loading_screen = None
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
