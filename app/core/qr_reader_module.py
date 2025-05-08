@@ -7,9 +7,6 @@ from app.core.data_manager import Data_Manager
 from app.controllers.attendance import insert_attendance
 
 class QR_Reader_Module(Data_Manager):
-  def __init__(self) -> None:
-    super().__init__()
-
   def read_qr_code(self, image):
     try:
       qrcode = cv2.QRCodeDetector()
@@ -36,10 +33,7 @@ class QR_Reader_Module(Data_Manager):
           info = json.loads(decoded_info[i])
 
           if info["Provider"] == "TrueFace":
-            insert_attendance(
-              info["student_id"],
-              info["student_name"]
-            )
+            insert_attendance(info["student_id"], info["student_name"])
             break
 
     except Exception as e:

@@ -6,6 +6,7 @@ from app.config.configrations import Configrations
 
 class Router:
   def __init__(self):
+    # private
     self._current_page = None
     self._config = Configrations()
 
@@ -23,14 +24,14 @@ class Router:
     try:
       self.clear_window()
 
-      self._config.window.configure(cursor="watch")
-      self._config.window.update()
+      # self._config.get_window().configure(cursor="watch")
+      # self._config.get_window().update()
 
-      frame = customtkinter.CTkFrame(self._config.window)
+      frame = customtkinter.CTkFrame(self._config.get_window())
       view_instance = view_class()
 
-      self._config.window.configure(cursor="")
-      self._config.window.update()
+      # self._config.get_window().configure(cursor="")
+      # self._config.get_window().update()
 
       view_instance.lunch_view(frame)
 

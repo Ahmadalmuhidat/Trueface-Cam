@@ -11,7 +11,7 @@ def get_current_class_attendance():
   try:
     database_manager = Data_Manager()
     data = {
-      "current_class": database_manager.current_class
+      "current_class": database_manager.get_current_class()
     }
     response = requests.get(
       database_manager.get_config().get_base_url() + "/teacher/get_current_class_attendance",
@@ -45,7 +45,7 @@ def search_attendance(student_id):
       "student_id": student_id,
     }
     response = requests.get(
-      database_manager.config.get_base_url() + "/teacher/search_attendance",
+      database_manager.get_config().get_base_url() + "/teacher/search_attendance",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
@@ -74,10 +74,10 @@ def check_attendance(student_id):
     database_manager = Data_Manager()
     data = {
       "student_id": student_id,
-      "current_class": database_manager.current_class
+      "current_class": database_manager.get_current_class()
     }
     response = requests.get(
-      database_manager.config.get_base_url() + "/teacher/check_attendance",
+      database_manager.get_config().get_base_url() + "/teacher/check_attendance",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
@@ -101,16 +101,16 @@ def check_attendance(student_id):
     print(ExceptionObject)
     pass
 
-def insert_attendance(student_id, StudentName):
+def insert_attendance(student_id, student_name):
   try:
     if not check_attendance(student_id):
       database_manager = Data_Manager()
       data = {
         "student_id": student_id,
-        "current_class": database_manager.current_class
+        "current_class": database_manager.get_current_class()
       }
       response = requests.post(
-        database_manager.config.get_base_url() + "/teacher/insert_attendance",
+        database_manager.get_config().get_base_url() + "/teacher/insert_attendance",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))
@@ -124,7 +124,7 @@ def insert_attendance(student_id, StudentName):
         )
         CTkMessagebox(
           title = "Match Found",
-          message = "{} has been signed".format(StudentName),
+          message = "{} has been signed".format(student_name),
           icon = "check"
         )
     else:

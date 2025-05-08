@@ -4,18 +4,18 @@ import cv2
 
 class Camera:
   def __init__(self, index, name):
-    self.name = name
-    self.index = index
+    self._name = name
+    self._index = index
   
   def get_name(self):
-    return self.name
+    return self._name
   
   def get_index(self):
-    return self.index
+    return self._index
   
   def test(self):
     try:
-      camera = cv2.VideoCapture(self.index)
+      camera = cv2.VideoCapture(self._index)
 
       if camera.isOpened():
         is_reading, frame = camera.read()
@@ -35,7 +35,7 @@ class Camera:
 
   def view(self):
     try:
-      cap = cv2.VideoCapture(self.index)
+      cap = cv2.VideoCapture(self._index)
       WindowTitle = "Camera View"
 
       while True:

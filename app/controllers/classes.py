@@ -10,10 +10,10 @@ def get_current_teacher_classes():
   try:
     database_manager = Data_Manager()
     data = {
-      "current_teacher": database_manager.token
+      "current_teacher": database_manager.get_token()
     }
     response = requests.get(
-      database_manager.config.get_base_url() + "/teacher/get_current_teacher_classes",
+      database_manager.get_config().get_base_url() + "/teacher/get_current_teacher_classes",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))

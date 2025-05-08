@@ -8,7 +8,7 @@ from app.controllers.auth import login
 
 class Login():
   def __init__(self):
-    self.data_manager = Data_Manager()
+    self._data_manager = Data_Manager()
 
   def check_user(self):
     result = login(
@@ -17,7 +17,7 @@ class Login():
     )
 
     if result:
-      self.data_manager.token = result
+      self._data_manager.set_token(result)
       self.window.destroy()
       Main().start_program()
 

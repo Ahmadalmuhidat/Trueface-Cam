@@ -11,26 +11,26 @@ from app.controllers.students import get_students_with_face_encode
 
 class Settings():
   def __init__(self):
-    self.camera_manager = Camera_Manager_Module()
-    self.data_manager = Data_Manager()
+    self._camera_manager = Camera_Manager_Module()
+    self._data_manager = Data_Manager()
 
     get_current_teacher_classes()
 
     self.class_id_title_map = {
-      f"{class_.get_subject_area()} {class_.get_start_time()}-{class_.get_end_time()}": class_.get_class_id() for class_ in self.data_manager.get_current_teacher_classes()
+      f"{class_.get_subject_area()} {class_.get_start_time()}-{class_.get_end_time()}": class_.get_class_id() for class_ in self._data_manager.get_current_teacher_classes()
     }
     
     self.class_start_time_map = {
-      f"{class_.get_subject_area()} {class_.get_start_time()}-{class_.get_end_time()}": class_.get_start_time() for class_ in self.data_manager.get_current_teacher_classes()
+      f"{class_.get_subject_area()} {class_.get_start_time()}-{class_.get_end_time()}": class_.get_start_time() for class_ in self._data_manager.get_current_teacher_classes()
     }
     
     self.cameras_key_map = {
-      camera.get_name(): camera.get_index() for camera in self.camera_manager.get_available_cameras()
+      camera.get_name(): camera.get_index() for camera in self._camera_manager.get_available_cameras()
     }
   
-  def update_current_camera(self, choise):
+  def update_current_camera(self, user_camera_selection):
     try:
-      self.camera_manager.set_current_camera(self.cameras_key_map[choise])
+      self._camera_manager.set_current_camera(self.cameras_key_map[user_camera_selection])
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -62,9 +62,9 @@ class Settings():
         )
         return
 
-      self.data_manager.set_current_class(self.class_id_title_map[self.current_lecture_entry.get()])
-      self.data_manager.set_start_time(self.class_start_time_map[self.current_lecture_entry.get()])
-      self.data_manager.set_allowed_minutes(self.allowed_minutes_entry.get())
+      self._data_manager.set_current_class(self.class_id_title_map[self.current_lecture_entry.get()])
+      self._data_manager.set_start_time(self.class_start_time_map[self.current_lecture_entry.get()])
+      self._data_manager.set_allowed_minutes(self.allowed_minutes_entry.get())
 
       get_students_with_face_encode()
       get_current_class_attendance()
@@ -105,7 +105,7 @@ class Settings():
 
       self.current_lecture_entry = customtkinter.CTkComboBox(
         content_frame,
-        values = [f"{class_.get_subject_area()} {class_.get_start_time()}-{class_.get_end_time()}" for class_ in self.data_manager.get_current_teacher_classes()],
+        values = [f"{class_.get_subject_area()} {class_.get_start_time()}-{class_.get_end_time()}" for class_ in self._data_manager.get_current_teacher_classes()],
         width = 400
       )
       self.current_lecture_entry.grid(
@@ -168,7 +168,7 @@ class Settings():
       view_camera_button = customtkinter.CTkButton(
         content_frame,
         text = "Test Current Camera",
-        command = self.camera_manager.view_current_camera_stream
+        command = self._camera_manager.view_current_camera_stream
       )
       view_camera_button.grid(
         row = 8,

@@ -11,26 +11,32 @@ from app.core.face_recognition_module import Face_Recognition_Module
 from app.models.camera import Camera
 
 class Camera_Manager_Module:
+  # static
   _instance = None
+  _initialized = False
 
   def __new__(cls):
     if cls._instance is None:
-      cls._instance = super(Data_Manager, cls).__new__(cls)
-      cls._instance.__init__()
+      cls._instance = super().__new__(cls)
     return cls._instance
 
   def __init__(self) -> None:
-    self.data_manager = Data_Manager()
-    self.face_recognition_module = Face_Recognition_Module()
+    # prevent re-initialization
+    if self.__class__._initialized:
+      return
+    self.__class__._initialized = True
 
-    self.found_active_connected_camera = False
-
+    # private
+    self._data_manager = Data_Manager()
+    self._face_recognition_module = Face_Recognition_Module()
     self._activate_capturing = False
     self._capture_events = []
     self._capture_threads = []
     self._available_cameras = []
     self._current_camera_index = 0
 
+    # public
+    self.found_active_connected_camera = False
     self.scanning_loading_screen_running = False
     self.loading_screen = None
 
@@ -77,7 +83,7 @@ class Camera_Manager_Module:
     try:
       if not self._activate_capturing:
         if self._current_camera_index:
-          cam = next((camera for camera in self._available_cameras if camera.index == self._current_camera_index), None)
+          cam = next((camera for camera in self._available_cameras if camera.get_index() == self._current_camera_index), None)
           cam.view()
         else:
           CTkMessagebox(
@@ -106,7 +112,7 @@ class Camera_Manager_Module:
 
   def start_capturing(self):
     try:
-      if not self.data_manager.current_class:
+      if not self._data_manager.get_current_class():
         CTkMessagebox(
           title = "Error",
           message = "Please select a lecture from the settings",
@@ -180,7 +186,7 @@ class Camera_Manager_Module:
           self.FramesQueue.put(img_rgb)
                 
           FR_thread = threading.Thread(
-            target = self.face_recognition_module.analyze_face,
+            target = self._face_recognition_module.analyze_face,
             args = (frame,)
           )
           FR_thread.start()

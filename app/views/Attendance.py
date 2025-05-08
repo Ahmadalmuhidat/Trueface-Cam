@@ -10,10 +10,10 @@ from app.controllers.reports import get_report
 
 class Attendance():
   def __init__(self):
-    self.data_manager = Data_Manager()
+    self._data_manager = Data_Manager()
 
-    self.attendance = []
-    self.headers = [
+    self._attendance = []
+    self._headers = [
       "Student ID",
       "First Name",
       "Middle Name",
@@ -24,12 +24,12 @@ class Attendance():
   def generate_report(self):
     try:
       get_report(
-        self.data_manager.get_start_time(),
-        self.data_manager.get_allowed_minutes()
+        self._data_manager.get_start_time(),
+        self._data_manager.get_allowed_minutes()
       )
 
       report = pandas.DataFrame(
-        self.data_manager.get_current_lecture_attendance_report(),
+        self._data_manager.get_current_lecture_attendance_report(),
         columns = [
           "Student ID",
           "First Name",
@@ -57,7 +57,7 @@ class Attendance():
         icon = icon
       )
 
-      self.data_manager.get_current_lecture_attendance_report().clear()
+      self._data_manager.get_current_lecture_attendance_report().clear()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -67,11 +67,11 @@ class Attendance():
 
   def display_attendance_table(self):
     try:
-      for label in self.attendance:
+      for label in self._attendance:
         label.destroy()
 
-      if len(self.data_manager.get_current_lecture_attendance()) > 0:
-        for row, attendance in enumerate(self.data_manager.get_current_lecture_attendance(), start = 1):
+      if len(self._data_manager.get_current_lecture_attendance()) > 0:
+        for row, attendance in enumerate(self._data_manager.get_current_lecture_attendance(), start = 1):
           attendance_row = [
             attendance.get_student().get_student_id(),
             attendance.get_student().get_first_name(),
@@ -92,7 +92,7 @@ class Attendance():
               column = col,
               sticky = "nsew"
             )
-            self.attendance.append(attendance_data)
+            self._attendance.append(attendance_data)
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -102,7 +102,7 @@ class Attendance():
   
   def refresh(self):
     try:
-      if not self.data_manager.get_current_class():
+      if not self._data_manager.get_current_class():
         title = "Error"
         message = "Please select a lecture from the settings"
         icon = "cancel"
@@ -203,7 +203,7 @@ class Attendance():
         expand = True
       )
 
-      for col, header in enumerate(self.headers):
+      for col, header in enumerate(self._headers):
         header_label = customtkinter.CTkLabel(
           self.attendance_table_frame,
           text = header,
@@ -216,7 +216,7 @@ class Attendance():
           sticky = "nsew"
         )
 
-      for col in range(len(self.headers)):
+      for col in range(len(self._headers)):
         self.attendance_table_frame.columnconfigure(
           col,
           weight = 1

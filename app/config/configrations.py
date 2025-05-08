@@ -1,11 +1,10 @@
-import sys
-import os
-
 class Configrations:
+  # static
   window = None
   close_threads = False
 
   def __init__(self) -> None:
+    # private
     self._base_url = "http://localhost:8000"
 
   @classmethod

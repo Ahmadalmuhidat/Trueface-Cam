@@ -3,14 +3,19 @@ from app.models import student, attendance, class_
 
 class Data_Manager:
   _instance = None
+  _initialized = False
 
   def __new__(cls):
     if cls._instance is None:
-      cls._instance = super(Data_Manager, cls).__new__(cls)
-      cls._instance.__init__()
+      cls._instance = super().__new__(cls)
     return cls._instance
 
   def __init__(self):
+    # prevent re-initialization
+    if self.__class__._initialized:
+      return
+    self.__class__._initialized = True
+
     # global data
     self.current_class_students = []
     self.current_lecture_attendance = []
@@ -52,7 +57,8 @@ class Data_Manager:
         student.Student(
           data['ID'],
           data['FirstName'],
-          data['MiddleName'],data['LastName']
+          data['MiddleName'],
+          data['LastName']
         ),
         data['Time']
       ) for data in current_lecture_attendance
@@ -103,6 +109,9 @@ class Data_Manager:
 
   def get_token(self):
     return self.token
+  
+  def set_token(self, token):
+    self.token = token
 
   def get_config(self):
     return self.config

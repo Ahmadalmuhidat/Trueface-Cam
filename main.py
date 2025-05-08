@@ -16,11 +16,9 @@ from app.config.router import Router
 class Main():
   def __init__(self):
     try:
-      super().__init__()
-
-      self.config = Configrations()
-      self.camera_manager = Camera_Manager_Module()
-      self.router = Router()
+      self._config = Configrations()
+      self._camera_manager = Camera_Manager_Module()
+      self._router = Router()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -36,7 +34,7 @@ class Main():
       home_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = lambda: self.router.navigate(Home.Home),
+        command = lambda: self._router.navigate(Home.Home),
         text = "Home"
       )
       home_view.pack(side = customtkinter.LEFT)
@@ -44,7 +42,7 @@ class Main():
       attendance_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = lambda: self.router.navigate(Attendance.Attendance),
+        command = lambda: self._router.navigate(Attendance.Attendance),
         text = "Attendance"
       )
       attendance_view.pack(side = customtkinter.LEFT)
@@ -52,7 +50,7 @@ class Main():
       students_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = lambda: self.router.navigate(Students.Students),
+        command = lambda: self._router.navigate(Students.Students),
         text = "Students"
       )
       students_view.pack(side = customtkinter.LEFT)
@@ -60,7 +58,7 @@ class Main():
       settings_view = customtkinter.CTkButton(
         navbar,
         corner_radius = 0,
-        command = lambda: self.router.navigate(Settings.Settings),
+        command = lambda: self._router.navigate(Settings.Settings),
         text = "Settings"
       )
       settings_view.pack(side = customtkinter.LEFT)
@@ -73,7 +71,7 @@ class Main():
 
   def when_app_close(self):
     try:
-      if self.camera_manager.get_activate_capturing():
+      if self._camera_manager.get_activate_capturing():
         title = "Error"
         icon = "cancel"
         CTkMessagebox(
@@ -84,7 +82,6 @@ class Main():
         return
 
       self.window.destroy()
-
       sys.exit(0)
 
     except Exception as e:
@@ -97,8 +94,8 @@ class Main():
     try:
       self.window = customtkinter.CTk()
 
-      self.config.set_window(self.window)
-      self.camera_manager.get_working_cameras()
+      self._config.set_window(self.window)
+      self._camera_manager.get_working_cameras()
     
       width = self.window.winfo_screenwidth()
       height = self.window.winfo_screenheight()
@@ -113,7 +110,7 @@ class Main():
       )
 
       self.create_navbar()
-      self.router.navigate(Home.Home)
+      self._router.navigate(Home.Home)
 
       self.window.mainloop()
 

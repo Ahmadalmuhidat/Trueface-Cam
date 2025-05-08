@@ -8,18 +8,18 @@ from CTkMessagebox import CTkMessagebox
 
 def get_students_with_face_encode():
   try:
-    database_manager = Data_Manager()
+    data_manager = Data_Manager()
     data = {
-      "current_class": database_manager.current_class,
+      "current_class": data_manager.get_current_class(),
     }
     response = requests.get(
-      database_manager.config.get_base_url() + "/teacher/get_students_with_face_encode",
+      data_manager.get_config().get_base_url() + "/teacher/get_students_with_face_encode",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      database_manager.set_current_class_students(response.get("data"))
+      data_manager.set_current_class_students(response.get("data"))
     else:
       title = "Error"
       message = response.get("error")
@@ -41,10 +41,10 @@ def get_current_class_students():
   try:
     database_manager = Data_Manager()
     data = {
-      "current_class": database_manager.current_class
+      "current_class": database_manager.get_current_class()
     }
     response = requests.get(
-      database_manager.config.get_base_url() + "/teacher/get_class_students",
+      database_manager.get_config().get_base_url() + "/teacher/get_class_students",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))

@@ -14,11 +14,12 @@ from app.controllers.attendance import insert_attendance
 
 class Face_Recognition_Module():
 	def __init__(self) -> None:
+		# private
 		self._n_frames = 5
 		self._frame_counter = 0
 		self._frames_queue = Queue()
-		self.qr_reader = QR_Reader_Module()
-		self.data_manager = Data_Manager()
+		self._qr_reader = QR_Reader_Module()
+		self._data_manager = Data_Manager()
 
 	def extract_face(self, frame):
 		return face_recognition.face_locations(frame)
@@ -35,7 +36,7 @@ class Face_Recognition_Module():
 
 			if results[0]:
 				insert_attendance(target_id, target_name)
-				Data_Manager.current_class_students.pop(index)
+				Data_Manager.get_current_class_students().pop(index)
 
 		except Exception as e:
 			ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -46,8 +47,8 @@ class Face_Recognition_Module():
 	
 	def detect_face(self, face, small_frame):
 		try:
-			for index in range(len(self.data_manager.get_current_class_students())):
-				student = self.data_manager.get_current_class_students()[index]
+			for index in range(len(self._data_manager.get_current_class_students())):
+				student = self._data_manager.get_current_class_students()[index]
 				args = (
 					student.get_student_id(),
 					student.get_first_name(),
@@ -86,8 +87,8 @@ class Face_Recognition_Module():
 				if (face):
 					self.create_loaing_screen()
 
-					for index in range(len(self.data_manager.get_current_class_students())):
-						student = self.data_manager.get_current_class_students()[index]
+					for index in range(len(self._data_manager.get_current_class_students())):
+						student = self._data_manager.get_current_class_students()[index]
 						args = (
 							student.get_student_id(),
 							student.get_first_name(),

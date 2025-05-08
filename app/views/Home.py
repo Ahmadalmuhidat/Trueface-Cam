@@ -13,13 +13,13 @@ from app.core.camera_module import Camera_Manager_Module
 
 class Home():
   def __init__(self):
-    self.camera_manager = Camera_Manager_Module()
-    self.data_manager = Data_Manager()
-    self.config = Configrations()
+    self._camera_manager = Camera_Manager_Module()
+    self._data_manager = Data_Manager()
+    self._config = Configrations()
 
   def update_camera_status(self):
     try:
-      if self.camera_manager.found_active_connected_camera:
+      if self._camera_manager.found_active_connected_camera:
         self.camera_status.configure(
           text = "Connected",
           text_color = "green"
@@ -39,7 +39,7 @@ class Home():
 
   def update_database_status(self):
     try:
-      response = requests.get(self.config.get_base_url() + "/",).content
+      response = requests.get(self._config.get_base_url() + "/",).content
       response_str = response.decode('utf-8')
       APIActive = json.loads(response_str)
 
@@ -85,7 +85,7 @@ class Home():
     try:
       while True:
         self.attendance_count.configure(
-          text = "Attendance \n\n{}".format(len(self.data_manager.get_current_lecture_attendance()))
+          text = "Attendance \n\n{}".format(len(self._data_manager.get_current_lecture_attendance()))
         )
 
         if Configrations.close_threads:
@@ -128,7 +128,7 @@ class Home():
       capture_button = customtkinter.CTkButton(
         content_frame,
         text = "Start Capture",
-        command = self.camera_manager.start_capturing,
+        command = self._camera_manager.start_capturing,
         font=customtkinter.CTkFont(size=15)
       )
       capture_button.grid(
@@ -141,7 +141,7 @@ class Home():
       stop_capture_button = customtkinter.CTkButton(
         content_frame,
         text = "Stop Capture",
-        command = self.camera_manager.stop_capturing,
+        command = self._camera_manager.stop_capturing,
         height = 50,
         fg_color = "red",
         font = customtkinter.CTkFont(size = 15)

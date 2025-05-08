@@ -12,16 +12,16 @@ def get_report(start_time, allowed_minutes):
     data = {
       "start_time": start_time,
       "allowed_minutes": allowed_minutes,
-      "current_classes": database_manager.current_class
+      "current_classes": database_manager.get_current_class()
     }
     response = requests.get(
-      database_manager.config.get_base_url() + "/teacher/get_report",
+      database_manager.get_config().get_base_url() + "/teacher/get_report",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
 
     if response.get("status_code") == 200:
-      database_manager.current_lecture_attendance_report = response.get("data")
+      database_manager.set_current_lecture_attendance_report(response.get("data"))
     else:
       title = "Error"
       message = response.get("error")

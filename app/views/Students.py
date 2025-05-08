@@ -8,7 +8,7 @@ from CTkMessagebox import CTkMessagebox
 
 class Students():
   def __init__(self):
-    self.data_manager = Data_Manager()
+    self._data_manager = Data_Manager()
 
     self.students = []
     self.headers = [
@@ -24,8 +24,8 @@ class Students():
       for label in self.students:
         label.destroy()
 
-      if len(self.data_manager.get_current_class_students()) > 0:
-        for row, student in enumerate(self.data_manager.get_current_class_students(), start = 1):
+      if len(self._data_manager.get_current_class_students()) > 0:
+        for row, student in enumerate(self._data_manager.get_current_class_students(), start = 1):
           student_row = [
             student.get_student_id(),
             student.get_first_name(),
@@ -56,7 +56,7 @@ class Students():
   
   def refresh(self):
     try:
-      if not self.data_manager.get_current_class():
+      if not self._data_manager.get_current_class():
           title = "Error"
           message = "Please select a lecture from the settings"
           icon = "cancel"
