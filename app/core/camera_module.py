@@ -52,7 +52,6 @@ class Camera_Manager_Module:
   def get_activate_capturing(self):
     return self._activate_capturing
 
-  @classmethod
   def get_working_cameras(self):
     try:
       for camera in enumerate_cameras():
@@ -183,7 +182,7 @@ class Camera_Manager_Module:
 
         if ret:
           img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-          self.FramesQueue.put(img_rgb)
+          self._face_recognition_module._frames_queue.put(img_rgb)
                 
           FR_thread = threading.Thread(
             target = self._face_recognition_module.analyze_face,
@@ -208,10 +207,10 @@ class Camera_Manager_Module:
 
   def close_loading_stream(self):
     try:
-      if self._scanning_loading_screen_running and self._loading_screen:
-        self._scanning_loading_screen_running = False
-        self._loading_screen.destroy()
-        self._loading_screen = None
+      if self.scanning_loading_screen_running and self.loading_screen:
+        self.scanning_loading_screen_running = False
+        self.loading_screen.destroy()
+        self.loading_screen = None
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
