@@ -111,7 +111,7 @@ def insert_attendance(student_id, student_name):
       }
       response = requests.post(
         database_manager.get_config().get_base_url() + "/teacher/insert_attendance",
-        params = data
+        data = data
       ).content
       response = json.loads(response.decode('utf-8'))
 
@@ -127,15 +127,15 @@ def insert_attendance(student_id, student_name):
           message = "{} has been signed".format(student_name),
           icon = "check"
         )
-    else:
-      title = "Error"
-      message = response.get("error")
-      icon = "cancel"
-      CTkMessagebox(
-        title = title,
-        message = message if message else "Something went wrong while inserting attendance",
-        icon = icon
-      )
+      else:
+        title = "Error"
+        message = response.get("error")
+        icon = "cancel"
+        CTkMessagebox(
+          title = title,
+          message = message if message else "Something went wrong while inserting attendance",
+          icon = icon
+        )
 
   except Exception as e:
     ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

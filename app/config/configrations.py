@@ -8,6 +8,16 @@ class Configrations:
     self._base_url = "http://localhost:8000"
 
   @classmethod
+  def loading_cursor_on(cls):
+    cls.get_window().configure(cursor="watch")
+    cls.get_window().update()
+
+  @classmethod
+  def loading_cursor_off(cls):
+    cls.get_window().configure(cursor="")
+    cls.get_window().update()
+
+  @classmethod
   def set_close_threads(cls, close_threads):
     cls.close_threads = close_threads
 

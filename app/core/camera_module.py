@@ -21,7 +21,6 @@ class Camera_Manager_Module:
     return cls._instance
 
   def __init__(self) -> None:
-    # prevent re-initialization
     if self.__class__._initialized:
       return
     self.__class__._initialized = True
@@ -176,6 +175,7 @@ class Camera_Manager_Module:
   def capture_and_analyze(self):
     try:
       cap = cv2.VideoCapture(self._current_camera_index)
+      self._face_recognition_module.start_session()
 
       while self._activate_capturing:
         ret, frame = cap.read()
@@ -185,7 +185,7 @@ class Camera_Manager_Module:
           self._face_recognition_module._frames_queue.put(img_rgb)
                 
           FR_thread = threading.Thread(
-            target = self._face_recognition_module.analyze_face,
+            target = self._face_recognition_module.analyze_camera_stream,
             args = (frame,)
           )
           FR_thread.start()

@@ -37,6 +37,7 @@ def get_students_with_face_encode():
     print(ExceptionObject)
     pass
 
+# remove this route and keep only one
 def get_current_class_students():
   try:
     database_manager = Data_Manager()

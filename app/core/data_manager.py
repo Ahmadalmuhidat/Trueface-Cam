@@ -11,7 +11,6 @@ class Data_Manager:
     return cls._instance
 
   def __init__(self):
-    # prevent re-initialization
     if self.__class__._initialized:
       return
     self.__class__._initialized = True
@@ -25,7 +24,7 @@ class Data_Manager:
     # global settings
     self.current_class = None
     self.start_time = None
-    self.allowed_minutes = None
+    self.allowed_minutes = 15
     self.current_teacher = None
 
     # auth
@@ -44,7 +43,7 @@ class Data_Manager:
         data['LastName'],
         data['Gender'],
         data['FaceID'],
-        data['Createdate'],
+        data['Createdate']
       ) for data in current_class_students
     ]
 

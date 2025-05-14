@@ -24,14 +24,8 @@ class Router:
     try:
       self.clear_window()
 
-      # self._config.get_window().configure(cursor="watch")
-      # self._config.get_window().update()
-
       frame = customtkinter.CTkFrame(self._config.get_window())
       view_instance = view_class()
-
-      # self._config.get_window().configure(cursor="")
-      # self._config.get_window().update()
 
       view_instance.lunch_view(frame)
 

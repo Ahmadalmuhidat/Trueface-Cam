@@ -2,9 +2,11 @@ import sys
 import os
 import customtkinter
 import pandas
+import threading
 
 from CTkMessagebox import CTkMessagebox
 from app.core.data_manager import Data_Manager
+from app.config.configrations import Configrations
 from app.controllers.attendance import get_current_class_attendance, search_attendance
 from app.controllers.reports import get_report
 
@@ -20,9 +22,12 @@ class Attendance():
       "Last Name",
       "Attendance Time"
     ]
+    self._config = Configrations()
 
   def generate_report(self):
     try:
+      self._config.loading_cursor_on()
+
       get_report(
         self._data_manager.get_start_time(),
         self._data_manager.get_allowed_minutes()
@@ -31,11 +36,11 @@ class Attendance():
       report = pandas.DataFrame(
         self._data_manager.get_current_lecture_attendance_report(),
         columns = [
-          "Student ID",
-          "First Name",
-          "Middle Name",
-          "Last Name",
-          "Attendance Time",
+          "ID",
+          "FirstName",
+          "MiddleName",
+          "LastName",
+          "Time",
           "Lateness"
         ]
       )
@@ -58,6 +63,7 @@ class Attendance():
       )
 
       self._data_manager.get_current_lecture_attendance_report().clear()
+      self._config.loading_cursor_off()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -67,6 +73,12 @@ class Attendance():
 
   def display_attendance_table(self):
     try:
+      self._config.loading_cursor_on()
+
+      get_current_class_attendance()
+
+      self._config.loading_cursor_off()
+
       for label in self._attendance:
         label.destroy()
 
@@ -113,8 +125,7 @@ class Attendance():
         )
         return
 
-      get_current_class_attendance()
-      self.display_attendance_table()
+      threading.Thread(target=self.display_attendance_table).start()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -124,8 +135,12 @@ class Attendance():
 
   def search(self, term):
     try:
+      self._config.loading_cursor_on()
+
       search_attendance(term)
       self.display_attendance_table()
+
+      self._config.loading_cursor_off()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -146,7 +161,7 @@ class Attendance():
 
       search_button = customtkinter.CTkButton(
         search_bar_frame,
-        command = lambda: self.search(search_bar.get()),
+        command = lambda: threading.Thread(target=self.search, args=(search_bar.get())),
         text = "Search"
       )
       search_button.grid(
@@ -221,6 +236,8 @@ class Attendance():
           col,
           weight = 1
         )
+      
+      threading.Thread(target=self.display_attendance_table).start()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()

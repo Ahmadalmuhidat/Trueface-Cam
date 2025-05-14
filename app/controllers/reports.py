@@ -15,7 +15,7 @@ def get_report(start_time, allowed_minutes):
       "current_classes": database_manager.get_current_class()
     }
     response = requests.get(
-      database_manager.get_config().get_base_url() + "/teacher/get_report",
+      database_manager.get_config().get_base_url() + "/teacher/get_class_attendance_report",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))

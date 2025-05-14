@@ -1,14 +1,17 @@
 import sys
 import os
+import threading
 import customtkinter
 
 from app.core.data_manager import Data_Manager
+from app.config.configrations import Configrations
 from app.controllers.students import get_current_class_students
 from CTkMessagebox import CTkMessagebox
 
 class Students():
   def __init__(self):
     self._data_manager = Data_Manager()
+    self._config = Configrations()
 
     self.students = []
     self.headers = [
@@ -21,6 +24,12 @@ class Students():
 
   def display_students_table(self):
     try:
+      self._config.loading_cursor_on()
+
+      get_current_class_students
+
+      self._config.loading_cursor_off()
+
       for label in self.students:
         label.destroy()
 
@@ -67,8 +76,7 @@ class Students():
           )
           return
 
-      get_current_class_students()
-      self.display_students_table()
+      threading.Thread(target=self.display_students_table).start()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -125,6 +133,8 @@ class Students():
           col,
           weight = 1
         )
+      
+      threading.Thread(target=self.display_students_table).start()
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
