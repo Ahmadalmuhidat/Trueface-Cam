@@ -13,7 +13,7 @@ def get_students_with_face_encode():
       "current_class": data_manager.get_current_class(),
     }
     response = requests.get(
-      data_manager.get_config().get_base_url() + "/teacher/get_students_with_face_encode",
+      data_manager.get_config().get_base_url() + "/get_students_with_face_encode",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
@@ -45,7 +45,7 @@ def get_current_class_students():
       "current_class": database_manager.get_current_class()
     }
     response = requests.get(
-      database_manager.get_config().get_base_url() + "/teacher/get_class_students",
+      database_manager.get_config().get_base_url() + "/get_class_students",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))

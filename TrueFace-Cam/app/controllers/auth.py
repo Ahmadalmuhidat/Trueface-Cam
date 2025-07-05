@@ -14,7 +14,7 @@ def login(email, password):
       "password": password
     }
     response = requests.get(
-      database_manager.get_config().get_base_url() + "/admin/check_user",
+      "http://localhost:8000/admin/check_user",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))

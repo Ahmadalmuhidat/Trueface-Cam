@@ -1,7 +1,9 @@
 from django.urls import path
-from .controllers import classes, students, attendance
+from .controllers import classes, students, attendance, health
 
 urlpatterns = [
+  # health
+  path('', health.health),
   # attendance
   path('get_current_class_attendance', attendance.get_current_class_attendance),
   path('search_attendance', attendance.search_attendance),

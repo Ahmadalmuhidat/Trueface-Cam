@@ -14,7 +14,7 @@ def get_current_class_attendance():
       "current_class": database_manager.get_current_class()
     }
     response = requests.get(
-      database_manager.get_config().get_base_url() + "/teacher/get_current_class_attendance",
+      database_manager.get_config().get_base_url() + "/get_current_class_attendance",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
@@ -45,7 +45,7 @@ def search_attendance(student_id):
       "student_id": student_id,
     }
     response = requests.get(
-      database_manager.get_config().get_base_url() + "/teacher/search_attendance",
+      database_manager.get_config().get_base_url() + "/search_attendance",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
@@ -77,7 +77,7 @@ def check_attendance(student_id):
       "current_class": database_manager.get_current_class()
     }
     response = requests.get(
-      database_manager.get_config().get_base_url() + "/teacher/check_attendance",
+      database_manager.get_config().get_base_url() + "/check_attendance",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))
@@ -110,7 +110,7 @@ def insert_attendance(student_id, student_name):
         "current_class": database_manager.get_current_class()
       }
       response = requests.post(
-        database_manager.get_config().get_base_url() + "/teacher/insert_attendance",
+        database_manager.get_config().get_base_url() + "/insert_attendance",
         data = data
       ).content
       response = json.loads(response.decode('utf-8'))

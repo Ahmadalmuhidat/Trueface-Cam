@@ -10,7 +10,7 @@ from app.config.context import Context
 def get_courses() -> list:
   try:
     data_manager = Context()
-    response = requests.get(data_manager.get_config().get_base_url() + "/admin/get_courses").content
+    response = requests.get(data_manager.get_config().get_base_url() + "/get_courses").content
     response = json.loads(response.decode('utf-8'))
     data_manager = Context()
 
@@ -51,7 +51,7 @@ def add_course(course_object: Course) -> None:
     }
     data_manager = Context()
     response = requests.post(
-      data_manager.get_config().get_base_url() + "/admin/insert_course",
+      data_manager.get_config().get_base_url() + "/insert_course",
       data = data
     ).content
     response = json.loads(response.decode('utf-8'))
@@ -94,7 +94,7 @@ def remove_course(course_id: str, refresh_table_function) -> None:
       }
       data_manager = Context()
       response = requests.post(
-        data_manager.get_config().get_base_url() + "/admin/remove_course",
+        data_manager.get_config().get_base_url() + "/remove_course",
         data = data
       ).content
       response = json.loads(response.decode('utf-8'))
@@ -129,7 +129,7 @@ def search_course(course_id: str) -> list:
     }
     data_manager = Context()
     response = requests.get(
-      data_manager.get_config().get_base_url() + "/admin/search_courses",
+      data_manager.get_config().get_base_url() + "/search_courses",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))

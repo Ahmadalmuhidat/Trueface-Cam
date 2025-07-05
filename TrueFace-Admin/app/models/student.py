@@ -55,7 +55,7 @@ class Student:
         "student_id": self.student_id
       }
       response = requests.get(
-        self.config.get_base_url() + "/admin/check_duplicated_id",
+        self.config.get_base_url() + "/check_duplicated_id",
         params = data
       ).content
       response = json.loads(response.decode('utf-8'))

@@ -10,7 +10,7 @@ from app.config.context import Context
 def get_classes() -> list:
 	try:
 		data_manager = Context()
-		response = requests.get(data_manager.get_config().get_base_url() + "/admin/get_classes").content
+		response = requests.get(data_manager.get_config().get_base_url() + "/get_classes").content
 		response = json.loads(response.decode('utf-8'))
 		data_manager = Context()
 
@@ -53,7 +53,7 @@ def add_class(class_object: Class) -> None:
 		data_manager = Context()
 
 		response = requests.post(
-			data_manager.get_config().get_base_url() + "/admin/insert_class",
+			data_manager.get_config().get_base_url() + "/insert_class",
 			data=data
 		).content
 		response = json.loads(response.decode('utf-8'))
@@ -96,7 +96,7 @@ def remove_class(class_id: str, refresh_table_function) -> None:
 			}
 			data_manager = Context()
 			response = requests.post(
-				data_manager.get_config().get_base_url() + "/admin/remove_class",
+				data_manager.get_config().get_base_url() + "/remove_class",
 				data = data
 			).content
 			response = json.loads(response.decode('utf-8'))
@@ -132,7 +132,7 @@ def search_class(class_id: str) -> list:
 		}
 		data_manager = Context()
 		response = requests.get(
-			data_manager.get_config().get_base_url() + "/admin/search_class",
+			data_manager.get_config().get_base_url() + "/search_class",
 			params = data
 		).content
 		response = json.loads(response.decode('utf-8'))
@@ -164,7 +164,7 @@ def get_student_classes(student_id: str) -> None:
 		}
 		data_manager = Context()
 		response = requests.get(
-			data_manager.get_config().get_base_url() + "/admin/get_classes_student_relation",
+			data_manager.get_config().get_base_url() + "/get_classes_student_relation",
 			params = data
 		).content
 		response = json.loads(response.decode('utf-8'))
@@ -216,7 +216,7 @@ def remove_student_from_class(relation_id: str) -> None:
 			}
 			data_manager = Context()
 			response = requests.post(
-				data_manager.get_config().get_base_url() + "/admin/remove_class_student_relation",
+				data_manager.get_config().get_base_url() + "/remove_class_student_relation",
 				data = data
 			).content
 			response = json.loads(response.decode('utf-8'))
@@ -255,7 +255,7 @@ def remove_student_from_all_classes(student_id: str) -> None:
 		}
 		data_manager = Context()
 		response = requests.post(
-			data_manager.get_config().get_base_url() + "/admin/clear_class_student_relation",
+			data_manager.get_config().get_base_url() + "/clear_class_student_relation",
 			data = data
 		).content
 		response = json.loads(response.decode('utf-8'))
@@ -291,7 +291,7 @@ def get_classes_for_selection() -> list:
 	try:
 		data_manager = Context()
 		response = requests.get(
-			data_manager.get_config().get_base_url() + "/admin/get_classes_for_selection"
+			data_manager.get_config().get_base_url() + "/get_classes_for_selection"
 		).content
 		response = json.loads(response.decode('utf-8'))
 
@@ -331,7 +331,7 @@ def add_student_to_class(relation_id: str, student_id: str, class_id: str, class
 		}
 		data_manager = Context()
 		response = requests.post(
-			data_manager.get_config().get_base_url() + "/admin/insert_class_student_relation",
+			data_manager.get_config().get_base_url() + "/insert_class_student_relation",
 			data = data
 		).content
 		response = json.loads(response.decode('utf-8'))

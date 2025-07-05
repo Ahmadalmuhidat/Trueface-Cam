@@ -13,7 +13,7 @@ def get_current_teacher_classes():
       "current_teacher": database_manager.get_token()
     }
     response = requests.get(
-      database_manager.get_config().get_base_url() + "/teacher/get_current_teacher_classes",
+      database_manager.get_config().get_base_url() + "/get_current_teacher_classes",
       params = data
     ).content
     response = json.loads(response.decode('utf-8'))

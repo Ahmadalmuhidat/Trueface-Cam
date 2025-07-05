@@ -19,16 +19,19 @@ class Home():
 
   def update_camera_status(self):
     try:
-      if self._camera_manager.found_active_connected_camera:
-        self.camera_status.configure(
-          text = "Connected",
-          text_color = "green"
+      while True:
+        if self._camera_manager.found_active_connected_camera:
+          self.camera_status.configure(
+            text = "Connected",
+            text_color = "green"
+          )
+        else:
+          self.camera_status.configure(
+            text= "Disconnected",
+            text_color = "red"
         )
-      else:
-        self.camera_status.configure(
-          text= "Disconnected",
-          text_color = "red"
-      )
+
+        time.sleep(5)
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -37,22 +40,25 @@ class Home():
       print(ExceptionObject)
       pass
 
-  def update_database_status(self):
+  def update_api_status(self):
     try:
-      response = requests.get(self._config.get_base_url() + "/",).content
-      response_str = response.decode('utf-8')
-      APIActive = json.loads(response_str)
+      while True:
+        response = requests.get(self._config.get_base_url() + "/",).content
+        response_str = response.decode('utf-8')
+        api_active = json.loads(response_str)
 
-      if not APIActive:
-        self.database_status.configure(
-          text = "Disconnected",
-          text_color = "red"
-        )
-      else:
-        self.database_status.configure(
-          text = "Connected",
-          text_color = "green"
-        )   
+        if not api_active.get("data"):
+          self.database_status.configure(
+            text = "Disconnected",
+            text_color = "red"
+          )
+        else:
+          self.database_status.configure(
+            text = "Connected",
+            text_color = "green"
+          )
+
+        time.sleep(2) 
 
     except Exception as e:
       ExceptionType, ExceptionObject, ExceptionTraceBack = sys.exc_info()
@@ -185,13 +191,13 @@ class Home():
       )
       database_status_frame.grid_propagate(False)
 
-      self.database_status_header = customtkinter.CTkLabel(
+      self.api_status_header = customtkinter.CTkLabel(
         database_status_frame,
         bg_color = "transparent",
         font = customtkinter.CTkFont(size = 15),
-        text = "Database Status"
+        text = "API Status"
       )
-      self.database_status_header.pack(
+      self.api_status_header.pack(
         padx = 5,
         pady = 10
       )
@@ -244,7 +250,7 @@ class Home():
 
       threading.Thread(target = self.update_cpu_metrics).start()
       threading.Thread(target = self.update_attendance_count).start()
-      threading.Thread(target = self.update_database_status).start()
+      threading.Thread(target = self.update_api_status).start()
       threading.Thread(target = self.update_camera_status).start()
 
     except Exception as e:

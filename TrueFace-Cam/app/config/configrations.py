@@ -16,7 +16,7 @@ class Configrations:
       return
     self.__class__._initialized = True
     # private
-    self._base_url = "http://localhost:8000"
+    self._base_url = "http://localhost:8000/teacher"
 
   @classmethod
   def loading_cursor_on(cls):

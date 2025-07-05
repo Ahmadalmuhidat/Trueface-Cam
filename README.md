@@ -57,7 +57,7 @@ The Admin System provides a user interface for managing attendance data and syst
 
 1.  **Set up the environment:**
     ```bash
-    python3 -m venv env
+    python3.9 -m venv env
     source env/bin/activate
     pip install -r requirements.txt
     ```
@@ -72,7 +72,7 @@ The Camera System handles real-time facial recognition and attendance capture.
 
 1.  **Set up the environment:**
     ```bash
-    python3 -m venv env
+    python3.9 -m venv env
     source env/bin/activate
     pip install -r requirements.txt
     ```
