@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f6f6f6;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 20px 30px;
+      }
+
+      h2 {
+        color: #333333;
+      }
+
+      p {
+        font-size: 16px;
+        color: #555555;
+      }
+
+      .password-box {
+        background-color: #f1f1f1;
+        padding: 10px 15px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #000000;
+        border-radius: 5px;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Welcome to TrueFace</h2>
+      <p>Hello,</p>
+      <p>We’re excited to have you on board! Your account has been created successfully.</p>
+      <p>Here is your generated password:</p>
+      <div class="password-box">
+        {{password}}
+      </div>
+      <p>Thank you,<br><strong>The TrueFace Team</strong></p>
+    </div>
+  </body>
+</html>
