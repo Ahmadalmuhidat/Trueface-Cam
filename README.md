@@ -87,9 +87,11 @@ Below is a screenshot showcasing the intuitive user interface of the TrueFace Ad
 * **QR Reader Module**: Contains the system's global configuration settings.
 
 ![Diagram 1 - System Architecture](./assets/trueface_cam_arch.png)
-*Figure 1: System Architecture of the Camera System*
+<p align="center"><em>Figure 1: System Architecture of the Camera System</em></p>
+
+The following diagram explains the process of capturing and identifying the student.
 ![Diagram 2 - Face Recognition Flow](./assets/trueface_cam_workflow.png)
-*Figure 2: Real-Time Face Recognition Flow*
+<p align="center"><em>Figure 2: Real-Time Face Recognition Flow</em></p>
 
 ### Camera System Interface
 Here's a glimpse of the TrueFace Camera System in action.
