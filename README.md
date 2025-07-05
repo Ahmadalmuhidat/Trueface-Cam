@@ -88,6 +88,7 @@ Below is a screenshot showcasing the intuitive user interface of the TrueFace Ad
 
 ![Diagram 1 - System Architecture](./assets/trueface_cam_arch.png)
 <p align="center"><em>Figure 1: System Architecture of the Camera System</em></p>
+
 ![Diagram 2 - Face Recognition Flow](./assets/trueface_cam_workflow.png)
 <p align="center"><em>Figure 2: Real-Time Face Recognition Flow</em></p>
 
