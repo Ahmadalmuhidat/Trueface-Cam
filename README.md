@@ -5,7 +5,6 @@ TrueFace is an advanced attendance management solution that leverages **real-tim
 ---
 
 ## Key Features ✨
-
 * **Effortless Face Recognition:** Automatically records attendance using state-of-the-art facial recognition.
 * **Real-Time Data Capture:** Processes and updates attendance records instantly, ensuring up-to-the-minute accuracy.
 * **Robust Django API:** Features a powerful backend API built with Django, facilitating efficient data management and interaction.
@@ -15,11 +14,9 @@ TrueFace is an advanced attendance management solution that leverages **real-tim
 ---
 
 ## Getting Started 🚀
-
 To get started with TrueFace, ensure you have the following prerequisites installed:
 
 ### Prerequisites
-
 * **Python 3.9+**: The core language for TrueFace.
 * **Docker**: Essential for containerization and simplified deployment.
 * **MySQL**: The default database for storing attendance data. While configurable, MySQL is recommended for initial setup.
@@ -27,13 +24,10 @@ To get started with TrueFace, ensure you have the following prerequisites instal
 ---
 
 ### Installation & Setup
-
 TrueFace comprises three main components: the **Admin System**, the **Camera System**, and the **Backend API**. Each component has a straightforward installation process.
 
 #### 1. Backend API Installation
-
 The Backend API manages all attendance data and interactions.
-
 1.  **Set up the environment:**
     ```bash
     python3 -m venv env
@@ -52,9 +46,7 @@ The Backend API manages all attendance data and interactions.
     ```
 
 #### 2. Admin System Installation
-
 The Admin System provides a user interface for managing attendance data and system configurations.
-
 1.  **Set up the environment:**
     ```bash
     python3.9 -m venv env
@@ -67,9 +59,7 @@ The Admin System provides a user interface for managing attendance data and syst
     ```
 
 #### 3. Camera System Installation
-
 The Camera System handles real-time facial recognition and attendance capture.
-
 1.  **Set up the environment:**
     ```bash
     python3.9 -m venv env
@@ -84,25 +74,23 @@ The Camera System handles real-time facial recognition and attendance capture.
 ---
 
 ## Visuals 📸
-
 ### Admin System Interface
-
 Below is a screenshot showcasing the intuitive user interface of the TrueFace Admin System.
-
 ![UI Screenshot](./assets/trueface-admin-screenshot.png)
 
 ### Camera System Diagrams
-
-These diagrams illustrate the architecture and workflow of the TrueFace Camera System, demonstrating its real-time processing capabilities.
+* **Configrations**: Contains the system's global configuration settings.
+* **Context**: Holds the system's global data.
+* **Router**: Manages navigation between views.
+* **Camera Module**: Controls camera functions.
+* **Face Recognition Module**: Handles face recognition processes.
+* **QR Reader Module**: Contains the system's global configuration settings.
 
 ![Diagram 1 - System Architecture](./assets/trueface_cam_arch.png)
 *Figure 1: System Architecture of the Camera System*
-
 ![Diagram 2 - Face Recognition Flow](./assets/trueface_cam_workflow.png)
 *Figure 2: Real-Time Face Recognition Flow*
 
 ### Camera System Interface
-
 Here's a glimpse of the TrueFace Camera System in action.
-
 ![UI Screenshot](./assets/trueface-cam-screenshot.png)
