@@ -1,10 +1,10 @@
-# TrueFace: AI-Powered Attendance Management 🤖
+# TrueFace: AI-Powered Attendance Management
 
 TrueFace is an advanced attendance management solution that leverages **real-time facial recognition technology** to automate and streamline attendance tracking. It provides a seamless, accurate, and secure system for identifying individuals and recording their presence.
 
 ---
 
-## Key Features ✨
+## Key Features
 * **Effortless Face Recognition:** Automatically records attendance using state-of-the-art facial recognition.
 * **Real-Time Data Capture:** Processes and updates attendance records instantly, ensuring up-to-the-minute accuracy.
 * **Robust Django API:** Features a powerful backend API built with Django, facilitating efficient data management and interaction.
@@ -13,7 +13,7 @@ TrueFace is an advanced attendance management solution that leverages **real-tim
 
 ---
 
-## Getting Started 🚀
+## Getting Started
 To get started with TrueFace, ensure you have the following prerequisites installed:
 
 ### Prerequisites
@@ -73,7 +73,7 @@ The Camera System handles real-time facial recognition and attendance capture.
 
 ---
 
-## Visuals 📸
+## Visuals
 ### Admin System Interface
 Below is a screenshot showcasing the intuitive user interface of the TrueFace Admin System.
 ![UI Screenshot](./assets/trueface-admin-screenshot.png)
