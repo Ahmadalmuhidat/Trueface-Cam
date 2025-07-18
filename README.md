@@ -92,8 +92,6 @@ Below is a screenshot showcasing the intuitive user interface of the TrueFace Ad
 ![Diagram 2 - Face Recognition Flow](./assets/trueface_cam_workflow.png)
 <p align="center"><em>Figure 2: Real-Time Face Recognition Flow</em></p>
 
----
-
 ### Camera System Interface
 Here's a glimpse of the TrueFace Camera System in action.
 ![UI Screenshot](./assets/trueface-cam-screenshot.png)
